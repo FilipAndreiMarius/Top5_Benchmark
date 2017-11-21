@@ -27,6 +27,11 @@ public class VideoCapture extends Thread{
         setFrames(frames);
         setDuration(duration);
     }
+    public VideoCapture( String command) throws IOException {
+        this.command=command;
+
+    }
+
     @Override
     public void run() {
 
@@ -34,13 +39,15 @@ public class VideoCapture extends Thread{
             Process p;
             switch (command) {
                 case StartVideo:
-                    System.out.println("Video-Thread- Started"
+                    System.out.println("Video-Record-Thread-Started"
                             + Thread.currentThread().getName());
                     ProcessBuilder pb = new ProcessBuilder("cmd.exe","/c",ffmpegStartVideoCommand());
                     pb.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                     pb.redirectError(ProcessBuilder.Redirect.INHERIT);
                     Process p1 = pb.start();
                     p1.waitFor();
+                    System.out.println("Video-Record-Thread-Started"
+                            + Thread.currentThread().getName());
                     break;
 
 
@@ -49,11 +56,18 @@ public class VideoCapture extends Thread{
                     File outputPath = new File(FPS60VIDEOS);
                     File[] Videos = inputPath.listFiles();
                     for(File file:Videos) {
-                        p = Runtime.getRuntime().exec(convertTo60Fps(file.getAbsolutePath(), outputPath.getAbsolutePath()+"\\"+file.getName()));
-                        System.out.print("Staring video compressing to 60 Fps for video:" + file.getName());
-                        System.out.print(p.getInputStream().available());
+                        System.out.println("Video-Compressing-Started"
+                                + Thread.currentThread().getName());
+                        ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe","/c",convertTo60Fps(file.getAbsolutePath(), outputPath.getAbsolutePath()+"\\"+file.getName()));
+                        BuilderCompress.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
+                        BuilderCompress.redirectError(ProcessBuilder.Redirect.INHERIT);
+                        p=BuilderCompress.start();
+                        p.waitFor();
+                        System.out.println("Video-Compressing-Started"
+                                + Thread.currentThread().getName());
                     }
                     break;
+
 
                    case SplitVideoToFrames:
                     File output=new File(SPLITED_VIDEOS);
@@ -61,16 +75,18 @@ public class VideoCapture extends Thread{
                     File[] files = dir.listFiles();
 
                     for(File file:files){
-
-                           String outputFolder=  Utils.Utils.createDirectory(output+"/"+file.getName());
-                           Thread.sleep(2500);
-                        Runtime.getRuntime().exec(splitIntoFrames(file.getAbsolutePath(), outputFolder));
-                        System.out.print("Starting Video Into frames:");
-
+                        System.out.println("Video-Splitting-Started"
+                                + Thread.currentThread().getName());
+                         String outputFolder=  Utils.Utils.createDirectory(output+"/"+file.getName());
+                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe","/c",splitIntoFrames(file.getAbsolutePath(), outputFolder));
+                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
+                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);
+                         Process split=splitFrames.start();
+                         split.waitFor();
+                        System.out.println("Video-Splitting-Ended"
+                                + Thread.currentThread().getName());
                     }
-
                     break;
-
 
             }
 
@@ -79,7 +95,7 @@ public class VideoCapture extends Thread{
             System.out.print(e);
 
         }finally {
-            System.out.println("Video-Thread- Ended"
+            System.out.println("Video-Thread-Ended"
                     + Thread.currentThread().getName());
         }
 
@@ -105,7 +121,6 @@ public class VideoCapture extends Thread{
     }
 
 
-
     public String convertTo60Fps(String fileInput,String fileOutput){
         StringBuilder command = new StringBuilder();
         command.append("ffmpeg  -i "+fileInput)
@@ -122,7 +137,6 @@ public class VideoCapture extends Thread{
                 .append("\\image.%6d.jpg");
         return command.toString();
     }
-
 
     public static String getFrames() {
         return frames;

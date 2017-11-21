@@ -116,14 +116,33 @@ public class GooglePage extends Thread {
     }
 
     public static void main(String args[]) throws IOException {
-        Thread video = new VideoCapture("15", "35", "runVideo");
-        video.start();
-        Thread a = new GooglePage(2);
-        a.start();
-       /* synchronized (a){
-            VideoCapture com
 
-        }*/
+        Thread recordVideo = new VideoCapture("15", "40", "runVideo");
+        recordVideo.start();
+
+        Thread a = new GooglePage(1);
+        a.start();
+
+        try {
+            recordVideo.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Thread compress =new VideoCapture("compress");
+        compress.start();
+
+
+        try {
+            compress.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Thread splitVideo =new VideoCapture("splitVideo");
+        splitVideo.start();
+
+
+
 
 
     }
