@@ -1,5 +1,6 @@
 package PageLoadFlows;
 
+import Utils.ObjectTypes;
 import VideoProcessor.VideoCapture;
 import com.paulgavrikov.notification.Notification;
 import org.openqa.selenium.By;
@@ -117,13 +118,15 @@ public class GooglePage extends Thread {
 
     public static void main(String args[]) throws IOException {
 
-        Thread recordVideo = new VideoCapture("15", "40", "runVideo");
+
+
+        Thread recordVideo = new VideoCapture("15", "40", "runVideo", ObjectTypes.GOOGLE.toString());
         recordVideo.start();
 
         Thread a = new GooglePage(1);
         a.start();
 
-        try {
+      /*  try {
             recordVideo.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -139,7 +142,7 @@ public class GooglePage extends Thread {
         }
 
         Thread splitVideo =new VideoCapture("splitVideo");
-        splitVideo.start();
+        splitVideo.start();*/
 
 
 

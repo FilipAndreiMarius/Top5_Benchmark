@@ -18,7 +18,8 @@ import java.util.Iterator;
 public class Utils {
 
 
-    public ArrayList<Object> getImages(String path) throws IOException {
+    public static ArrayList<Object> getImages(String path) throws IOException {
+
         ArrayList<Object> images = new ArrayList<>();
         Iterator it = org.apache.commons.io.FileUtils.iterateFiles(new File(path), null, false);
         while (it.hasNext()) {
