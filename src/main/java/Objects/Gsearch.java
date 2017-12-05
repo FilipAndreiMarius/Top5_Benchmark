@@ -3,7 +3,9 @@ package Objects;
  * Created by andrei.filip on 10/4/2017.
  */
 
-import Constants.Object_Constants;
+import Utils.ObjectTypes;
+import Utils.Utils;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
@@ -14,9 +16,14 @@ import static Constants.Object_Constants.*;
 
 public class Gsearch extends ImageSearch {
 
-
-
-    JsonObject reportObject=new JsonObject();
+    Boolean First_non_blank_found=false;
+    Boolean SearchBar=false;
+    Boolean LordOfTheRingsSearch=false;
+    JsonObject reportObject;
+    String testName= ObjectTypes.GOOGLE.name;
+    ArrayList<Object> images_array;
+    ArrayList<Object> image_patterns;
+    JsonArray  resultsArray = new JsonArray();
 
 
     public JsonObject getReportObject() {
@@ -26,69 +33,122 @@ public class Gsearch extends ImageSearch {
 
 
 
+    public JsonArray getFirstNonBlankHero() throws IOException {
 
-    public JsonObject analizeVideo() throws IOException {
         reportObject=new JsonObject();
-        int frame_number = 0;
-        int counter = 0;
+        int frame_number ;
+        int counter ;
 
-        ArrayList<Object> images_array = new ArrayList<>();
-        ArrayList<Object> image_patterns = new ArrayList<>();
-        Boolean First_non_blank_found=false;
-        Boolean SearchBar=false;
-        Boolean LordOfTheRingsSearch=false;
 
-        images_array = Utils.Utils.getImages(Object_Constants.AMAZON_IMAGE_FOLDER);
-        image_patterns=Utils.Utils.getImages(AMAZON_PATTERN_FOLDER);
+        resultsArray = new JsonArray();
+        reportObject = new JsonObject();
+        Boolean StoriesHero = false;
+        Boolean AccessImages = false;
+        int found=0;
 
+
+
+        Boolean LastHero = false;
+        Boolean zeroElement=false;
+        float similarity= (float) 0.95;
+
+        images_array=getPatterns(testName,"SplitedVideos");
+        image_patterns=getPatterns(testName,"Patterns");
         for (int i = 0; i < image_patterns.size(); i++) {
-            for(int j=0;j<images_array.size();j++) {
+            for (int j = 401; j < images_array.size(); j++) {
                 Object p = images_array.get(j);
                 String path_pattern = p.toString();
-                String fff=image_patterns.get(i).toString();
+                String imagePattern = image_patterns.get(i).toString();
 
-                Boolean result =false;
-
-                Utils.Utils.run(path_pattern, fff);
+                Boolean result = false;
 
 
-                result = Utils.Utils.searchImage(path_pattern, fff);
+                result = Utils.searchImage(path_pattern, imagePattern,similarity);
+                System.out.println("Search nr:"+j);
                 counter = j;
+               //first time google search is  used
+                if (result&&imagePattern.contains("zero")) {
+                    found++;
+                    if(found>1) {
+                        frame_number = counter;
+                        reportObject.addProperty(ZERO_ELEMENT, frame_number);
+                        System.out.println(reportObject);
+                        similarity= (float) 0.95;
+                        zeroElement = true;
 
-                if (result==true && fff.contains("FirstNonBlank")) {
+                    }
+                    i = i + 1;
+
+                }
+
+                if (zeroElement && result && imagePattern.contains("FirstNonBlank")) {
                     frame_number = counter;
                     reportObject.addProperty(FIRST_NON_BLANK, frame_number);
-                    First_non_blank_found=true;
-                    i=i+1;
+                    System.out.println("First non Blank:"+reportObject);
+                    First_non_blank_found = true;
+                    i = i + 1;
+                }
+                if (First_non_blank_found  && result  && imagePattern.contains("HeroElement")) {
+                    frame_number = counter;
+                    reportObject.addProperty(TOP_STORIES_HERO, frame_number);
+                    System.out.println("Top Stories:"+reportObject);
+                    StoriesHero = true;
+                    similarity= (float) 0.99;
+                    i = i + 1;
+                    j=j+15;
+                }
+                if (StoriesHero && result && imagePattern.contains("AccessImages")) {
+                    frame_number = counter;
+                    reportObject.addProperty(ACCESS_IMAGES, frame_number);
+                    System.out.println("Access images:"+reportObject);
+                    AccessImages = true;
+                    i = i + 1;
+                    similarity= (float) 0.95;
 
                 }
-                if (First_non_blank_found==true&&result==true && fff.contains("SearchBarHeroElement")) {
+                if (First_non_blank_found && result && imagePattern.contains("LastHero.png")) {
                     frame_number = counter;
-                    reportObject.addProperty(SEARCH_BAR_HERO, frame_number);
-                    SearchBar=true;
-                    i=i+1;
+                    reportObject.addProperty(LAST_HERO, frame_number);
+                    System.out.println("last hero"+reportObject);
+                    LastHero = true;
+                    resultsArray.add(reportObject);
+                    System.out.println("Result object: " + reportObject);
                 }
-                if (/*First_non_blank_found==true&&*/result==true && fff.contains("SearchLordOfTheRings.png")) {
-                    frame_number = counter;
-                    reportObject.addProperty(LORD_OF_THE_RINGS_SEARCH_ACTION, frame_number);
-                    LordOfTheRingsSearch=true;
-                    break;
+                if (First_non_blank_found && StoriesHero && LastHero ) {
+                    while(LastHero){
+                        LastHero= Utils.searchImage(path_pattern,  images_array.get(j).toString(),similarity);
+                        j=j+1;
+
+                    }
+
+                    First_non_blank_found = false;
+                    StoriesHero = false;
+                    LastHero = false;
+                    i=0;
+                    found=0;
+                    reportObject = new JsonObject();
                 }
-                if(SearchBar && First_non_blank_found &&LordOfTheRingsSearch){
-                    return reportObject;
-                }
-                // break;
+
+
+
+
+
+
             }
         }
-        return reportObject;
+
+        return resultsArray;
     }
 
 
+
+
     public static void main(String args[]) throws IOException {
-   /*     Thread recordVideo = new VideoCapture("15", "5", "runVideo", Utils.ObjectTypes.GOOGLE.name);
+/*
+       Thread recordVideo = new VideoCapture("30", "50", "runVideo", ObjectTypes.GOOGLE.name);
         recordVideo.start();
 
-        Thread a = new GooglePage(1);
+        Thread a = new GooglePage(4);
         a.start();
 
        try {
@@ -96,7 +156,7 @@ public class Gsearch extends ImageSearch {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Thread compress =new VideoCapture("compress",Utils.ObjectTypes.GOOGLE.name);
+        Thread compress =new VideoCapture("compress",ObjectTypes.GOOGLE.name);
         compress.start();
 
         try {
@@ -106,8 +166,13 @@ public class Gsearch extends ImageSearch {
         }
 
 
-        Thread splitVideo =new VideoCapture("splitVideo",Utils.ObjectTypes.GOOGLE.name);
-        splitVideo.start();*/
+        Thread splitVideo =new VideoCapture("splitVideo",ObjectTypes.GOOGLE.name);
+        splitVideo.start();
 
+*/
+
+
+     Gsearch g=new Gsearch();
+     g.getFirstNonBlankHero();
     }
 }

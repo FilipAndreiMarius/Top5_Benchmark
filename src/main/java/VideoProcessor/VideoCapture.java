@@ -49,7 +49,7 @@ public class VideoCapture extends Thread {
                     pb.redirectError(ProcessBuilder.Redirect.INHERIT);
                     Process p1 = pb.start();
                     p1.waitFor();
-                    System.out.println("Video-Record-Thread-Started"
+                    System.out.println("Video-Record-Thread-Ended"
                             + Thread.currentThread().getName());
                     break;
 
@@ -62,18 +62,18 @@ public class VideoCapture extends Thread {
                         if (file.getName().contains(testName)) {
                             File[] Videos = file.listFiles();
                             for (File movieFile : Videos) {
-                                System.out.println("Video-Compressing-Started"
+                                System.out.println("Video_file_found-Compressing-Started"
                                         + Thread.currentThread().getName());
                                 ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe", "/c", convertTo60Fps(movieFile.getAbsolutePath(), outputPath.getAbsolutePath() + "\\" + file.getName() + "\\" + movieFile.getName()));
                                 BuilderCompress.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                                 BuilderCompress.redirectError(ProcessBuilder.Redirect.INHERIT);
                                 p = BuilderCompress.start();
                                 p.waitFor();
-                                System.out.println("Video-Compressing-Started"
+                                System.out.println("Video-Compressing-Ended"
                                         + Thread.currentThread().getName());
                             }
                         } else {
-                            System.out.println("Keep Searching..:)");
+                            System.out.println("Video file not found!...Keep Searching..:)");
                         }
 
                     }
@@ -108,7 +108,7 @@ public class VideoCapture extends Thread {
             System.out.print(e);
 
         } finally {
-            System.out.println("Video-Thread-Ended"
+            System.out.println("Video-Processing-DONE!!!!!"
                     + Thread.currentThread().getName());
         }
 
@@ -121,17 +121,20 @@ public class VideoCapture extends Thread {
         return randomNum;
     }
 
-    //FFMPEG Video command that will be inputed in terminal
-    public String ffmpegStartVideoCommand() {
+    //FFMPEG Video command that will be imputed in terminal
+    public String ffmpegStartVideoCommand(){
         StringBuilder command = new StringBuilder();
         String path = setTestPath(testName);
         command.append("ffmpeg -f dshow -i video=")
                 .append("screen-capture-recorder")
-                .append(" -r " + getFrames())
-                .append(" -t " + getDuration())
+                .append(" -vcodec libx264")
+                .append(" -preset ultrafast")
+                .append(" -crf 0")
+                .append(" -acodec pcm_s16le")
+                .append(" -r "+getFrames())
+                .append(" -t "+getDuration())
                 .append(" Videos\\")
                 .append(path)
-                .append(generateNumber(1, 1000))
                 .append(".mp4");
         return command.toString();
     }
@@ -173,7 +176,7 @@ public class VideoCapture extends Thread {
         command.append("ffmpeg  -i " + fileInput)
                 .append(" -qscale -1 ")
                 .append(fileOutput)
-                .append("\\image.%6d.jpg");
+                .append("\\image.%6d.png");
         return command.toString();
     }
 

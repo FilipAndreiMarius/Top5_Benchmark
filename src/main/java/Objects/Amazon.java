@@ -53,10 +53,10 @@ public class Amazon {
 
                  Boolean result =false;
 
-                Utils.run(path_pattern, fff);
+                /*Utils.run(path_pattern, fff);*/
 
 
-                result = Utils.searchImage(path_pattern, fff);
+                result = Utils.searchImage(path_pattern, fff, (float) 0.8);
                   counter = j;
 
                   if (result==true && fff.contains("FirstNonBlank")) {

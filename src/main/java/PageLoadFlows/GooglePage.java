@@ -30,48 +30,52 @@ public class GooglePage extends Thread {
     static By GoogleSearchButton = By.className("lsb");
     static By GoogleImage = By.xpath("//*[@class='q qs']");
     Boolean runTest=false;
+    Notification notificationP = new Notification();
 
 
     public GooglePage(int nrRuns) {
      this.nrRuns=nrRuns;
+        System.setProperty("webdriver.gecko.driver", "C:\\Commons\\geckodriver.exe");
+        driver = new FirefoxDriver();
+        driver.manage().window().maximize();
+
+    }
+    public void setUp() throws IOException, InterruptedException {
+        // runTest=Utils.Utils.checkCpuLoad();
+       /*if(runTest!=false) {*/
+
+
     }
 
-    public static void accessImage() throws MalformedURLException, AWTException {
+    public void accessImage() throws MalformedURLException, AWTException {
 
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(GoogleImage));
         driver.findElement(GoogleImage).click();
+
+
+
+
     }
 
 
-    public void setUp() throws IOException, InterruptedException {
-        runTest=Utils.Utils.checkCpuLoad();
-       if(runTest!=false) {
-           System.setProperty("webdriver.gecko.driver", "C:\\Commons\\geckodriver.exe");
-           driver = new FirefoxDriver();
-           driver.manage().window().maximize();
-       }
-    }
 
     public void accessGsearch() throws MalformedURLException, AWTException, InterruptedException {
         System.out.print("GSearch page is accessed:");
-        Notification notificationP = new Notification();
-        notificationP.push("GPage", "GSearch page is accessed");
         driver.get(GsearchUrl);
-        notificationP.push("123123123", "ads");
+
 
 
     }
 
-    public void searchGoogle() throws MalformedURLException, AWTException {
+    public void searchGoogle() throws MalformedURLException, AWTException, InterruptedException {
         driver.findElement(GoogleSearchBar).sendKeys(searchItem);
 
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(GoogleSearchButton));
-        new Thread(new Notifications()).start();
-
         Actions actions = new Actions(driver);
         actions.sendKeys(driver.findElement(GoogleSearchButton), Keys.ENTER).build().perform();
+        Thread.sleep(3000);
 
 
     }
@@ -113,7 +117,7 @@ public class GooglePage extends Thread {
     }
 
     public void teardown() {
-        driver.quit();
+        //driver.quit();
     }
 
     public static void main(String args[]) throws IOException {

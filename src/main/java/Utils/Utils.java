@@ -1,8 +1,6 @@
 package Utils;
 
-import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+
 import org.sikuli.script.Finder;
 import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
@@ -32,12 +30,12 @@ public class Utils {
     }
 
 
-    public static Boolean searchImage(String imagePath1, String imagePath2) throws IOException {
+    public static Boolean searchImage(String imagePath1, String imagePath2,float similarity) throws IOException {
         Match m;
         ArrayList<Match> list = null;
         Finder finder = new Finder(imagePath1, new Region(286, 164, 108, 23));
 
-        Pattern pattern = new Pattern(imagePath2).similar((float) 0.5);
+        Pattern pattern = new Pattern(imagePath2).similar(similarity);
 
         finder.find(pattern);
 
@@ -50,6 +48,7 @@ public class Utils {
     }
 
 
+/*
     public static void run(String inFile, String templateFile) {
         System.out.println("\nRunning Template Matching");
         //System.load( "C:\\OpenCvs\\opencv\\build\\java\\x64\\opencv_java330.dll" );
@@ -96,7 +95,7 @@ public class Utils {
 
         Imgcodecs.imwrite("match1.png", img);
 
-    }
+    }*/
 
 
 

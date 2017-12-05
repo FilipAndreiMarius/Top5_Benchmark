@@ -16,10 +16,18 @@ public class Object_Constants {
     public static final String FIRST_NON_BLANK_PATTERN = "C:\\Users\\andrei.filip\\IdeaProjects\\SikuliCompare\\Patterns\\Amazon_Patterns\\FirstNonBlank.png";
 
     //ReportObject
+    public static final String ZERO_ELEMENT="zero_element";
     public static final String FIRST_NON_BLANK="first_non_blank";
     public static final String SEARCH_BAR_HERO="search_bar_hero_element";
     public static final String SEARCH_BAR_FIRST_NON_BLANK="search_bar_first_non_blank";
     public static final String LORD_OF_THE_RINGS_SEARCH_ACTION="lord_of_the_rings_search_action";
 
+
+    public static final String IMAGE_FIRST_NON_BLANK="image_first_non_blank";
+
+    public static final String LAST_HERO = "last_hero";
+
+    public static final String TOP_STORIES_HERO = "hero_element";
+    public static final String ACCESS_IMAGES = "Access_Images";
 
 }

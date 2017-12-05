@@ -12,54 +12,25 @@ public class ImageSearch {
     //hardcoded value just for testing
     static String testName = "Gsearch";
 
+   //String testName"Gsearch,Amazon,Gmail,Facebook
+   //path_name:'SplitedVideos' ,'Patterns'
 
-    public static ArrayList<Object> getSplitedVideo(String testName) throws IOException {
-        testName = testName;
+    public static ArrayList<Object> getPatterns(String testName,String pathName) throws IOException {
         ArrayList<Object> images_array = null;
-        File splitedVideoDirectory = new File("SplitedVideos");
-        File[] splitedVideoForders = splitedVideoDirectory.listFiles();
-
-        for (File videoFolder : splitedVideoForders) {
-            if (videoFolder.getName().contains(testName)) {
-                images_array = Utils.Utils.getImages(videoFolder.getPath());
-
-            }
-            return images_array;
-        }
-        return images_array;
-    }
-
-    public static ArrayList<Object> getPatterns(String testName) throws IOException {
-        testName = testName;
-        ArrayList<Object> images_array = null;
-        File patternFolder = new File("Patterns");
+        File patternFolder = new File(pathName);
         File[] patternDirectoriesArray = patternFolder.listFiles();
 
         for (File folder : patternDirectoriesArray) {
-            if (folder.getName().contains(testName)) ;
-            {
+            if (folder.getName().contains(testName)) {
                 images_array = Utils.Utils.getImages(folder.getPath());
+                return images_array;
             }
-
-            return images_array;
         }
         return images_array;
     }
 
 
 
-
-
-
-
-    public static void main(String args[]) throws IOException {
-
-
-        ArrayList<Object> images_array=  getSplitedVideo("Gsearch");
-        System.out.print(images_array);
-
-
-    }
 
 
 }
