@@ -3,8 +3,10 @@ package Objects;
  * Created by andrei.filip on 10/4/2017.
  */
 
+import PageLoadFlows.GooglePage;
 import Utils.ObjectTypes;
 import Utils.Utils;
+import VideoProcessor.VideoCapture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -144,7 +146,6 @@ public class Gsearch extends ImageSearch {
 
 
     public static void main(String args[]) throws IOException {
-/*
        Thread recordVideo = new VideoCapture("30", "50", "runVideo", ObjectTypes.GOOGLE.name);
         recordVideo.start();
 
@@ -169,10 +170,9 @@ public class Gsearch extends ImageSearch {
         Thread splitVideo =new VideoCapture("splitVideo",ObjectTypes.GOOGLE.name);
         splitVideo.start();
 
-*/
 
 
-     Gsearch g=new Gsearch();
-     g.getFirstNonBlankHero();
+/*     Gsearch g=new Gsearch();
+     g.getFirstNonBlankHero();*/
     }
 }

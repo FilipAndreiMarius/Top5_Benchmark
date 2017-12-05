@@ -2,6 +2,9 @@ package VideoProcessor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
 
 public class VideoCapture extends Thread {
@@ -58,6 +61,7 @@ public class VideoCapture extends Thread {
                     File inputPath = new File(VIDEOS);
                     File outputPath = new File(FPS60VIDEOS);
                     File[] VideoDirs = inputPath.listFiles();
+
                     for (File file : VideoDirs) {
                         if (file.getName().contains(testName)) {
                             File[] Videos = file.listFiles();

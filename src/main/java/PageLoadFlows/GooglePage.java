@@ -2,7 +2,6 @@ package PageLoadFlows;
 
 import Utils.ObjectTypes;
 import VideoProcessor.VideoCapture;
-import com.paulgavrikov.notification.Notification;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,12 +29,11 @@ public class GooglePage extends Thread {
     static By GoogleSearchButton = By.className("lsb");
     static By GoogleImage = By.xpath("//*[@class='q qs']");
     Boolean runTest=false;
-    Notification notificationP = new Notification();
 
 
     public GooglePage(int nrRuns) {
      this.nrRuns=nrRuns;
-        System.setProperty("webdriver.gecko.driver", "C:\\Commons\\geckodriver.exe");
+        System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckoDriver\\geckodriver.exe");
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
 
