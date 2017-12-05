@@ -1,12 +1,10 @@
-package PageLoadFlows;
+package org.mozilla.benchmark.pageObjects;
 
+import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-import static Constants.Page_Objects_Constants.YoutubeItem;
-import static Constants.Page_Objects_Constants.YoutubeUrl;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -22,29 +20,24 @@ public class YoutubePage {
     By youtubeFirstVideo = By.cssSelector("a[href*='/watch?v=G2944Wc2V_4']");
     By youtube2ndVideo = By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-compact-video-renderer']");
 
-
     public YoutubePage(WebDriver driver) {
         this.driver = driver;
-
     }
 
     public void accessYoutube() {
-        driver.get(YoutubeUrl);
+        driver.get(Constants.PageObjects.YOUTUBE_URL);
     }
 
     public void accessTrending() throws InterruptedException {
-
     /*   (new WebDriverWait(driver, 5))
                .until(ExpectedConditions.presenceOfElementLocated(trendingElment));*/
         driver.get("https://www.youtube.com/feed/trending");
-
     }
 
     public void searchInTrending() throws InterruptedException {
-
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.visibilityOfElementLocated(YoutubeSearchBar));
-        driver.findElement(YoutubeSearchBar).sendKeys(YoutubeItem);
+        driver.findElement(YoutubeSearchBar).sendKeys(Constants.PageObjects.YOUTUBE_ITEM);
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(YoutubeSearchButton));
         driver.findElement(YoutubeSearchButton).click();
@@ -60,7 +53,6 @@ public class YoutubePage {
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(youtube2ndVideo));
         driver.findElement(youtube2ndVideo).click();
-
     }
 
     public void runAllScenarios() throws InterruptedException {
@@ -70,5 +62,4 @@ public class YoutubePage {
         playVideo();
         play2ndVideo();
     }
-
 }

@@ -1,7 +1,8 @@
-package PageLoadFlows;
+package org.mozilla.benchmark.pageObjects;
 
-import Utils.ObjectTypes;
-import VideoProcessor.VideoCapture;
+import org.mozilla.benchmark.utils.ObjectTypes;
+import org.mozilla.benchmark.videoProcessor.VideoCapture;
+import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -14,9 +15,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import static Constants.Page_Objects_Constants.GsearchUrl;
-import static Constants.Page_Objects_Constants.searchItem;
-
 /**
  * Created by andrei.filip on 10/30/2017.
  */
@@ -28,61 +26,44 @@ public class GooglePage extends Thread {
     static By GoogleSearchBar = By.id("lst-ib");
     static By GoogleSearchButton = By.className("lsb");
     static By GoogleImage = By.xpath("//*[@class='q qs']");
-    Boolean runTest=false;
-
+    Boolean runTest = false;
 
     public GooglePage(int nrRuns) {
-     this.nrRuns=nrRuns;
+        this.nrRuns = nrRuns;
         System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckoDriver\\geckodriver.exe");
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
-
     }
+
     public void setUp() throws IOException, InterruptedException {
-        // runTest=Utils.Utils.checkCpuLoad();
+        // runTest=com.mozilla.benchmark.utils.com.mozilla.benchmark.utils.checkCpuLoad();
        /*if(runTest!=false) {*/
-
-
     }
 
     public void accessImage() throws MalformedURLException, AWTException {
-
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(GoogleImage));
         driver.findElement(GoogleImage).click();
-
-
-
-
     }
-
-
 
     public void accessGsearch() throws MalformedURLException, AWTException, InterruptedException {
         System.out.print("GSearch page is accessed:");
-        driver.get(GsearchUrl);
-
-
-
+        driver.get(Constants.PageObjects.GSEARCH_URL);
     }
 
     public void searchGoogle() throws MalformedURLException, AWTException, InterruptedException {
-        driver.findElement(GoogleSearchBar).sendKeys(searchItem);
-
+        driver.findElement(GoogleSearchBar).sendKeys(Constants.PageObjects.SEARCH_ITEM);
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.presenceOfElementLocated(GoogleSearchButton));
         Actions actions = new Actions(driver);
         actions.sendKeys(driver.findElement(GoogleSearchButton), Keys.ENTER).build().perform();
         Thread.sleep(3000);
-
-
     }
 
     public void runAllScenarios() throws MalformedURLException, AWTException, InterruptedException {
         accessGsearch();
         searchGoogle();
         accessImage();
-
     }
 
     public void quit() {
@@ -109,7 +90,6 @@ public class GooglePage extends Thread {
                 System.out.println("Thread- Ended"
                         + Thread.currentThread().getName());
                 teardown();
-
             }
         }
     }
@@ -119,9 +99,6 @@ public class GooglePage extends Thread {
     }
 
     public static void main(String args[]) throws IOException {
-
-
-
         Thread recordVideo = new VideoCapture("15", "40", "runVideo", ObjectTypes.GOOGLE.toString());
         recordVideo.start();
 
@@ -145,11 +122,6 @@ public class GooglePage extends Thread {
 
         Thread splitVideo =new VideoCapture("splitVideo");
         splitVideo.start();*/
-
-
-
-
-
     }
 }
 

@@ -1,4 +1,4 @@
-package PageLoadFlows;
+package org.mozilla.benchmark.pageObjects;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -8,8 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.swing.*;
 
-import static Constants.Page_Objects_Constants.AmazonSearchItem;
-import static Constants.Page_Objects_Constants.AmazonUrl;
+import org.mozilla.benchmark.utils.Constants;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -22,29 +21,24 @@ public class AmazonPage {
     static By VideoElement = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
     static By bookResultElement = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
 
-
     public AmazonPage(WebDriver driver) {
         this.driver = driver;
-
     }
-
 
     public static void accessAmazon() throws InterruptedException {
         Alert alert = null;
-        driver.get(AmazonUrl);
+        driver.get(Constants.PageObjects.AMAZON_URL);
         JOptionPane.showMessageDialog(null, "Website accessed");
         Thread.sleep(5000);
-
     }
 
     public static void searchAmazon() {
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.visibilityOfElementLocated(AmazonSearchBarElement));
-        driver.findElement(AmazonSearchBarElement).sendKeys(AmazonSearchItem);
+        driver.findElement(AmazonSearchBarElement).sendKeys(Constants.PageObjects.AMAZON_SEARCH_ITEM);
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.visibilityOfElementLocated(AmazonSearchButton));
         driver.findElement(AmazonSearchButton).click();
-
     }
 
 
@@ -53,11 +47,9 @@ public class AmazonPage {
         (new WebDriverWait(driver, 5))
                 .until(ExpectedConditions.visibilityOfElementLocated(VideoElement));
         driver.findElement(VideoElement).click();
-
     }
 
     public static void backAction() {
-
         driver.navigate().back();
     }
 
@@ -74,5 +66,4 @@ public class AmazonPage {
         backAction();
         accessBookResult();
     }
-
 }

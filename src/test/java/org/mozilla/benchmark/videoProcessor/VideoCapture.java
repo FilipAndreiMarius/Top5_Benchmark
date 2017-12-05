@@ -1,10 +1,9 @@
-package VideoProcessor;
+package org.mozilla.benchmark.videoProcessor;
+
+import org.mozilla.benchmark.utils.Image;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Random;
 
 public class VideoCapture extends Thread {
@@ -15,13 +14,11 @@ public class VideoCapture extends Thread {
     public static final String FPS60VIDEOS = "60FpsVideos";
     public static final String SPLITED_VIDEOS = "SplitedVideos";
 
-
     static String frames;
     static String duration;
     static String location;
     static String command;
     static String testName;
-
 
     public VideoCapture(String frames, String duration, String command, String testName) throws IOException {
         this.command = command;
@@ -35,7 +32,6 @@ public class VideoCapture extends Thread {
     public VideoCapture(String command, String testName) throws IOException {
         this.testName = testName;
         this.command = command;
-
     }
 
     @Override
@@ -55,7 +51,6 @@ public class VideoCapture extends Thread {
                     System.out.println("Video-Record-Thread-Ended"
                             + Thread.currentThread().getName());
                     break;
-
 
                 case Compress:
                     File inputPath = new File(VIDEOS);
@@ -79,10 +74,8 @@ public class VideoCapture extends Thread {
                         } else {
                             System.out.println("Video file not found!...Keep Searching..:)");
                         }
-
                     }
                     break;
-
 
                 case SplitVideoToFrames:
                     File output = new File(SPLITED_VIDEOS);
@@ -93,7 +86,7 @@ public class VideoCapture extends Thread {
 
                         System.out.println("Video-Splitting-Started"
                                 + Thread.currentThread().getName());
-                        String outputFolder = Utils.Utils.createDirectory(output + "/" + file.getName());
+                        String outputFolder = Image.createDirectory(output + "/" + file.getName());
                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe", "/c", splitIntoFrames(file.getAbsolutePath(), outputFolder));
                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -101,12 +94,9 @@ public class VideoCapture extends Thread {
                         split.waitFor();
                         System.out.println("Video-Splitting-Ended"
                                 + Thread.currentThread().getName());
-
                     }
                     break;
-
             }
-
 
         } catch (Exception e) {
             System.out.print(e);
@@ -115,7 +105,6 @@ public class VideoCapture extends Thread {
             System.out.println("Video-Processing-DONE!!!!!"
                     + Thread.currentThread().getName());
         }
-
     }
 
     //generates a random Number for the VideoName
@@ -126,7 +115,7 @@ public class VideoCapture extends Thread {
     }
 
     //FFMPEG Video command that will be imputed in terminal
-    public String ffmpegStartVideoCommand(){
+    public String ffmpegStartVideoCommand() {
         StringBuilder command = new StringBuilder();
         String path = setTestPath(testName);
         command.append("ffmpeg -f dshow -i video=")
@@ -135,8 +124,8 @@ public class VideoCapture extends Thread {
                 .append(" -preset ultrafast")
                 .append(" -crf 0")
                 .append(" -acodec pcm_s16le")
-                .append(" -r "+getFrames())
-                .append(" -t "+getDuration())
+                .append(" -r " + getFrames())
+                .append(" -t " + getDuration())
                 .append(" Videos\\")
                 .append(path)
                 .append(".mp4");
@@ -207,8 +196,6 @@ public class VideoCapture extends Thread {
     public static void setLocation(String location) {
         VideoCapture.location = location;
     }
-
-
 }
 
 

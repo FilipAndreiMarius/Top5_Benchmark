@@ -1,4 +1,4 @@
-package PageLoadFlows;
+package org.mozilla.benchmark.pageObjects;
 
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -10,17 +10,17 @@ import java.io.IOException;
  * Created by andrei.filip on 10/31/2017.
  */
 public class MainPageObj {
-     WebDriver driver;
+    WebDriver driver;
 
-/*    @Before
-    public void setUp() throws InterruptedException, AWTException, IOException {
+    /*    @Before
+        public void setUp() throws InterruptedException, AWTException, IOException {
 
 
-          @After
-        public void tearDown() {
-            driver.quit();
+              @After
+            public void tearDown() {
+                driver.quit();
 
-    }*/
+        }*/
 /*
     @Test
     public void testsFacebook() throws InterruptedException {
@@ -56,26 +56,16 @@ public class MainPageObj {
     }
 
 */
-  @Test()
-  public void testGsearch() throws IOException, AWTException, InterruptedException {
+    @Test()
+    public void testGsearch() throws IOException, AWTException, InterruptedException {
 
 /*      VideoCapture ca=new VideoCapture("20","20");
       ca.runVideo("runVideo");*/
- Thread a=new GooglePage(2);
- a.start();
+        Thread a = new GooglePage(2);
+        a.start();
 
 
-
-
-
-
-
-
-
-
-
-
-  }
+    }
 
 
 }
