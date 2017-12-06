@@ -142,22 +142,5 @@ public class Image {
         return PATH;
     }
 
-    public static Boolean checkCpuLoad() throws IOException, InterruptedException {
-        Boolean run = false;
-        double cpuLoad = 0;
-        SystemInfo info = new SystemInfo();
 
-        while (run != true) {
-            cpuLoad = info.getCpuLoad();
-            if (cpuLoad > 20.0) {
-                System.out.print("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
-                Thread.sleep(2000);
-            }
-            if (cpuLoad <= 20.0) {
-                System.out.print("Cpu is under 20% usage: " + cpuLoad + "\n");
-                run = true;
-            }
-        }
-        return run;
-    }
 }
