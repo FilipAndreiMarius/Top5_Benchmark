@@ -2,7 +2,6 @@ package org.mozilla.benchmark.utils;
 
 
 import org.sikuli.script.Finder;
-import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 
@@ -13,7 +12,7 @@ import java.util.Iterator;
 /**
  * Created by andrei.filip on 10/4/2017.
  */
-public class Image {
+public class ImageManager {
 
     public static ArrayList<Object> getImages(String path) throws IOException {
 
@@ -28,19 +27,10 @@ public class Image {
     }
 
     public static Boolean searchImage(String imagePath1, String imagePath2, float similarity) throws IOException {
-        Match m;
-        ArrayList<Match> list = null;
         Finder finder = new Finder(imagePath1, new Region(286, 164, 108, 23));
-
         Pattern pattern = new Pattern(imagePath2).similar(similarity);
-
         finder.find(pattern);
-
-        if (finder.hasNext()) {
-            return true;
-        } else {
-            return false;
-        }
+        return finder.hasNext();
     }
 
 
@@ -92,55 +82,4 @@ public class Image {
         Imgcodecs.imwrite("match1.png", img);
 
     }*/
-
-    public static void runCmd(String command, Boolean runTests) throws IOException, InterruptedException {
-
-        ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command);
-        builder.redirectErrorStream(true);
-        Process p = builder.start();
-
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        OutputStream out = p.getOutputStream();
-        out.write("q\n".getBytes());
-        out.flush();
-        Thread.sleep(5000);
-
-        String line;
-        while (true) {
-            line = r.readLine();
-            if (line == null) {
-                break;
-            }
-            System.out.print("\n" + line);
-        }
-    }
-
-    public static String createDirectory(String directoryName) {
-
-        File file = new File(directoryName);
-        String PATH = null;
-
-        if (!file.exists()) {
-            System.out.println("Creating directory:" + file.getName());
-            Boolean result = false;
-
-            try {
-                file.mkdir();
-                result = true;
-                PATH = file.getAbsolutePath();
-            } catch (SecurityException se) {
-                se.getLocalizedMessage();
-            }
-            if (result) {
-                System.out.print("DIR created");
-
-                return PATH;
-            }
-        } else {
-            System.out.println("A directory with this name already exists:");
-        }
-        return PATH;
-    }
-
-
 }

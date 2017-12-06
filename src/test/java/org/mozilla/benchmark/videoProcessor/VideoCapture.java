@@ -1,6 +1,6 @@
 package org.mozilla.benchmark.videoProcessor;
 
-import org.mozilla.benchmark.utils.Image;
+import org.mozilla.benchmark.utils.FileManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +86,7 @@ public class VideoCapture extends Thread {
 
                         System.out.println("Video-Splitting-Started"
                                 + Thread.currentThread().getName());
-                        String outputFolder = Image.createDirectory(output + "/" + file.getName());
+                        String outputFolder = FileManager.createDirectory(output + "/" + file.getName());
                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe", "/c", splitIntoFrames(file.getAbsolutePath(), outputFolder));
                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);

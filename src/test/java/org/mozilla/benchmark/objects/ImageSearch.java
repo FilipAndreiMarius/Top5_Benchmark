@@ -1,6 +1,6 @@
 package org.mozilla.benchmark.objects;
 
-import org.mozilla.benchmark.utils.Image;
+import org.mozilla.benchmark.utils.ImageManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ImageSearch {
 
         for (File folder : patternDirectoriesArray) {
             if (folder.getName().contains(testName)) {
-                images_array = Image.getImages(folder.getPath());
+                images_array = ImageManager.getImages(folder.getPath());
                 return images_array;
             }
         }

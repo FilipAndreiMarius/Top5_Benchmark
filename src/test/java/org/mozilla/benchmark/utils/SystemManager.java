@@ -1,10 +1,8 @@
 package org.mozilla.benchmark.utils;
 
-import com.sun.management.HotSpotDiagnosticMXBean;
 import com.sun.management.OperatingSystemMXBean;
 import org.apache.xalan.xsltc.runtime.InternalRuntimeError;
 
-import javax.management.MBeanServer;
 import javax.management.MBeanServerConnection;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -15,14 +13,11 @@ public class SystemManager {
 
         try {
             MBeanServerConnection server = ManagementFactory.getPlatformMBeanServer();
-            OperatingSystemMXBean osMBean = ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
-
-            return osMBean;
+            return ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
         } catch (Exception exp) {
             throw new RuntimeException(exp);
         }
     }
-
 
     private static double getCpuLoad() throws InterruptedException {
         double cpuLoad = 0;

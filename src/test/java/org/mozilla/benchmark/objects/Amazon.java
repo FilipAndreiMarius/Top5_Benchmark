@@ -1,6 +1,6 @@
 package org.mozilla.benchmark.objects;
 
-import org.mozilla.benchmark.utils.Image;
+import org.mozilla.benchmark.utils.ImageManager;
 import com.google.gson.JsonObject;
 import org.mozilla.benchmark.utils.Constants;
 
@@ -11,9 +11,8 @@ import java.util.ArrayList;
  * Created by andrei.filip on 10/4/2017.
  */
 public class Amazon {
-    JsonObject reportObject = new JsonObject();
-    Image utils = new Image();
 
+    JsonObject reportObject = new JsonObject();
 
     public JsonObject getReportObject() {
         System.out.print("JsonObject resulted:" + "\n" + reportObject);
@@ -22,49 +21,42 @@ public class Amazon {
 
 
     public JsonObject getFirstNonBlankHero() throws IOException {
-        reportObject = new JsonObject();
-        int frame_number = 0;
-        int counter = 0;
 
-        ArrayList<Object> images_array = new ArrayList<>();
-        ArrayList<Object> image_patterns = new ArrayList<>();
-        Boolean First_non_blank_found = false;
+        reportObject = new JsonObject();
+
+        Boolean firstNonBlankFound = false;
         Boolean SearchBar = false;
         Boolean LordOfTheRingsSearch = false;
 
-        images_array = utils.getImages(Constants.Patterns.AMAZON_IMAGE_FOLDER);
-        image_patterns = utils.getImages(Constants.Patterns.AMAZON_PATTERN_FOLDER);
+        ArrayList<Object> images_array = ImageManager.getImages(Constants.Patterns.AMAZON_IMAGE_FOLDER);
+        ArrayList<Object> image_patterns = ImageManager.getImages(Constants.Patterns.AMAZON_PATTERN_FOLDER);
 
         for (int i = 0; i < image_patterns.size(); i++) {
             for (int j = 0; j < images_array.size(); j++) {
-                Object p = images_array.get(j);
-                String path_pattern = p.toString();
+
+                String path_pattern = images_array.get(j).toString();
                 String fff = image_patterns.get(i).toString();
 
-                Boolean result = Image.searchImage(path_pattern, fff, (float) 0.8);
-                counter = j;
+                Boolean result = ImageManager.searchImage(path_pattern, fff, 0.8f);
 
                 if (result && fff.contains("FirstNonBlank")) {
-                    frame_number = counter;
-                    reportObject.addProperty(Constants.Elements.FIRST_NON_BLANK, frame_number);
-                    First_non_blank_found = true;
-                    i = i + 1;
+                    reportObject.addProperty(Constants.Elements.FIRST_NON_BLANK, j);
+                    firstNonBlankFound = true;
+                    i++;
                 }
 
-                if (First_non_blank_found && result && fff.contains("SearchBarHeroElement")) {
-                    frame_number = counter;
-                    reportObject.addProperty(Constants.Elements.SEARCH_BAR_HERO, frame_number);
+                if (firstNonBlankFound && result && fff.contains("SearchBarHeroElement")) {
+                    reportObject.addProperty(Constants.Elements.SEARCH_BAR_HERO, j);
                     SearchBar = true;
-                    i = i + 1;
+                    i++;
                 }
 
-                if (/*First_non_blank_found==true&&*/result && fff.contains("SearchLordOfTheRings.png")) {
-                    frame_number = counter;
-                    reportObject.addProperty(Constants.Elements.LORD_OF_THE_RINGS_SEARCH_ACTION, frame_number);
+                if (/*firstNonBlankFound==true&&*/result && fff.contains("SearchLordOfTheRings.png")) {
+                    reportObject.addProperty(Constants.Elements.LORD_OF_THE_RINGS_SEARCH_ACTION, j);
                     LordOfTheRingsSearch = true;
                     break;
                 }
-                if (SearchBar && First_non_blank_found && LordOfTheRingsSearch) {
+                if (SearchBar && firstNonBlankFound && LordOfTheRingsSearch) {
                     return reportObject;
                 }
             }

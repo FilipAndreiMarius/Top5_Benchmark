@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.Image;
+import org.mozilla.benchmark.utils.ImageManager;
 import org.mozilla.benchmark.utils.ObjectTypes;
 
 public class Gsearch extends ImageSearch {
@@ -54,7 +54,7 @@ public class Gsearch extends ImageSearch {
                 String path_pattern = p.toString();
                 String imagePattern = image_patterns.get(i).toString();
 
-                Boolean result = Image.searchImage(path_pattern, imagePattern, similarity);
+                Boolean result = ImageManager.searchImage(path_pattern, imagePattern, similarity);
                 System.out.println("Search nr:" + j);
                 counter = j;
                 //first time google search is  used
@@ -108,7 +108,7 @@ public class Gsearch extends ImageSearch {
 
                 if (First_non_blank_found && StoriesHero && LastHero) {
                     while (LastHero) {
-                        LastHero = Image.searchImage(path_pattern, images_array.get(j).toString(), similarity);
+                        LastHero = ImageManager.searchImage(path_pattern, images_array.get(j).toString(), similarity);
                         j = j + 1;
                     }
 
