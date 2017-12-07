@@ -20,82 +20,57 @@ import java.net.MalformedURLException;
  */
 public class GooglePage extends Thread {
 
-    static WebDriver driver;
-    static int nrRuns;
+    private final WebDriver driver;
+    private int runs;
 
-    static By GoogleSearchBar = By.id("lst-ib");
-    static By GoogleSearchButton = By.className("lsb");
-    static By GoogleImage = By.xpath("//*[@class='q qs']");
-    Boolean runTest = false;
+    private By googleSearchBarLocator = By.id("lst-ib");
+    private By googleSearchButtonLocator = By.className("lsb");
+    private By googleImageLocator = By.xpath("//*[@class='q qs']");
 
-    public GooglePage(int nrRuns) {
-        this.nrRuns = nrRuns;
+    public GooglePage(int runs) {
+        this.runs = runs;
         System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckoDriver\\geckodriver.exe");
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
     }
 
-    public void setUp() throws IOException, InterruptedException {
-        // runTest=com.mozilla.benchmark.utils.com.mozilla.benchmark.utils.checkCpuLoad();
-       /*if(runTest!=false) {*/
-    }
-
-    public void accessImage() throws MalformedURLException, AWTException {
+    public void accessImage() {
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(GoogleImage));
-        driver.findElement(GoogleImage).click();
+                .until(ExpectedConditions.presenceOfElementLocated(googleImageLocator));
+        driver.findElement(googleImageLocator).click();
     }
 
-    public void accessGsearch() throws MalformedURLException, AWTException, InterruptedException {
+    public void accessGsearch() {
         System.out.print("GSearch page is accessed:");
         driver.get(Constants.PageObjects.GSEARCH_URL);
     }
 
-    public void searchGoogle() throws MalformedURLException, AWTException, InterruptedException {
-        driver.findElement(GoogleSearchBar).sendKeys(Constants.PageObjects.SEARCH_ITEM);
-        (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(GoogleSearchButton));
-        Actions actions = new Actions(driver);
-        actions.sendKeys(driver.findElement(GoogleSearchButton), Keys.ENTER).build().perform();
-        Thread.sleep(3000);
+    public void searchGoogle() {
+        try {
+            driver.findElement(googleSearchBarLocator).sendKeys(Constants.PageObjects.SEARCH_ITEM);
+            (new WebDriverWait(driver, 5))
+                    .until(ExpectedConditions.presenceOfElementLocated(googleSearchButtonLocator));
+            Actions actions = new Actions(driver);
+            actions.sendKeys(driver.findElement(googleSearchButtonLocator), Keys.ENTER).build().perform();
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void runAllScenarios() throws MalformedURLException, AWTException, InterruptedException {
+    public void runAllScenarios() {
         accessGsearch();
         searchGoogle();
         accessImage();
     }
 
-    public void quit() {
-        driver.quit();
-    }
-
     @Override
     public void run() {
-        for (int i = 0; i < nrRuns; i++) {
-            try {
-                System.out.println("Thread- Started"
-                        + Thread.currentThread().getName());
-                setUp();
-                runAllScenarios();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (AWTException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                System.out.println("Thread- Ended"
-                        + Thread.currentThread().getName());
-                teardown();
-            }
+        for (int i = 0; i < this.runs; i++) {
+            System.out.println(Thread.currentThread().getName() + " started!");
+            runAllScenarios();
+            System.out.println(Thread.currentThread().getName() + " stopped!");
         }
-    }
-
-    public void teardown() {
-        //driver.quit();
     }
 
     public static void main(String args[]) throws IOException {

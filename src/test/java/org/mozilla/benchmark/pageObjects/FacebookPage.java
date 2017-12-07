@@ -9,20 +9,20 @@ import org.mozilla.benchmark.utils.Constants;
  */
 public class FacebookPage {
 
-    static WebDriver driver;
+    private final WebDriver driver;
     //login locators
-    By username = By.id("email");
-    By password = By.id("PASS");
-    By loginButton = By.id("loginbutton");
+    private By userNameLocator = By.id("email");
+    private By passwordLocator = By.id("PASS");
+    private By loginButtonLocator = By.id("loginbutton");
 
     //group locators
-    By groupButton = By.className("_5afe");
+    private By groupButtonLocator = By.className("_5afe");
 
     //home locator
-    By homeButton = By.id("u_0_c");
+    private By homeButtonLocator = By.id("u_0_c");
 
     //access User
-    By accessUser = By.className("_5pb8 _8o _8s lfloat _ohe");
+    private By accessUserLocator = By.className("_5pb8 _8o _8s lfloat _ohe");
 
     public FacebookPage(WebDriver driver) {
         this.driver = driver;
@@ -30,21 +30,21 @@ public class FacebookPage {
 
     public void LoginFacebook() {
         driver.get(Constants.PageObjects.FACEBOOK_URL);
-        driver.findElement(this.username).sendKeys(Constants.PageObjects.FACEBOOK_USER_NAME);
-        driver.findElement(this.password).sendKeys(Constants.PageObjects.FACEBOOK_PASS);
-        driver.findElement(this.loginButton).click();
+        driver.findElement(this.userNameLocator).sendKeys(Constants.PageObjects.FACEBOOK_USER_NAME);
+        driver.findElement(this.passwordLocator).sendKeys(Constants.PageObjects.FACEBOOK_PASS);
+        driver.findElement(this.loginButtonLocator).click();
     }
 
     public void accessGroup() {
-        driver.findElements(groupButton).get(3).click();
+        driver.findElements(groupButtonLocator).get(3).click();
     }
 
-    public void goHome() throws InterruptedException {
-        driver.findElement(homeButton).click();
+    public void goHome() {
+        driver.findElement(homeButtonLocator).click();
     }
 
     public void accessUser() {
-        driver.findElement(accessUser).click();
+        driver.findElement(accessUserLocator).click();
     }
 }
 

@@ -1,6 +1,5 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,51 +14,50 @@ import org.mozilla.benchmark.utils.Constants;
  */
 public class AmazonPage {
 
-    static WebDriver driver;
-    static By AmazonSearchBarElement = By.id("twotabsearchtextbox");
-    static By AmazonSearchButton = By.id("nav-search-submit-text");
-    static By VideoElement = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
-    static By bookResultElement = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
+    private final WebDriver driver;
+    private By searchBarLocator = By.id("twotabsearchtextbox");
+    private By SearchButtonLocator = By.id("nav-search-submit-text");
+    private By videoElementLocator = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
+    private By bookResultElementLocator = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
 
     public AmazonPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public static void accessAmazon() throws InterruptedException {
-        Alert alert = null;
+    public void accessAmazon() throws InterruptedException {
         driver.get(Constants.PageObjects.AMAZON_URL);
         JOptionPane.showMessageDialog(null, "Website accessed");
         Thread.sleep(5000);
     }
 
-    public static void searchAmazon() {
+    public void searchAmazon() {
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(AmazonSearchBarElement));
-        driver.findElement(AmazonSearchBarElement).sendKeys(Constants.PageObjects.AMAZON_SEARCH_ITEM);
+                .until(ExpectedConditions.visibilityOfElementLocated(searchBarLocator));
+        driver.findElement(searchBarLocator).sendKeys(Constants.PageObjects.AMAZON_SEARCH_ITEM);
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(AmazonSearchButton));
-        driver.findElement(AmazonSearchButton).click();
+                .until(ExpectedConditions.visibilityOfElementLocated(SearchButtonLocator));
+        driver.findElement(SearchButtonLocator).click();
     }
 
 
-    public static void accessVideoResult() throws InterruptedException {
+    public void accessVideoResult() throws InterruptedException {
         Thread.sleep(5000);
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(VideoElement));
-        driver.findElement(VideoElement).click();
+                .until(ExpectedConditions.visibilityOfElementLocated(videoElementLocator));
+        driver.findElement(videoElementLocator).click();
     }
 
-    public static void backAction() {
+    public void backAction() {
         driver.navigate().back();
     }
 
-    public static void accessBookResult() {
+    public void accessBookResult() {
         (new WebDriverWait(driver, 7))
-                .until(ExpectedConditions.visibilityOfElementLocated(bookResultElement));
-        driver.findElement(bookResultElement).click();
+                .until(ExpectedConditions.visibilityOfElementLocated(bookResultElementLocator));
+        driver.findElement(bookResultElementLocator).click();
     }
 
-    public static void runAllScenarios() throws InterruptedException {
+    public void runAllScenarios() throws InterruptedException {
         accessAmazon();
         searchAmazon();
         accessVideoResult();

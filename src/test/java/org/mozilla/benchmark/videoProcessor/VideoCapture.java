@@ -3,35 +3,26 @@ package org.mozilla.benchmark.videoProcessor;
 import org.mozilla.benchmark.utils.FileManager;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Random;
 
 public class VideoCapture extends Thread {
-    public static final String StartVideo = "runVideo";
-    public static final String Compress = "compress";
-    public static final String SplitVideoToFrames = "splitVideo";
-    public static final String VIDEOS = "Videos";
-    public static final String FPS60VIDEOS = "60FpsVideos";
-    public static final String SPLITED_VIDEOS = "SplitedVideos";
+    private static final String START_VIDEO = "runVideo";
+    private static final String COMPRESS_VIDEO = "compressVideo";
+    private static final String SPLIT_VIDEO_TO_FRAMES = "splitVideo";
+    private static final String VIDEOS = "Videos";
+    private static final String FPS60VIDEOS = "60FpsVideos";
+    private static final String SPLITED_VIDEOS = "SplitedVideos";
 
-    static String frames;
-    static String duration;
-    static String location;
-    static String command;
-    static String testName;
+    private String frames;
+    private String duration;
+    private String location;
+    private String command;
+    private String testName;
 
-    public VideoCapture(String frames, String duration, String command, String testName) throws IOException {
-        this.command = command;
+    public VideoCapture(String frames, String duration, String command, String testName) {
         this.frames = frames;
         this.duration = duration;
-        this.testName = testName;
-        setFrames(frames);
-        setDuration(duration);
-    }
-
-    public VideoCapture(String command, String testName) throws IOException {
-        this.testName = testName;
         this.command = command;
+        this.testName = testName;
     }
 
     @Override
@@ -39,10 +30,9 @@ public class VideoCapture extends Thread {
 
         try {
             Process p;
-            switch (command) {
-                case StartVideo:
-                    System.out.println("Video-Record-Thread-Started"
-                            + Thread.currentThread().getName());
+            switch (this.command) {
+                case START_VIDEO:
+                    System.out.println("Video-Record-Thread-Started" + Thread.currentThread().getName());
                     ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", ffmpegStartVideoCommand());
                     pb.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                     pb.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -52,7 +42,7 @@ public class VideoCapture extends Thread {
                             + Thread.currentThread().getName());
                     break;
 
-                case Compress:
+                case COMPRESS_VIDEO:
                     File inputPath = new File(VIDEOS);
                     File outputPath = new File(FPS60VIDEOS);
                     File[] VideoDirs = inputPath.listFiles();
@@ -61,15 +51,13 @@ public class VideoCapture extends Thread {
                         if (file.getName().contains(testName)) {
                             File[] Videos = file.listFiles();
                             for (File movieFile : Videos) {
-                                System.out.println("Video_file_found-Compressing-Started"
-                                        + Thread.currentThread().getName());
+                                System.out.println("Video_file_found-Compressing-Started" + Thread.currentThread().getName());
                                 ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe", "/c", convertTo60Fps(movieFile.getAbsolutePath(), outputPath.getAbsolutePath() + "\\" + file.getName() + "\\" + movieFile.getName()));
                                 BuilderCompress.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                                 BuilderCompress.redirectError(ProcessBuilder.Redirect.INHERIT);
                                 p = BuilderCompress.start();
                                 p.waitFor();
-                                System.out.println("Video-Compressing-Ended"
-                                        + Thread.currentThread().getName());
+                                System.out.println("Video-Compressing-Ended" + Thread.currentThread().getName());
                             }
                         } else {
                             System.out.println("Video file not found!...Keep Searching..:)");
@@ -77,23 +65,21 @@ public class VideoCapture extends Thread {
                     }
                     break;
 
-                case SplitVideoToFrames:
+                case SPLIT_VIDEO_TO_FRAMES:
                     File output = new File(SPLITED_VIDEOS);
                     File dir = new File(FPS60VIDEOS + "\\" + testName);
                     File[] files = dir.listFiles();
 
                     for (File file : files) {
 
-                        System.out.println("Video-Splitting-Started"
-                                + Thread.currentThread().getName());
+                        System.out.println("Video-Splitting-Started" + Thread.currentThread().getName());
                         String outputFolder = FileManager.createDirectory(output + "/" + file.getName());
                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe", "/c", splitIntoFrames(file.getAbsolutePath(), outputFolder));
                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);
                         Process split = splitFrames.start();
                         split.waitFor();
-                        System.out.println("Video-Splitting-Ended"
-                                + Thread.currentThread().getName());
+                        System.out.println("Video-Splitting-Ended" + Thread.currentThread().getName());
                     }
                     break;
             }
@@ -102,61 +88,28 @@ public class VideoCapture extends Thread {
             System.out.print(e);
 
         } finally {
-            System.out.println("Video-Processing-DONE!!!!!"
-                    + Thread.currentThread().getName());
+            System.out.println("Video-Processing-DONE!!!!!" + Thread.currentThread().getName());
         }
     }
 
-    //generates a random Number for the VideoName
-    public static int generateNumber(int min, int max) {
-        Random random = new Random();
-        int randomNum = random.nextInt((max - min) + 1) + min;
-        return randomNum;
-    }
-
-    //FFMPEG Video command that will be imputed in terminal
-    public String ffmpegStartVideoCommand() {
+    private String ffmpegStartVideoCommand() {
         StringBuilder command = new StringBuilder();
-        String path = setTestPath(testName);
+        String path = FileManager.setTestPath(this.testName);
         command.append("ffmpeg -f dshow -i video=")
                 .append("screen-capture-recorder")
                 .append(" -vcodec libx264")
                 .append(" -preset ultrafast")
                 .append(" -crf 0")
                 .append(" -acodec pcm_s16le")
-                .append(" -r " + getFrames())
-                .append(" -t " + getDuration())
+                .append(" -r " + this.frames)
+                .append(" -t " + this.duration)
                 .append(" Videos\\")
                 .append(path)
                 .append(".mp4");
         return command.toString();
     }
 
-    //contructs a test path based on a test name
-    public static String setTestPath(String testNm) {
-        String testPath = null;
-        switch (testNm) {
-            case "Gsearch":
-                testPath = "Gsearch" + "\\" + testNm;
-                break;
-            case "Gmail":
-                testPath = "Gmail" + "\\" + testNm;
-                break;
-            case "Amazon":
-                testPath = "Amazon" + "\\" + testNm;
-                break;
-            case "Facebook":
-                testPath = "Facebook" + "\\" + testNm;
-                break;
-            case "Youtube":
-                testPath = "Youtube" + "\\" + testNm;
-                break;
-        }
-        return testPath;
-    }
-
-
-    public String convertTo60Fps(String fileInput, String fileOutput) {
+    private String convertTo60Fps(String fileInput, String fileOutput) {
         StringBuilder command = new StringBuilder();
         command.append("ffmpeg  -i " + fileInput)
                 .append(" -vcodec h264 -an -vf fps=60 ")
@@ -164,7 +117,7 @@ public class VideoCapture extends Thread {
         return command.toString();
     }
 
-    public String splitIntoFrames(String fileInput, String fileOutput) {
+    private String splitIntoFrames(String fileInput, String fileOutput) {
         StringBuilder command = new StringBuilder();
         command.append("ffmpeg  -i " + fileInput)
                 .append(" -qscale -1 ")
@@ -173,28 +126,44 @@ public class VideoCapture extends Thread {
         return command.toString();
     }
 
-    public static String getFrames() {
-        return frames;
+    public String getFrames() {
+        return this.frames;
     }
 
-    public static void setFrames(String frames) {
-        VideoCapture.frames = frames;
+    public void setFrames(String frames) {
+        this.frames = frames;
     }
 
-    public static String getDuration() {
-        return duration;
+    public String getDuration() {
+        return this.duration;
     }
 
-    public static void setDuration(String duration) {
-        VideoCapture.duration = duration;
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 
-    public static String getLocation() {
-        return location;
+    public String getLocation() {
+        return this.location;
     }
 
-    public static void setLocation(String location) {
-        VideoCapture.location = location;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 }
 

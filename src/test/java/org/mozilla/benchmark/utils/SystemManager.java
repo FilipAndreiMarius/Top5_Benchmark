@@ -4,7 +4,6 @@ import com.sun.management.OperatingSystemMXBean;
 import org.apache.xalan.xsltc.runtime.InternalRuntimeError;
 
 import javax.management.MBeanServerConnection;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class SystemManager {
@@ -19,43 +18,41 @@ public class SystemManager {
         }
     }
 
-    private static double getCpuLoad() throws InterruptedException {
+    private static double getCpuLoad() {
         double cpuLoad = 0;
         try {
-            Thread.sleep(500);
             OperatingSystemMXBean osMBean = getOperatingSystemMXBean();
             cpuLoad = osMBean.getSystemCpuLoad() * 100;
-        } catch (InternalRuntimeError O) {
-            System.out.print(O);
+        } catch (InternalRuntimeError e) {
+            e.printStackTrace();
         }
         return cpuLoad;
     }
 
-    public static Boolean checkCpuLoad() throws IOException, InterruptedException {
-
-        Boolean run = false;
-
-        while (run != true) {
-            System.out.println("da");
+    public static Boolean checkCpuLoad() {
+        int iteration = 0;
+        while (iteration < Constants.System.MAX_CPU_RETRIES) {
             double cpuLoad = getCpuLoad();
-
-            if (cpuLoad > 20.0) {
-                System.out.print("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
-                Thread.sleep(2000);
+            if (cpuLoad > Constants.System.CPU_DESIRED) {
+                try {
+                    System.out.print("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
+                    Thread.sleep(Constants.System.CPU_CHECK_REFRESH_RATE);
+                    iteration++;
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                    return false;
+                }
             }
-            if (cpuLoad <= 20.0 && cpuLoad > 0.0) {
-                System.out.print("Cpu is under 20% usage: " + cpuLoad + "\n");
-                run = true;
+            if (cpuLoad <= Constants.System.CPU_DESIRED && cpuLoad > 0.0) {
+                return true;
             }
         }
-        return run;
+        return false;
     }
 
-    public static int getAvailableMemory() {
+    public static long getAvailableMemory() {
         OperatingSystemMXBean osMBean = getOperatingSystemMXBean();
-        int result = (int) ((osMBean.getFreePhysicalMemorySize() * 100) / osMBean.getTotalPhysicalMemorySize());
-        System.out.print("Total available memory available:" + result + "%");
-        return result;
+        return ((osMBean.getFreePhysicalMemorySize() * 100) / osMBean.getTotalPhysicalMemorySize());
     }
 }
 

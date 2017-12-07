@@ -19,7 +19,6 @@ public class Amazon {
         return reportObject;
     }
 
-
     public JsonObject getFirstNonBlankHero() throws IOException {
 
         reportObject = new JsonObject();

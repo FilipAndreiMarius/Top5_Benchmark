@@ -32,4 +32,27 @@ public class FileManager {
         }
         return PATH;
     }
+
+    //contructs a test path based on a test name
+    public static String setTestPath(String testNm) {
+        String testPath = null;
+        switch (testNm) {
+            case "Gsearch":
+                testPath = "Gsearch" + "\\" + testNm;
+                break;
+            case "Gmail":
+                testPath = "Gmail" + "\\" + testNm;
+                break;
+            case "Amazon":
+                testPath = "Amazon" + "\\" + testNm;
+                break;
+            case "Facebook":
+                testPath = "Facebook" + "\\" + testNm;
+                break;
+            case "Youtube":
+                testPath = "Youtube" + "\\" + testNm;
+                break;
+        }
+        return testPath;
+    }
 }

@@ -15,50 +15,46 @@ import java.net.MalformedURLException;
  */
 public class GmailPage {
 
-    static WebDriver driver;
-    static By userNameElement = By.id("identifierId");
-    static By nextButton = By.id("identifierNext");
-    static By passwordElement = By.id("password");
-    static By passwordnextButton = By.id("passwordNext");
-    static By tabElement = By.id("gbwa");
-    static By GmailtabElement = By.id("gb23");
-    static By youtubeLinkElement = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
+    private final WebDriver driver;
+    private By userNameLocator = By.id("identifierId");
+    private By nextButtonLocator = By.id("identifierNext");
+    private By passwordLocator = By.id("password");
+    private By passwordNextButtonLocator = By.id("passwordNext");
+    private By tabLocator = By.id("gbwa");
+    private By gmailTabLocator = By.id("gb23");
+    private By youtubeLinkLocator = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
 
     public GmailPage(WebDriver driver) {
         this.driver = driver;
     }
 
     public void loginGmail() throws InterruptedException, MalformedURLException, AWTException {
-     /*   Notifications a=new Notifications("Gmail","GMAIL_URL is accessed") ;
-        a.run();
-       // a.stop();
- */
         driver.get(Constants.PageObjects.GMAIL_URL);
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(userNameElement));
-        driver.findElement(userNameElement).sendKeys(Constants.PageObjects.USER_NAME);
+                .until(ExpectedConditions.presenceOfElementLocated(userNameLocator));
+        driver.findElement(userNameLocator).sendKeys(Constants.PageObjects.USER_NAME);
         new WebDriverWait(driver, 5);
-        driver.findElement(nextButton).click();
+        driver.findElement(nextButtonLocator).click();
         Thread.sleep(4000);
-        driver.findElement(passwordElement).sendKeys(Constants.PageObjects.PASS);
-        driver.findElement(passwordnextButton).click();
+        driver.findElement(passwordLocator).sendKeys(Constants.PageObjects.PASS);
+        driver.findElement(passwordNextButtonLocator).click();
     }
 
-    public static void accessEmail() throws MalformedURLException, AWTException {
+    public void accessEmail() throws MalformedURLException, AWTException {
         (new WebDriverWait(driver, 6))
-                .until(ExpectedConditions.presenceOfElementLocated(tabElement));
-        driver.findElement(tabElement).click();
+                .until(ExpectedConditions.presenceOfElementLocated(tabLocator));
+        driver.findElement(tabLocator).click();
 
         (new WebDriverWait(driver, 6))
-                .until(ExpectedConditions.presenceOfElementLocated(GmailtabElement));
-        driver.findElement(GmailtabElement).click();
+                .until(ExpectedConditions.presenceOfElementLocated(gmailTabLocator));
+        driver.findElement(gmailTabLocator).click();
     }
 
-    public static void accessYoutubeLink() {
+    public void accessYoutubeLink() {
         driver.get(Constants.PageObjects.YOUTUBE_LINK);
         (new WebDriverWait(driver, 6))
-                .until(ExpectedConditions.presenceOfElementLocated(youtubeLinkElement));
-        driver.findElement(youtubeLinkElement).click();
+                .until(ExpectedConditions.presenceOfElementLocated(youtubeLinkLocator));
+        driver.findElement(youtubeLinkLocator).click();
     }
 }
 

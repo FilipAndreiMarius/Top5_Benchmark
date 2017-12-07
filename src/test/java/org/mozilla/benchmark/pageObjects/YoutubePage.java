@@ -10,15 +10,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * Created by andrei.filip on 10/30/2017.
  */
 public class YoutubePage {
-    static WebDriver driver;
 
-    // By trendingElment=By.xpath("//*[class='style-scope ytd-guide-section-renderer']");
-    By trendingElment = By.className("title style-scope ytd-guide-entry-renderer");
+    private final WebDriver driver;
 
-    By YoutubeSearchBar = By.id("search-input");
-    By YoutubeSearchButton = By.id("search-icon-legacy");
-    By youtubeFirstVideo = By.cssSelector("a[href*='/watch?v=G2944Wc2V_4']");
-    By youtube2ndVideo = By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-compact-video-renderer']");
+    private By trendingLocator = By.className("title style-scope ytd-guide-entry-renderer");
+    private By youtubeSearchBarLocator = By.id("search-input");
+    private By youtubeSearchButtonLocator = By.id("search-icon-legacy");
+    private By youtubeFirstVideoLocator = By.cssSelector("a[href*='/watch?v=G2944Wc2V_4']");
+    private By youtubeSecondVideoLocator = By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-compact-video-renderer']");
 
     public YoutubePage(WebDriver driver) {
         this.driver = driver;
@@ -28,38 +27,36 @@ public class YoutubePage {
         driver.get(Constants.PageObjects.YOUTUBE_URL);
     }
 
-    public void accessTrending() throws InterruptedException {
-    /*   (new WebDriverWait(driver, 5))
-               .until(ExpectedConditions.presenceOfElementLocated(trendingElment));*/
+    public void accessTrending() {
         driver.get("https://www.youtube.com/feed/trending");
     }
 
     public void searchInTrending() throws InterruptedException {
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(YoutubeSearchBar));
-        driver.findElement(YoutubeSearchBar).sendKeys(Constants.PageObjects.YOUTUBE_ITEM);
+                .until(ExpectedConditions.visibilityOfElementLocated(youtubeSearchBarLocator));
+        driver.findElement(youtubeSearchBarLocator).sendKeys(Constants.PageObjects.YOUTUBE_ITEM);
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(YoutubeSearchButton));
-        driver.findElement(YoutubeSearchButton).click();
+                .until(ExpectedConditions.presenceOfElementLocated(youtubeSearchButtonLocator));
+        driver.findElement(youtubeSearchButtonLocator).click();
     }
 
-    public void playVideo() {
+    public void playFirstVideo() {
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(youtubeFirstVideo));
-        driver.findElement(youtubeFirstVideo).click();
+                .until(ExpectedConditions.presenceOfElementLocated(youtubeFirstVideoLocator));
+        driver.findElement(youtubeFirstVideoLocator).click();
     }
 
-    public void play2ndVideo() throws InterruptedException {
+    public void playSecondVideo() throws InterruptedException {
         (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(youtube2ndVideo));
-        driver.findElement(youtube2ndVideo).click();
+                .until(ExpectedConditions.presenceOfElementLocated(youtubeSecondVideoLocator));
+        driver.findElement(youtubeSecondVideoLocator).click();
     }
 
     public void runAllScenarios() throws InterruptedException {
         accessYoutube();
         accessTrending();
         searchInTrending();
-        playVideo();
-        play2ndVideo();
+        playFirstVideo();
+        playSecondVideo();
     }
 }
