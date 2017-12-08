@@ -1,5 +1,7 @@
 package Constants;
 
+import org.stringtemplate.v4.ST;
+
 /**
  * Created by andrei.filip on 10/31/2017.
  */
@@ -9,6 +11,9 @@ public class Page_Objects_Constants {
     //Gmail constants
     public static final String YoutubLink = "http://benjamin.smedbergs.us/tests/youtube-notification-mail/youtube-notification-mail-complete.html";
     public static final String GmailUrl = "https://accounts.google.com/";
+    public static final String Gmail = "https://mail.google.com";
+    public static final String ghostPage = "https://www.google.com";
+
     //credentials
     public static final String userName = "andrei.filip@softvision.ro";
     public static final String pass = "slackwarE112";

@@ -29,5 +29,7 @@ public class Object_Constants {
 
     public static final String TOP_STORIES_HERO = "hero_element";
     public static final String ACCESS_IMAGES = "Access_Images";
+    public static final String IMAGES_NON_BLANK = "images_non_blank";
+
 
 }

@@ -3,8 +3,10 @@ package Objects;
  * Created by andrei.filip on 10/4/2017.
  */
 
+import PageLoadFlows.GooglePage;
 import Utils.ObjectTypes;
 import Utils.Utils;
+import VideoProcessor.VideoCapture;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -45,6 +47,7 @@ public class Gsearch extends ImageSearch {
         Boolean StoriesHero = false;
         Boolean AccessImages = false;
         int found=0;
+        int accesImag=0;
 
 
 
@@ -55,7 +58,7 @@ public class Gsearch extends ImageSearch {
         images_array=getPatterns(testName,"SplitedVideos");
         image_patterns=getPatterns(testName,"Patterns");
         for (int i = 0; i < image_patterns.size(); i++) {
-            for (int j = 401; j < images_array.size(); j++) {
+            for (int j = 1370; j < images_array.size(); j++) {
                 Object p = images_array.get(j);
                 String path_pattern = p.toString();
                 String imagePattern = image_patterns.get(i).toString();
@@ -69,6 +72,7 @@ public class Gsearch extends ImageSearch {
                //first time google search is  used
                 if (result&&imagePattern.contains("zero")) {
                     found++;
+                    similarity= (float) 0.95;
                     if(found>1) {
                         frame_number = counter;
                         reportObject.addProperty(ZERO_ELEMENT, frame_number);
@@ -93,23 +97,39 @@ public class Gsearch extends ImageSearch {
                     reportObject.addProperty(TOP_STORIES_HERO, frame_number);
                     System.out.println("Top Stories:"+reportObject);
                     StoriesHero = true;
-                    similarity= (float) 0.99;
+                    similarity= (float) 0.95;
                     i = i + 1;
                     j=j+15;
                 }
-                if (StoriesHero && result && imagePattern.contains("AccessImages")) {
-                    frame_number = counter;
-                    reportObject.addProperty(ACCESS_IMAGES, frame_number);
-                    System.out.println("Access images:"+reportObject);
-                    AccessImages = true;
+                if (/*StoriesHero &&*/ result && imagePattern.contains("AccessImages")) {
+                    accesImag++;
                     i = i + 1;
-                    similarity= (float) 0.95;
-
+                    similarity = (float) 0.99;
+                    if(accesImag>2) {
+                        accesImag=0;
+                        frame_number = counter;
+                        reportObject.addProperty(ACCESS_IMAGES, frame_number);
+                        System.out.println("Access images:" + reportObject);
+                        AccessImages = true;
+                        similarity = (float) 0.95;
+                    }
                 }
+
+                if (First_non_blank_found  && result  && imagePattern.contains("JimagesNonBlank")) {
+                    frame_number = counter;
+                    reportObject.addProperty(IMAGES_NON_BLANK, frame_number);
+                    System.out.println("image non blank:"+reportObject);
+                    similarity= (float) 0.95;
+                    i = i + 1;
+                }
+
+
+
                 if (First_non_blank_found && result && imagePattern.contains("LastHero.png")) {
                     frame_number = counter;
                     reportObject.addProperty(LAST_HERO, frame_number);
                     System.out.println("last hero"+reportObject);
+                    System.out.println("Results Array" + resultsArray);
                     LastHero = true;
                     resultsArray.add(reportObject);
                     System.out.println("Result object: " + reportObject);
@@ -126,7 +146,12 @@ public class Gsearch extends ImageSearch {
                     LastHero = false;
                     i=0;
                     found=0;
+                    accesImag=0;
                     reportObject = new JsonObject();
+                }
+
+                if(j == images_array.size()){
+                    return resultsArray;
                 }
 
 
@@ -144,11 +169,10 @@ public class Gsearch extends ImageSearch {
 
 
     public static void main(String args[]) throws IOException {
-/*
-       Thread recordVideo = new VideoCapture("30", "50", "runVideo", ObjectTypes.GOOGLE.name);
+       /*Thread recordVideo = new VideoCapture("30", "120", "runVideo", ObjectTypes.GOOGLE.name);
         recordVideo.start();
 
-        Thread a = new GooglePage(4);
+        Thread a = new GooglePage(10);
         a.start();
 
        try {
@@ -167,12 +191,10 @@ public class Gsearch extends ImageSearch {
 
 
         Thread splitVideo =new VideoCapture("splitVideo",ObjectTypes.GOOGLE.name);
-        splitVideo.start();
-
-*/
+        splitVideo.start();*/
 
 
-     Gsearch g=new Gsearch();
-     g.getFirstNonBlankHero();
+        Gsearch g = new Gsearch();
+        g.getFirstNonBlankHero();
     }
 }
