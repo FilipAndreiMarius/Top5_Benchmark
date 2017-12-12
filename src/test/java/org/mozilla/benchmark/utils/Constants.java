@@ -36,7 +36,7 @@ public class Constants {
     public static final class Driver {
 
         public static final String WEBDRIVER_PROPERTY = "webdriver.gecko.driver";
-        public static final String WEBDRIVER_PATH = PROJECT_LOCATION + "\\libs\\geckoDriver.exe";
+        public static final String WEBDRIVER_PATH = PROJECT_LOCATION + "\\libs\\geckodriver.exe";
 
         private Driver() {
 
