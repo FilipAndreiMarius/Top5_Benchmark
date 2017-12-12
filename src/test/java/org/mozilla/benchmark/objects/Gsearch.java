@@ -6,16 +6,16 @@ package org.mozilla.benchmark.objects;
 import java.io.IOException;
 
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.ObjectTypes;
+import org.mozilla.benchmark.utils.Scenarios;
 
 public class Gsearch extends ImageAnalyzer {
 
    public Gsearch(){
-        super(Constants.GSEARCH_ALL_ELEMENTS, ObjectTypes.GOOGLE.name);
+        super(Constants.GSEARCH_ALL_ELEMENTS, Scenarios.GOOGLE.getName());
     }
 
     public static void main(String args[]) throws IOException {
-/*       Thread recordVideo = new VideoCapture("30", "50", "runVideo", ObjectTypes.GOOGLE.name);
+/*       Thread recordVideo = new VideoCapture("30", "50", "runVideo", Scenarios.GOOGLE.name);
         recordVideo.start();
 
         Thread a = new GooglePage(4);
@@ -26,7 +26,7 @@ public class Gsearch extends ImageAnalyzer {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Thread compress =new VideoCapture("compress",ObjectTypes.GOOGLE.name);
+        Thread compress =new VideoCapture("compress",Scenarios.GOOGLE.name);
         compress.start();
 
         try {
@@ -36,7 +36,7 @@ public class Gsearch extends ImageAnalyzer {
         }
 
 
-        Thread splitVideo =new VideoCapture("splitVideo",ObjectTypes.GOOGLE.name);
+        Thread splitVideo =new VideoCapture("splitVideo",Scenarios.GOOGLE.name);
         splitVideo.start();*/
 
 

@@ -1,6 +1,6 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.mozilla.benchmark.utils.ObjectTypes;
+import org.mozilla.benchmark.utils.Scenarios;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
@@ -11,9 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -74,7 +72,7 @@ public class GooglePage extends Thread {
     }
 
     public static void main(String args[]) throws IOException {
-        Thread recordVideo = new VideoCapture("15", "40", "runVideo", ObjectTypes.GOOGLE.toString());
+        Thread recordVideo = new VideoCapture("15", "40", "runVideo", Scenarios.GOOGLE.toString());
         recordVideo.start();
 
         Thread a = new GooglePage(1);
