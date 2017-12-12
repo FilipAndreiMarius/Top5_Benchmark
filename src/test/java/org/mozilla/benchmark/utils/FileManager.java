@@ -37,8 +37,8 @@ public class FileManager {
     public static String setTestPath(String testNm) {
         String testPath = null;
         switch (testNm) {
-            case "Gsearch":
-                testPath = "Gsearch" + "\\" + testNm;
+            case "Google":
+                testPath = "Google" + "\\" + testNm;
                 break;
             case "Gmail":
                 testPath = "Gmail" + "\\" + testNm;

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public enum Scenarios {
-    GOOGLE("Gsearch"),
+    GOOGLE("Google"),
     AMAZON("Amazon"),
     GMAIL("Gmail"),
     FACEBOOK("Facebook"),

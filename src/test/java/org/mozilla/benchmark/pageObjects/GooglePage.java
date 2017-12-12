@@ -27,7 +27,7 @@ public class GooglePage extends Thread {
 
     public GooglePage(int runs) {
         this.runs = runs;
-        System.setProperty("webdriver.gecko.driver", "C:\\workspace\\geckoDriver\\geckodriver.exe");
+        System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
     }
@@ -75,7 +75,7 @@ public class GooglePage extends Thread {
         Thread recordVideo = new VideoCapture("15", "40", "runVideo", Scenarios.GOOGLE.toString());
         recordVideo.start();
 
-        Thread a = new GooglePage(1);
+        Thread a = new GooglePage(Constants.NUMBER_OF_RUNS);
         a.start();
 
       /*  try {

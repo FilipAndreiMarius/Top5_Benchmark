@@ -11,25 +11,37 @@ public class Constants {
     public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
     public static final String SPLIT_VIDEO_PATH = PROJECT_LOCATION + "\\SplitedVideos";
     public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
+    public static final int NUMBER_OF_RUNS = 2;
 
-    public static final List<String> GSEARCH_ALL_ELEMENTS = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK);
+    public static final List<String> GOOGLE_PATTERN_CATEGORIES = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK,
+            Elements.FIRST_HERO, Elements.ACCESS_IMAGES, Elements.IMAGES_NON_BLANK, Elements.LAST_HERO);
 
     public final class Elements {
 
         public static final String ZERO = "zero";
         public static final String FIRST_NON_BLANK = "firstNonBlank";
+        public static final String FIRST_HERO = "firstHero";
+        public static final String ACCESS_IMAGES = "accessImages";
+        public static final String IMAGES_NON_BLANK = "imagesNonBlank";
+        public static final String LAST_HERO = "lastHero";
         public static final String SEARCH_BAR_HERO = "search_bar_hero_element";
         public static final String SEARCH_BAR_FIRST_NON_BLANK = "search_bar_first_non_blank";
         public static final String LORD_OF_THE_RINGS_SEARCH_ACTION = "lord_of_the_rings_search_action";
         public static final String IMAGE_FIRST_NON_BLANK = "image_first_non_blank";
-        public static final String LAST_HERO = "lastHero";
-        public static final String FIRST_HERO = "firstHero";
-        public static final String ACCESS_IMAGES = "accessImages";
 
         private Elements() {
         }
     }
 
+    public static final class Driver {
+
+        public static final String WEBDRIVER_PROPERTY = "webdriver.gecko.driver";
+        public static final String WEBDRIVER_PATH = PROJECT_LOCATION + "\\libs\\geckoDriver.exe";
+
+        private Driver() {
+
+        }
+    }
     public final class Patterns {
 
         public static final String AMAZON_IMAGE_FOLDER = "C:\\Git\\Benchmark\\Ui_Tests\\60FpsVideos\\Video_Frames\\Amazon0.41200816949697131.mp4";
