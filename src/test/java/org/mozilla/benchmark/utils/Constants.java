@@ -1,20 +1,30 @@
 package org.mozilla.benchmark.utils;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Silviu on 06/12/2017.
  */
 public class Constants {
+
+    public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
+    public static final String SPLIT_VIDEO_PATH = PROJECT_LOCATION + "\\SplitedVideos";
+    public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
+
+    public static final List<String> GSEARCH_ALL_ELEMENTS = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK);
+
     public final class Elements {
 
-        public static final String ZERO_ELEMENT = "zero_element";
-        public static final String FIRST_NON_BLANK = "first_non_blank";
+        public static final String ZERO = "zero";
+        public static final String FIRST_NON_BLANK = "firstNonBlank";
         public static final String SEARCH_BAR_HERO = "search_bar_hero_element";
         public static final String SEARCH_BAR_FIRST_NON_BLANK = "search_bar_first_non_blank";
         public static final String LORD_OF_THE_RINGS_SEARCH_ACTION = "lord_of_the_rings_search_action";
         public static final String IMAGE_FIRST_NON_BLANK = "image_first_non_blank";
-        public static final String LAST_HERO = "last_hero";
-        public static final String TOP_STORIES_HERO = "hero_element";
-        public static final String ACCESS_IMAGES = "Access_Images";
+        public static final String LAST_HERO = "lastHero";
+        public static final String FIRST_HERO = "firstHero";
+        public static final String ACCESS_IMAGES = "accessImages";
 
         private Elements() {
         }
