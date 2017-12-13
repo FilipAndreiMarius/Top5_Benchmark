@@ -1,7 +1,6 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.mozilla.benchmark.utils.Scenarios;
-import org.mozilla.benchmark.videoProcessor.VideoCapture;
+import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -11,7 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.IOException;
+import java.sql.Timestamp;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -29,6 +28,7 @@ public class GooglePage extends Thread {
         this.runs = runs;
         System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
         driver = new FirefoxDriver();
+        TimestampContainer.getInstance().setMaximize(new Timestamp(System.currentTimeMillis()));
         driver.manage().window().maximize();
     }
 
@@ -69,32 +69,6 @@ public class GooglePage extends Thread {
             runAllScenarios();
             System.out.println(Thread.currentThread().getName() + " stopped!");
         }
-    }
-
-    public static void main(String args[]) throws IOException {
-        Thread recordVideo = new VideoCapture("15", "40", "runVideo", Scenarios.GOOGLE.toString());
-        recordVideo.start();
-
-        Thread a = new GooglePage(Constants.NUMBER_OF_RUNS);
-        a.start();
-
-      /*  try {
-            recordVideo.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Thread compress =new VideoCapture("compress");
-        compress.start();
-
-
-        try {
-            compress.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        Thread splitVideo =new VideoCapture("splitVideo");
-        splitVideo.start();*/
     }
 }
 

@@ -33,6 +33,25 @@ public class FileManager {
         return PATH;
     }
 
+    public static int transformSecondsToFrames(int seconds) {
+        return seconds * Constants.FPS;
+    }
+
+    public static int getIntFromString(String s){
+        return Integer.parseInt(s.replaceAll("[\\D]", ""));
+    }
+
+    public static void removeFiles(String directoryName, int seconds) {
+        File folder = new File(directoryName);
+        int frames = transformSecondsToFrames(seconds);
+
+        for (File file : folder.listFiles()) {
+            if (getIntFromString(file.getName()) < frames) {
+                file.delete();
+            }
+        }
+    }
+
     //contructs a test path based on a test name
     public static String setTestPath(String testNm) {
         String testPath = null;

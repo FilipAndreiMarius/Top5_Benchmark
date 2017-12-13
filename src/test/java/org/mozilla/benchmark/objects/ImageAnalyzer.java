@@ -129,12 +129,6 @@ public class ImageAnalyzer {
     public int getLastFound() {
         return this.lastFound;
     }
-
-
-    public static void main(String args[]) throws IOException {
-        ImageAnalyzer x = new ImageAnalyzer(Constants.GOOGLE_PATTERN_CATEGORIES, "Google");
-        System.out.println(x.getResults());
-    }
 }
 
 

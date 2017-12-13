@@ -10,8 +10,11 @@ public class Constants {
 
     public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
     public static final String SPLIT_VIDEO_PATH = PROJECT_LOCATION + "\\SplitedVideos";
+    public static final String VIDEOS_PATH = PROJECT_LOCATION + "\\Videos";
+    public static final String FPS_60_VIDEO_PATH = PROJECT_LOCATION + "\\60FpsVideos";
     public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
     public static final int NUMBER_OF_RUNS = 2;
+    public static final int FPS = 60;
 
     public static final List<String> GOOGLE_PATTERN_CATEGORIES = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK,
             Elements.FIRST_HERO, Elements.ACCESS_IMAGES, Elements.IMAGES_NON_BLANK, Elements.LAST_HERO);

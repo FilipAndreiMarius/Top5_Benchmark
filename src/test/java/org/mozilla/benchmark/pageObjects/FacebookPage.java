@@ -1,8 +1,8 @@
 package org.mozilla.benchmark.pageObjects;
 
+import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.mozilla.benchmark.utils.Constants;
 
 /**
  * Created by andrei.filip on 10/30/2017.

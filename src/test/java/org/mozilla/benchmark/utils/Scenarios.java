@@ -40,13 +40,6 @@ public enum Scenarios {
         }
         ENUM_MAP = Collections.unmodifiableMap(map);
     }
-
-    public static Scenarios get (String name) {
-        return ENUM_MAP.get(name);
-    }
-    public static void main(String args[]) {
-        System.out.println(Scenarios.AMAZON.getName());
-    }
 }
 
 
