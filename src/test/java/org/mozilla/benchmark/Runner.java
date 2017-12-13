@@ -3,6 +3,7 @@ package org.mozilla.benchmark;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.pageObjects.GooglePage;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.Scenarios;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
 
@@ -16,10 +17,11 @@ public class Runner {
 
     public static void main(String args[]) throws IOException {
 
+        TimestampContainer.getInstance().setStartRunningTime(TimestampContainer.getCurrentTimestamp());
+        TimestampContainer.getInstance().setFfmpeg(new Timestamp(System.currentTimeMillis()));
+
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", Scenarios.GOOGLE.getName());
         recordVideo.start();
-
-        TimestampContainer.getInstance().setFfmpeg(new Timestamp(System.currentTimeMillis()));
 
         Thread a = new GooglePage(Constants.NUMBER_OF_RUNS);
         a.start();
@@ -49,10 +51,8 @@ public class Runner {
             e.printStackTrace();
         }
 
-        Thread removeFrames = new VideoCapture("removeFrames", Scenarios.GOOGLE.getName());
-        removeFrames.start();
-
-
+/*        Thread removeFrames = new VideoCapture("removeFrames", Scenarios.GOOGLE.getName());
+        removeFrames.start();*/
 
 /*        Google g = new Google();
         System.out.println("Google search results: " + g.getResults());*/

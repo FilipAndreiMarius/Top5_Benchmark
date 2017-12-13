@@ -1,11 +1,14 @@
 package org.mozilla.benchmark.utils;
 
+import org.mozilla.benchmark.objects.TimestampContainer;
+
 import java.io.File;
 
 /**
  * Created by Silviu on 06/12/2017.
  */
 public class FileManager {
+
     public static String createDirectory(String directoryName) {
 
         File file = new File(directoryName);
@@ -51,6 +54,24 @@ public class FileManager {
             }
         }
     }
+
+    public static Boolean createDirectories(String filename) {
+        File dir = new File(filename);
+
+        boolean successful = dir.mkdirs();
+        if (successful)
+        {
+            // created the directories successfully
+            System.out.println("directories were created successfully");
+        }
+        else
+        {
+            // something failed trying to create the directories
+            System.out.println("failed trying to create the directories");
+        }
+        return successful;
+    }
+
 
     //contructs a test path based on a test name
     public static String setTestPath(String testNm) {

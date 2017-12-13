@@ -1,6 +1,7 @@
 package org.mozilla.benchmark.objects;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by silviu.checherita on 12/13/2017.
@@ -9,6 +10,7 @@ public class TimestampContainer {
 
     private static TimestampContainer instance = null;
 
+    private String startRunningTime;
     private Timestamp ffmpeg;
     private Timestamp maximize;
 
@@ -48,5 +50,18 @@ public class TimestampContainer {
 
         long milliseconds = one.getTime() - two.getTime();
         return  (int) milliseconds / 1000;
+    }
+
+    public static String getCurrentTimestamp() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH_mm_ss");
+        return dateFormat.format(new Timestamp(System.currentTimeMillis()));
+    }
+
+    public String getStartRunningTime() {
+        return startRunningTime;
+    }
+
+    public void setStartRunningTime(String startRunningTime) {
+        this.startRunningTime = startRunningTime;
     }
 }

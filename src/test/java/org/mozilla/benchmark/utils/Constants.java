@@ -1,5 +1,7 @@
 package org.mozilla.benchmark.utils;
 
+import org.mozilla.benchmark.objects.TimestampContainer;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,13 +10,22 @@ import java.util.List;
  */
 public class Constants {
 
-    public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
-    public static final String SPLIT_VIDEO_PATH = PROJECT_LOCATION + "\\SplitedVideos";
-    public static final String VIDEOS_PATH = PROJECT_LOCATION + "\\Videos";
-    public static final String FPS_60_VIDEO_PATH = PROJECT_LOCATION + "\\60FpsVideos";
-    public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
+    public static final class Paths {
+
+        public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
+        public static final String ROOT_PATH = PROJECT_LOCATION + "\\runs\\" + TimestampContainer.getInstance().getStartRunningTime();
+        public static final String SPLIT_VIDEO_PATH = ROOT_PATH + "\\SplitedVideos";
+        public static final String VIDEOS_PATH = ROOT_PATH + "\\Videos";
+        public static final String FPS_60_VIDEO_PATH = ROOT_PATH + "\\60FpsVideos";
+        public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
+
+        private Paths() {
+        }
+    }
+
     public static final int NUMBER_OF_RUNS = 2;
     public static final int FPS = 60;
+
 
     public static final List<String> GOOGLE_PATTERN_CATEGORIES = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK,
             Elements.FIRST_HERO, Elements.ACCESS_IMAGES, Elements.IMAGES_NON_BLANK, Elements.LAST_HERO);
@@ -39,7 +50,7 @@ public class Constants {
     public static final class Driver {
 
         public static final String WEBDRIVER_PROPERTY = "webdriver.gecko.driver";
-        public static final String WEBDRIVER_PATH = PROJECT_LOCATION + "\\libs\\geckodriver.exe";
+        public static final String WEBDRIVER_PATH = Paths.PROJECT_LOCATION + "\\libs\\geckodriver.exe";
 
         private Driver() {
 

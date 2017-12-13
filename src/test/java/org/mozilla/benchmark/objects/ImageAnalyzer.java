@@ -34,7 +34,7 @@ public class ImageAnalyzer {
 
         LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
 
-        File patternFolder = new File(Constants.PATTERNS_PATH + "\\" + testName);
+        File patternFolder = new File(Constants.Paths.PATTERNS_PATH + "\\" + testName);
         for (int i = 0; i < Constants.NUMBER_OF_RUNS; i++) {
             for (String element : allElements) {
                 ArrayList<String> categoryImages = new ArrayList<>();
@@ -54,7 +54,7 @@ public class ImageAnalyzer {
     private static ArrayList<String> initializeImages(String testName) {
 
         ArrayList<String> images = new ArrayList<>();
-        Iterator it = iterateFiles(new File(Constants.SPLIT_VIDEO_PATH + "\\" + testName), null, false);
+        Iterator it = iterateFiles(new File(Constants.Paths.SPLIT_VIDEO_PATH + "\\" + testName), null, false);
         while (it.hasNext()) {
             Object o = it.next();
             images.add(o.toString());
