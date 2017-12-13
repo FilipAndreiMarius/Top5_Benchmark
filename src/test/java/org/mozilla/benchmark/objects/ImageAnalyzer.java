@@ -2,6 +2,9 @@ package org.mozilla.benchmark.objects;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.Runner;
 import org.mozilla.benchmark.utils.Constants;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
@@ -17,6 +20,8 @@ import static org.apache.commons.io.FileUtils.iterateFiles;
  * Created by Silviu on 11/12/2017.
  */
 public class ImageAnalyzer {
+
+    private static final Logger logger = LogManager.getLogger(ImageAnalyzer.class.getName());
 
     private LinkedHashMap<String, ArrayList<String>> patterns;
     private ArrayList<String> images;
@@ -35,7 +40,7 @@ public class ImageAnalyzer {
         LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
 
         File patternFolder = new File(Constants.Paths.PATTERNS_PATH + "\\" + testName);
-        for (int i = 0; i < Constants.NUMBER_OF_RUNS; i++) {
+        for (int i = 0; i < Constants.General.NUMBER_OF_RUNS; i++) {
             for (String element : allElements) {
                 ArrayList<String> categoryImages = new ArrayList<>();
                 File[] files = patternFolder.listFiles();
@@ -86,10 +91,9 @@ public class ImageAnalyzer {
         for (Map.Entry<String, ArrayList<String>> patterns : patternsMap.entrySet()) {
             for (int j = pattern_counter; j < patterns.getValue().size(); j++) {
                 for (int k = image_counter; k < images.size(); k++) {
-                    System.out.println(k + " - [" + patterns.getKey() + "] - Searching for pattern " + patterns.getValue().get(j) +
+                    logger.info(k + " - [" + patterns.getKey() + "] - Searching for pattern " + patterns.getValue().get(j) +
                             " in " + images.get(k));
                     if (searchImage(images.get(k), patterns.getValue().get(j), 0.95f)) {
-                        System.out.println("FOUND !!!");
                         if (patterns.getValue().size() - pattern_counter > 1) {
                             pattern_counter = j + 1;
                         } else {

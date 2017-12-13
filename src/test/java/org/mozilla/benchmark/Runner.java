@@ -1,29 +1,34 @@
 package org.mozilla.benchmark;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.pageObjects.GooglePage;
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.Scenarios;
+import org.mozilla.benchmark.utils.TimeManager;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 
 /**
  * Created by silviu.checherita on 12/13/2017.
  */
 public class Runner {
 
+    private static final Logger logger = LogManager.getLogger(Runner.class.getName());
+
     public static void main(String args[]) throws IOException {
 
-        TimestampContainer.getInstance().setStartRunningTime(TimestampContainer.getCurrentTimestamp());
-        TimestampContainer.getInstance().setFfmpeg(new Timestamp(System.currentTimeMillis()));
+        TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
+        TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
+
+        logger.info("Start Video Process ...");
 
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", Scenarios.GOOGLE.getName());
         recordVideo.start();
 
-        Thread a = new GooglePage(Constants.NUMBER_OF_RUNS);
+        Thread a = new GooglePage(Constants.General.NUMBER_OF_RUNS);
         a.start();
 
         try {
@@ -51,8 +56,16 @@ public class Runner {
             e.printStackTrace();
         }
 
-/*        Thread removeFrames = new VideoCapture("removeFrames", Scenarios.GOOGLE.getName());
-        removeFrames.start();*/
+        Thread removeFrames = new VideoCapture("removeFrames", Scenarios.GOOGLE.getName());
+        removeFrames.start();
+
+        try {
+            removeFrames.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        logger.info("Video Processing done !!!");
 
 /*        Google g = new Google();
         System.out.println("Google search results: " + g.getResults());*/

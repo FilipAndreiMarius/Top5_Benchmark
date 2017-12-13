@@ -1,7 +1,11 @@
 package org.mozilla.benchmark.pageObjects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.ImageAnalyzer;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.TimeManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -17,6 +21,7 @@ import java.sql.Timestamp;
  */
 public class GooglePage extends Thread {
 
+    private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
     private final WebDriver driver;
     private int runs;
 
@@ -28,7 +33,7 @@ public class GooglePage extends Thread {
         this.runs = runs;
         System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
         driver = new FirefoxDriver();
-        TimestampContainer.getInstance().setMaximize(new Timestamp(System.currentTimeMillis()));
+        TimestampContainer.getInstance().setMaximize(TimeManager.getCurrentTimestamp());
         driver.manage().window().maximize();
     }
 
@@ -39,7 +44,6 @@ public class GooglePage extends Thread {
     }
 
     public void accessGsearch() {
-        System.out.print("GSearch page is accessed:");
         driver.get(Constants.PageObjects.GSEARCH_URL);
     }
 
@@ -52,7 +56,7 @@ public class GooglePage extends Thread {
             actions.sendKeys(driver.findElement(googleSearchButtonLocator), Keys.ENTER).build().perform();
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.fatal("Interrupted ! ", e);
         }
     }
 
@@ -65,9 +69,7 @@ public class GooglePage extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < this.runs; i++) {
-            System.out.println(Thread.currentThread().getName() + " started!");
             runAllScenarios();
-            System.out.println(Thread.currentThread().getName() + " stopped!");
         }
     }
 }

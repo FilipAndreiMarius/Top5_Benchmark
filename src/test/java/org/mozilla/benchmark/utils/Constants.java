@@ -2,6 +2,7 @@ package org.mozilla.benchmark.utils;
 
 import org.mozilla.benchmark.objects.TimestampContainer;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Constants {
     public static final class Paths {
 
         public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
-        public static final String ROOT_PATH = PROJECT_LOCATION + "\\runs\\" + TimestampContainer.getInstance().getStartRunningTime();
+        public static final String ROOT_PATH = PROJECT_LOCATION + "\\runs\\" + TimeManager.getFormattedTimestamp(TimestampContainer.getInstance().getStartRunningTime());
         public static final String SPLIT_VIDEO_PATH = ROOT_PATH + "\\SplitedVideos";
         public static final String VIDEOS_PATH = ROOT_PATH + "\\Videos";
         public static final String FPS_60_VIDEO_PATH = ROOT_PATH + "\\60FpsVideos";
@@ -23,9 +24,22 @@ public class Constants {
         }
     }
 
-    public static final int NUMBER_OF_RUNS = 2;
-    public static final int FPS = 60;
+    public final class General {
 
+        public static final int NUMBER_OF_RUNS = 2;
+
+        private General() {
+        }
+    }
+
+    public final class Video {
+
+        public static final int FPS = 60;
+        public static final String VIDEO_EXTENSION = ".mp4";
+
+        private Video() {
+        }
+    }
 
     public static final List<String> GOOGLE_PATTERN_CATEGORIES = Arrays.asList(Elements.ZERO, Elements.FIRST_NON_BLANK,
             Elements.FIRST_HERO, Elements.ACCESS_IMAGES, Elements.IMAGES_NON_BLANK, Elements.LAST_HERO);
@@ -53,9 +67,9 @@ public class Constants {
         public static final String WEBDRIVER_PATH = Paths.PROJECT_LOCATION + "\\libs\\geckodriver.exe";
 
         private Driver() {
-
         }
     }
+
     public final class Patterns {
 
         public static final String AMAZON_IMAGE_FOLDER = "C:\\Git\\Benchmark\\Ui_Tests\\60FpsVideos\\Video_Frames\\Amazon0.41200816949697131.mp4";

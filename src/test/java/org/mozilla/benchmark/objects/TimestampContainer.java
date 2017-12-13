@@ -10,11 +10,20 @@ public class TimestampContainer {
 
     private static TimestampContainer instance = null;
 
-    private String startRunningTime;
+    private Timestamp startRunningTime;
     private Timestamp ffmpeg;
     private Timestamp maximize;
 
     protected TimestampContainer(){
+    }
+
+    public static TimestampContainer getInstance() {
+        if(instance == null) {
+            synchronized(TimestampContainer.class) {
+                instance = new TimestampContainer();
+            }
+        }
+        return instance;
     }
 
     public Timestamp getFfmpeg() {
@@ -33,35 +42,11 @@ public class TimestampContainer {
         this.maximize = maximize;
     }
 
-    public static TimestampContainer getInstance() {
-        if(instance == null) {
-            synchronized(TimestampContainer.class) {
-                instance = new TimestampContainer();
-            }
-        }
-        return instance;
-    }
-
-    public int getTimestampDifference(Timestamp one, Timestamp two){
-
-        if (one == null || two == null){
-            return 0;
-        }
-
-        long milliseconds = one.getTime() - two.getTime();
-        return  (int) milliseconds / 1000;
-    }
-
-    public static String getCurrentTimestamp() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH_mm_ss");
-        return dateFormat.format(new Timestamp(System.currentTimeMillis()));
-    }
-
-    public String getStartRunningTime() {
+    public Timestamp getStartRunningTime() {
         return startRunningTime;
     }
 
-    public void setStartRunningTime(String startRunningTime) {
+    public void setStartRunningTime(Timestamp startRunningTime) {
         this.startRunningTime = startRunningTime;
     }
 }

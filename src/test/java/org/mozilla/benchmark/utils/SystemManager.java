@@ -1,21 +1,27 @@
 package org.mozilla.benchmark.utils;
 
 import com.sun.management.OperatingSystemMXBean;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.xalan.xsltc.runtime.InternalRuntimeError;
+import org.mozilla.benchmark.objects.ImageAnalyzer;
 
 import javax.management.MBeanServerConnection;
 import java.lang.management.ManagementFactory;
 
 public class SystemManager {
 
-    private static OperatingSystemMXBean getOperatingSystemMXBean() {
+    private static final Logger logger = LogManager.getLogger(SystemManager.class.getName());
 
+    private static OperatingSystemMXBean getOperatingSystemMXBean() {
+        OperatingSystemMXBean opSys = null;
         try {
             MBeanServerConnection server = ManagementFactory.getPlatformMBeanServer();
-            return ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
+            opSys = ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
         } catch (Exception exp) {
-            throw new RuntimeException(exp);
+            logger.fatal("Exception! ", exp);
         }
+        return opSys;
     }
 
     private static double getCpuLoad() {
@@ -24,7 +30,7 @@ public class SystemManager {
             OperatingSystemMXBean osMBean = getOperatingSystemMXBean();
             cpuLoad = osMBean.getSystemCpuLoad() * 100;
         } catch (InternalRuntimeError e) {
-            e.printStackTrace();
+            logger.fatal("InternalRuntimeError! ", e);
         }
         return cpuLoad;
     }
@@ -35,11 +41,11 @@ public class SystemManager {
             double cpuLoad = getCpuLoad();
             if (cpuLoad > Constants.System.CPU_DESIRED) {
                 try {
-                    System.out.print("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
+                    logger.warn("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
                     Thread.sleep(Constants.System.CPU_CHECK_REFRESH_RATE);
                     iteration++;
-                } catch (InterruptedException e){
-                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    logger.fatal("Interrupted!", e);
                     return false;
                 }
             }
