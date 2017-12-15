@@ -24,11 +24,11 @@ public class Constants {
         }
     }
 
-    public final class General {
+    public final class Execution {
 
-        public static final int NUMBER_OF_RUNS = 2;
+        public static final int NUMBER_OF_RUNS = 12;
 
-        private General() {
+        private Execution() {
         }
     }
 

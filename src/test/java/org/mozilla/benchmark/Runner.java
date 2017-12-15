@@ -2,6 +2,7 @@ package org.mozilla.benchmark;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.Google;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.pageObjects.GooglePage;
 import org.mozilla.benchmark.utils.Constants;
@@ -28,7 +29,7 @@ public class Runner {
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", Scenarios.GOOGLE.getName());
         recordVideo.start();
 
-        Thread a = new GooglePage(Constants.General.NUMBER_OF_RUNS);
+        Thread a = new GooglePage(Constants.Execution.NUMBER_OF_RUNS);
         a.start();
 
         try {
@@ -67,7 +68,7 @@ public class Runner {
 
         logger.info("Video Processing done !!!");
 
-/*        Google g = new Google();
-        System.out.println("Google search results: " + g.getResults());*/
+        Google g = new Google();
+        System.out.println("Google search results: " + g.getResults());
     }
 }

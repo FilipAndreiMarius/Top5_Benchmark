@@ -40,7 +40,7 @@ public class ImageAnalyzer {
         LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
 
         File patternFolder = new File(Constants.Paths.PATTERNS_PATH + "\\" + testName);
-        for (int i = 0; i < Constants.General.NUMBER_OF_RUNS; i++) {
+        for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
             for (String element : allElements) {
                 ArrayList<String> categoryImages = new ArrayList<>();
                 File[] files = patternFolder.listFiles();
