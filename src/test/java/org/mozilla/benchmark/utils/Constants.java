@@ -2,40 +2,53 @@ package org.mozilla.benchmark.utils;
 
 import org.mozilla.benchmark.objects.TimestampContainer;
 
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by Silviu on 06/12/2017.
  */
 public class Constants {
 
+    public static final Properties PROPERTIES = PropertiesManager.loadProperties(Paths.PROP_FILE_PATH);
+
     public static final class Paths {
 
         public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
-        public static final String ROOT_PATH = PROJECT_LOCATION + "\\runs\\" + TimeManager.getFormattedTimestamp(TimestampContainer.getInstance().getStartRunningTime());
-        public static final String SPLIT_VIDEO_PATH = ROOT_PATH + "\\SplitedVideos";
-        public static final String VIDEOS_PATH = ROOT_PATH + "\\Videos";
-        public static final String FPS_60_VIDEO_PATH = ROOT_PATH + "\\60FpsVideos";
-        public static final String PATTERNS_PATH = PROJECT_LOCATION + "\\Patterns";
+        private static final String RUNS_FOLDER = "runs";
+        private static final String SPLIT_VIDEO_FOLDER = "SplitedVideos";
+        private static final String VIDEOS_FOLDER = "Videos";
+        private static final String FPS_60_VIDEO_FOLDER = "60FpsVideos";
+        private static final String PATTERNS_FOLDER = "Patterns";
+
+        public static final String ROOT_PATH = PROJECT_LOCATION + File.separator + RUNS_FOLDER + File.separator + TimeManager.getFormattedTimestamp(TimeManager.getCurrentTimestamp());
+        public static final String SPLIT_VIDEO_PATH = ROOT_PATH + File.separator + SPLIT_VIDEO_FOLDER;
+        public static final String VIDEOS_PATH = ROOT_PATH + File.separator + VIDEOS_FOLDER;
+        public static final String FPS_60_VIDEO_PATH = ROOT_PATH + File.separator + FPS_60_VIDEO_FOLDER;
+        public static final String PATTERNS_PATH = PROJECT_LOCATION + File.separator + PATTERNS_FOLDER;
+
+        private static final String PROP_FILE_PATH = PropertiesManager.setConfigPath("config.properties");
+
 
         private Paths() {
         }
     }
 
-    public final class Execution {
+    public static final class Execution {
 
-        public static final int NUMBER_OF_RUNS = 12;
+        public static final int NUMBER_OF_RUNS = PropertiesManager.getInteger(PROPERTIES, "numberOfRuns");
 
         private Execution() {
         }
     }
 
-    public final class Video {
+    public static final class Video {
 
-        public static final int FPS = 60;
-        public static final String VIDEO_EXTENSION = ".mp4";
+        public static final int FPS = PropertiesManager.getInteger(PROPERTIES, "fps");
+        public static final String VIDEO_EXTENSION = PropertiesManager.getString(PROPERTIES, "videoExtension");
 
         private Video() {
         }
