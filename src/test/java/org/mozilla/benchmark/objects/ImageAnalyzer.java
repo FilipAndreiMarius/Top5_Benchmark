@@ -1,16 +1,17 @@
 package org.mozilla.benchmark.objects;
 
-import com.google.gson.JsonArray;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.Runner;
 import org.mozilla.benchmark.utils.Constants;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,37 +24,33 @@ public class ImageAnalyzer {
 
     private static final Logger logger = LogManager.getLogger(ImageAnalyzer.class.getName());
 
-    private LinkedHashMap<String, ArrayList<String>> patterns;
+    private ArrayList<ImagePattern> patterns;
     private ArrayList<String> images;
-    private JsonArray results;
+    private JsonObject results;
     private int lastFound;
 
-    ImageAnalyzer(List<String> allElements, String testName) {
-        this.patterns = initializePatterns(allElements, testName);
+    ImageAnalyzer(String testName) {
+        this.patterns = initializePatterns(testName);
         this.images = initializeImages(testName);
-        this.results = analyzeAndShowResults();
+        this.results = analyzeAndShowResults(testName);
         this.lastFound = 0;
     }
 
-    private LinkedHashMap<String, ArrayList<String>> initializePatterns(List<String> allElements, String testName) {
+    private ArrayList<ImagePattern> initializePatterns(String testName) {
 
-        LinkedHashMap<String, ArrayList<String>> map = new LinkedHashMap<>();
+        ArrayList<ImagePattern> patternList = new ArrayList<>();
+        String jsonPath = Constants.Paths.PATTERNS_PATH + "\\" + testName + "\\" + testName.toLowerCase() + ".json";
 
-        File patternFolder = new File(Constants.Paths.PATTERNS_PATH + "\\" + testName);
         for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
-            for (String element : allElements) {
-                ArrayList<String> categoryImages = new ArrayList<>();
-                File[] files = patternFolder.listFiles();
-                if (files != null) {
-                    for (File file : files) {
-                        if (file.getName().contains(element))
-                            categoryImages.add(file.getPath());
-                    }
-                }
-                map.put(element + "_run_" + (i+1), categoryImages);
+            try {
+                ImagePattern pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
+                pattern.setName(testName + "_run_" + (i + 1));
+                patternList.add(pattern);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
-        return map;
+        return patternList;
     }
 
     private static ArrayList<String> initializeImages(String testName) {
@@ -79,46 +76,49 @@ public class ImageAnalyzer {
         }
     }
 
-    private JsonArray analyzeAndShowResults() {
+    private JsonObject analyzeAndShowResults(String testName) {
 
-        Map<String, ArrayList<String>> patternsMap = this.patterns;
+        ArrayList<ImagePattern> patterns = this.patterns;
         ArrayList<String> images = this.images;
 
-        JsonArray results = new JsonArray();
+        JsonObject results = new JsonObject();
         int image_counter = this.lastFound;
         int pattern_counter = 0;
 
-        for (Map.Entry<String, ArrayList<String>> patterns : patternsMap.entrySet()) {
-            for (int j = pattern_counter; j < patterns.getValue().size(); j++) {
-                for (int k = image_counter; k < images.size(); k++) {
-                    logger.info(k + " - [" + patterns.getKey() + "] - Searching for pattern " + patterns.getValue().get(j) +
-                            " in " + images.get(k));
-                    if (searchImage(images.get(k), patterns.getValue().get(j), 0.95f)) {
-                        if (patterns.getValue().size() - pattern_counter > 1) {
-                            pattern_counter = j + 1;
+        for (ImagePattern pattern : patterns) {
+            JsonObject result = new JsonObject();
+            for (ImageElement element : pattern.getImageElements()) {
+                for (int j = pattern_counter; j < element.getImageDetails().size(); j++) {
+                    for (int k = image_counter; k < images.size(); k++) {
+                        String patternPath = Constants.Paths.PATTERNS_PATH + "\\" + testName + "\\" + element.getImageDetails().get(j).getName();
+                        logger.info(k + " - [" + element.getName() + "] - Searching for pattern " + patternPath +
+                                " in " + images.get(k));
+                        if (searchImage(images.get(k), patternPath, element.getImageDetails().get(j).getSimilarity())) {
+                            if (element.getImageDetails().size() - pattern_counter > 1) {
+                                pattern_counter = j + 1;
+                            } else {
+                                result.addProperty(element.getName(), image_counter + 1);
+                                pattern_counter = 0;
+                                this.lastFound = image_counter + 1;
+                            }
+                            image_counter = k + 1;
+                            break;
                         } else {
-                            JsonObject result = new JsonObject();
-                            result.addProperty(patterns.getKey(), image_counter + 1);
-                            results.add(result);
-                            pattern_counter = 0;
-                            this.lastFound = image_counter + 1;
+                            image_counter = k + 1;
                         }
-                        image_counter = k + 1;
-                        break;
-                    } else {
-                        image_counter = k + 1;
                     }
                 }
             }
+            results.add(pattern.getName(), result);
         }
         return results;
     }
 
-    public JsonArray getResults() {
+    public JsonObject getResults() {
         return this.results;
     }
 
-    public LinkedHashMap<String, ArrayList<String>> getPatterns() {
+    public ArrayList<ImagePattern> getPatterns() {
         return this.patterns;
     }
 

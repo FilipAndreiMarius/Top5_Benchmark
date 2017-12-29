@@ -1,0 +1,12 @@
+{
+  "name": "google",
+  "imageElements":[ {"name":"zero",           "imageDetails":[{"name": "zero1.png", "similarity": 0.95},
+                                                              {"name": "zero2.png", "similarity": 0.95}]},
+                    {"name":"firstNonBlank",  "imageDetails":[{"name": "firstNonBlank.png", "similarity": 0.95}]},
+                    {"name":"firstHero",      "imageDetails":[{"name": "firstHero.png", "similarity": 0.95}]},
+                    {"name":"accessImages",   "imageDetails":[{"name": "accessImages1.png", "similarity": 0.95},
+                                                              {"name": "accessImages2.png", "similarity": 0.95},
+                                                              {"name": "accessImages3.png", "similarity": 0.95}]},
+                    {"name":"imagesNonBlank", "imageDetails":[{"name": "imagesNonBlank.png", "similarity": 0.95}]},
+                    {"name":"lastHero",       "imageDetails":[{"name": "lastHero.png", "similarity": 0.95}]}]
+}

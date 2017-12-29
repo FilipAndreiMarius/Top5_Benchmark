@@ -9,7 +9,7 @@ import org.mozilla.benchmark.utils.Scenarios;
 public class Google extends ImageAnalyzer {
 
     public Google() {
-        super(Constants.GOOGLE_PATTERN_CATEGORIES, Scenarios.GOOGLE.getName());
+        super(Scenarios.GOOGLE.getName());
     }
 
 }
