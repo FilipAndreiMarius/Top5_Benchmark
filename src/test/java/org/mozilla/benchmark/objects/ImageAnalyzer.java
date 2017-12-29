@@ -53,7 +53,7 @@ public class ImageAnalyzer {
         return patternList;
     }
 
-    private static ArrayList<String> initializeImages(String testName) {
+    private ArrayList<String> initializeImages(String testName) {
 
         ArrayList<String> images = new ArrayList<>();
         Iterator it = iterateFiles(new File(Constants.Paths.SPLIT_VIDEO_PATH + "\\" + testName), null, false);
@@ -64,7 +64,7 @@ public class ImageAnalyzer {
         return images;
     }
 
-    private static Boolean searchImage(String imagePath1, String imagePath2, float similarity) {
+    private Boolean searchImage(String imagePath1, String imagePath2, float similarity) {
         try {
             Finder finder = new Finder(imagePath1, new Region(286, 164, 108, 23));
             Pattern pattern = new Pattern(imagePath2).similar(similarity);
