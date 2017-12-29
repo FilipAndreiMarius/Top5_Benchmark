@@ -18,24 +18,19 @@ public class PropertiesManager {
 
     public static String getString(Properties properties, String key) {
         String value = properties.getProperty(key);
-
         return (isNullOrEmpty(value) ? "" : value.trim());
     }
 
     public static Integer getInteger(Properties properties, String key) {
         String value = getString(properties, key);
-
         return isNullOrEmpty(value) ? 0 : Integer.valueOf(value);
     }
 
     public static Properties loadProperties(String inputFilePath) {
         Properties properties = new Properties();
         InputStream input = null;
-
         try {
-
             input = new FileInputStream(inputFilePath);
-
             properties.load(input);
         } catch (IOException ex) {
             logger.error("Could not load " + inputFilePath + " " + ex);
@@ -49,11 +44,6 @@ public class PropertiesManager {
             }
         }
         return properties;
-    }
-
-    public static String setConfigPath(String propertiesFileName) {
-        return Constants.Paths.PROJECT_LOCATION + File.separator + "src" + File.separator + "test" + File.separator
-                + "resources" + File.separator + propertiesFileName;
     }
 
     private static boolean isNullOrEmpty(String string) {

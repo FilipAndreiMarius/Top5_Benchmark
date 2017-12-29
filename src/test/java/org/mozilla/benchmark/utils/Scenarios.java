@@ -10,11 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public enum Scenarios {
-    GOOGLE("Google"),
-    AMAZON("Amazon"),
-    GMAIL("Gmail"),
-    FACEBOOK("Facebook"),
-    YOUTUBE("Youtube");
+    GOOGLE("google"),
+    AMAZON("amazon"),
+    GMAIL("gmail"),
+    FACEBOOK("facebook"),
+    YOUTUBE("youtube");
 
 
     Scenarios(String name) {
