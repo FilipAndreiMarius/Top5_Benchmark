@@ -15,15 +15,42 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static final Logger logger = LogManager.getLogger(PropertiesManager.class.getName());
+    private static Properties prop = loadProperties(Constants.Paths.PROP_FILE_PATH);
 
-    public static String getString(Properties properties, String key) {
-        String value = properties.getProperty(key);
+    private static String getString(String key) {
+        String value = prop.getProperty(key);
         return (isNullOrEmpty(value) ? "" : value.trim());
     }
 
-    public static Integer getInteger(Properties properties, String key) {
-        String value = getString(properties, key);
+    private static Integer getInteger(String key) {
+        String value = getString(key);
         return isNullOrEmpty(value) ? 0 : Integer.valueOf(value);
+    }
+
+    private static Boolean getBoolean(String key) {
+        String value = getString(key);
+
+        return isNullOrEmpty(value) ? null : Boolean.valueOf(value);
+    }
+
+    public static int getNumberOfRuns() {
+        return getInteger("numberOfRuns");
+    }
+
+    public static int getFps() {
+        return getInteger("fps");
+    }
+
+    public static String getVideoExtension() {
+        return getString("videoExtension");
+    }
+
+    public static Boolean getGfxWebrenderEnabled() {
+        return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE);
+    }
+
+    public static Boolean getGfxWebrenderBlobImages() {
+        return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
     }
 
     public static Properties loadProperties(String inputFilePath) {

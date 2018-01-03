@@ -10,8 +10,6 @@ import java.util.Properties;
  */
 public class Constants {
 
-    public static final Properties PROPERTIES = PropertiesManager.loadProperties(Paths.PROP_FILE_PATH);
-
     public static final class Paths {
 
         public static final String PROJECT_LOCATION = java.lang.System.getProperty("user.dir");
@@ -33,7 +31,7 @@ public class Constants {
         public static final String FPS_60_VIDEO_PATH = ROOT_PATH + File.separator + FPS_60_VIDEO_FOLDER;
 
         public static final String PATTERNS_PATH = RESOURCES_PATH + File.separator + PATTERNS_FOLDER;
-        private static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
+        public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
 
         private Paths() {
         }
@@ -41,7 +39,7 @@ public class Constants {
 
     public static final class Execution {
 
-        public static final int NUMBER_OF_RUNS = PropertiesManager.getInteger(PROPERTIES, "numberOfRuns");
+        public static final int NUMBER_OF_RUNS = PropertiesManager.getNumberOfRuns();
 
         private Execution() {
         }
@@ -49,10 +47,21 @@ public class Constants {
 
     public static final class Video {
 
-        public static final int FPS = PropertiesManager.getInteger(PROPERTIES, "fps");
-        public static final String VIDEO_EXTENSION = PropertiesManager.getString(PROPERTIES, "videoExtension");
+        public static final int FPS = PropertiesManager.getFps();
+        public static final String VIDEO_EXTENSION = PropertiesManager.getVideoExtension();
 
         private Video() {
+        }
+    }
+
+    public static final class FirefoxPrefs {
+
+        public static final String GFX_WEBRENDER_ENABLED_PREFERENCE = "gfx.webrender.enabled";
+        public static final String GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE = "gfx.webrender.blob-images";
+        public static final Boolean GFX_WEBRENDER_ENABLED = PropertiesManager.getGfxWebrenderEnabled();
+        public static final Boolean GFX_WEBRENDER_BLOB_IMAGES = PropertiesManager.getGfxWebrenderBlobImages();
+
+        private FirefoxPrefs() {
         }
     }
 

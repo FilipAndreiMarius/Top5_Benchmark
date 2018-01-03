@@ -2,6 +2,7 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.Driver;
 import org.mozilla.benchmark.objects.ImageAnalyzer;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.utils.Constants;
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 public class GooglePage extends Thread {
 
     private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
-    private final WebDriver driver;
+    private final WebDriver driver = Driver.getInstance();
     private int runs;
 
     private By googleSearchBarLocator = By.id("lst-ib");
@@ -31,10 +32,6 @@ public class GooglePage extends Thread {
 
     public GooglePage(int runs) {
         this.runs = runs;
-        System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
-        driver = new FirefoxDriver();
-        TimestampContainer.getInstance().setMaximize(TimeManager.getCurrentTimestamp());
-        driver.manage().window().maximize();
     }
 
     public void accessImage() {
