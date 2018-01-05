@@ -3,7 +3,6 @@ package org.mozilla.benchmark.utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +50,10 @@ public class PropertiesManager {
 
     public static Boolean getGfxWebrenderBlobImages() {
         return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
+    }
+
+    public static String[] getExecutedScenarios() {
+        return getString("executedScenarios").split(",");
     }
 
     public static Properties loadProperties(String inputFilePath) {

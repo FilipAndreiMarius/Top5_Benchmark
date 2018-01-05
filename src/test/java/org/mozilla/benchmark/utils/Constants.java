@@ -40,6 +40,7 @@ public class Constants {
     public static final class Execution {
 
         public static final int NUMBER_OF_RUNS = PropertiesManager.getNumberOfRuns();
+        public static final String[] EXECUTED_SCENARIOS = PropertiesManager.getExecutedScenarios();
 
         private Execution() {
         }

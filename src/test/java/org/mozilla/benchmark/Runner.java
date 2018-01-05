@@ -1,7 +1,7 @@
 package org.mozilla.benchmark;
 
 import org.mozilla.benchmark.objects.ScenarioRunner;
-import org.mozilla.benchmark.utils.Scenarios;
+import org.mozilla.benchmark.utils.Constants;
 
 import java.io.IOException;
 
@@ -10,9 +10,20 @@ import java.io.IOException;
  */
 public class Runner {
 
+    private static String getScenarioName(String jsonName){
+        return jsonName.replace(".json", "");
+
+    }
+
     public static void main(String args[]) throws IOException {
 
-        Thread googleRunner = new ScenarioRunner(Scenarios.GOOGLE.getName());
-        googleRunner.start();
+        String[] executedScenarios = Constants.Execution.EXECUTED_SCENARIOS;
+        for (String scenario : executedScenarios) {
+            Thread[] threads = new Thread[executedScenarios.length];
+            for (int i = 0; i < threads.length; i++) {
+                threads[i] = new ScenarioRunner(getScenarioName(scenario));
+                threads[i].start();
+            }
+        }
     }
 }
