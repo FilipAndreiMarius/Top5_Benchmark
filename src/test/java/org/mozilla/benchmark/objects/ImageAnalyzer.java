@@ -39,7 +39,7 @@ public class ImageAnalyzer {
     private ArrayList<ImagePattern> initializePatterns(String testName) {
 
         ArrayList<ImagePattern> patternList = new ArrayList<>();
-        String jsonPath = Constants.Paths.PATTERNS_PATH + "\\" + testName + "\\" + testName.toLowerCase() + ".json";
+        String jsonPath = Constants.Paths.RESOURCES_PATH + "\\" + testName.toLowerCase() + ".json";
 
         for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
             try {
