@@ -39,7 +39,7 @@ public class ImageAnalyzer {
     private ArrayList<ImagePattern> initializePatterns(String testName) {
 
         ArrayList<ImagePattern> patternList = new ArrayList<>();
-        String jsonPath = Constants.Paths.RESOURCES_PATH + "\\" + testName.toLowerCase() + ".json";
+        String jsonPath = Constants.Paths.RESOURCES_PATH + File.separator + testName.toLowerCase() + Constants.Extensions.JSON_EXTENSION;
 
         for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
             try {
@@ -56,7 +56,7 @@ public class ImageAnalyzer {
     private ArrayList<String> initializeImages(String testName) {
 
         ArrayList<String> images = new ArrayList<>();
-        Iterator it = iterateFiles(new File(Constants.Paths.SPLIT_VIDEO_PATH + "\\" + testName), null, false);
+        Iterator it = iterateFiles(new File(Constants.Paths.SPLIT_VIDEO_PATH + File.separator + testName), null, false);
         while (it.hasNext()) {
             Object o = it.next();
             images.add(o.toString());
@@ -90,7 +90,7 @@ public class ImageAnalyzer {
             for (ImageElement element : pattern.getImageElements()) {
                 for (int j = pattern_counter; j < element.getImageDetails().size(); j++) {
                     for (int k = image_counter; k < images.size(); k++) {
-                        String patternPath = Constants.Paths.PATTERNS_PATH + "\\" + testName + "\\" + element.getImageDetails().get(j).getName();
+                        String patternPath = Constants.Paths.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
                         logger.info(k + " - [" + element.getName() + "] - Searching for pattern " + patternPath +
                                 " in " + images.get(k));
                         if (searchImage(images.get(k), patternPath, element.getImageDetails().get(j).getSimilarity())) {

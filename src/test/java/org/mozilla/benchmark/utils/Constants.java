@@ -49,9 +49,16 @@ public class Constants {
     public static final class Video {
 
         public static final int FPS = PropertiesManager.getFps();
-        public static final String VIDEO_EXTENSION = PropertiesManager.getVideoExtension();
-
         private Video() {
+        }
+    }
+
+    public static final class Extensions {
+
+        public static final String VIDEO_EXTENSION = PropertiesManager.getVideoExtension();
+        public static final String JSON_EXTENSION = ".json";
+
+        private Extensions() {
         }
     }
 

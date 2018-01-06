@@ -40,7 +40,7 @@ public class VideoCapture extends Thread {
     @Override
     public void run() {
 
-        String videoName = getTestName() + Constants.Video.VIDEO_EXTENSION;
+        String videoName = getTestName() + Constants.Extensions.VIDEO_EXTENSION;
 
         try {
 
@@ -49,7 +49,7 @@ public class VideoCapture extends Thread {
             switch (this.command) {
 
                 case START_VIDEO:
-                    String videoOutputPath = Constants.Paths.VIDEOS_PATH + "\\" + getTestName();
+                    String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {
                         logger.info("Start recording video ...");
                         logger.info("Executing FFMPEG command: " + ffmpegStartVideoCommand(videoOutputPath, videoName));
@@ -63,11 +63,11 @@ public class VideoCapture extends Thread {
                     break;
 
                 case COMPRESS_VIDEO:
-                    String video60FpsOutputPath = Constants.Paths.FPS_60_VIDEO_PATH + "\\" + getTestName();
+                    String video60FpsOutputPath = Constants.Paths.FPS_60_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(video60FpsOutputPath)) {
                         logger.info("Start video compression ... ");
-                        String inputPath = Constants.Paths.VIDEOS_PATH + "\\" + getTestName() + "\\" + videoName;
-                        String outputPath = video60FpsOutputPath + "\\" + videoName;
+                        String inputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName() + File.separator + videoName;
+                        String outputPath = video60FpsOutputPath + File.separator + videoName;
                         String convertCommand = convertTo60Fps(inputPath, outputPath);
                         logger.info("Executing conversion command:" + convertCommand);
                         ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe", "/c", convertCommand);
@@ -81,8 +81,8 @@ public class VideoCapture extends Thread {
 
                 case SPLIT_VIDEO_TO_FRAMES:
                     logger.info("Start image split ...");
-                    String input = Constants.Paths.FPS_60_VIDEO_PATH + "\\" + getTestName() + "\\" + videoName;
-                    String output = Constants.Paths.SPLIT_VIDEO_PATH + "\\" + getTestName();
+                    String input = Constants.Paths.FPS_60_VIDEO_PATH + File.separator + getTestName() + File.separator + videoName;
+                    String output = Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(output)) {
                         String splitCommand = splitIntoFrames(input, output);
                         logger.info("Executing split command: " + splitCommand);
@@ -100,7 +100,7 @@ public class VideoCapture extends Thread {
                     Timestamp ffmpeg = TimestampContainer.getInstance().getFfmpeg();
                     Timestamp maximize = TimestampContainer.getInstance().getMaximize();
                     int secondsToRemove = TimeManager.getTimestampDifference(maximize, ffmpeg);
-                    FileManager.removeFiles(Constants.Paths.SPLIT_VIDEO_PATH + "\\" + getTestName(), secondsToRemove);
+                    FileManager.removeFiles(Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName(), secondsToRemove);
                     logger.info("Removing unnecessary images done !!!");
                     break;
             }
@@ -122,7 +122,7 @@ public class VideoCapture extends Thread {
                 .append(" -t " + this.duration)
                 .append(" ")
                 .append(path)
-                .append("\\")
+                .append(File.separator)
                 .append(videoName);
         return command.toString();
     }

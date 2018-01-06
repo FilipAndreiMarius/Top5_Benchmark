@@ -10,20 +10,18 @@ import java.io.IOException;
  */
 public class Runner {
 
-    private static String getScenarioName(String jsonName){
-        return jsonName.replace(".json", "");
+    private static String getScenarioName(String jsonName) {
+        return jsonName.replace(Constants.Extensions.JSON_EXTENSION, "");
 
     }
 
     public static void main(String args[]) throws IOException {
 
-        String[] executedScenarios = Constants.Execution.EXECUTED_SCENARIOS;
-        for (String scenario : executedScenarios) {
-            Thread[] threads = new Thread[executedScenarios.length];
-            for (int i = 0; i < threads.length; i++) {
-                threads[i] = new ScenarioRunner(getScenarioName(scenario));
-                threads[i].start();
-            }
+        String[] scenarios = Constants.Execution.EXECUTED_SCENARIOS;
+        Thread[] threads = new Thread[scenarios.length];
+        for (int i = 0; i < threads.length; i++) {
+            threads[i] = new ScenarioRunner(getScenarioName(scenarios[i]));
+            threads[i].start();
         }
     }
 }
