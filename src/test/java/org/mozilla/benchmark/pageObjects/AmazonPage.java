@@ -1,5 +1,8 @@
 package org.mozilla.benchmark.pageObjects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.Driver;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -11,22 +14,23 @@ import javax.swing.*;
 /**
  * Created by andrei.filip on 10/30/2017.
  */
-public class AmazonPage {
+public class AmazonPage extends Thread {
 
-    private final WebDriver driver;
+    private static final Logger logger = LogManager.getLogger(AmazonPage.class.getName());
+    private final WebDriver driver = Driver.getInstance();
+    private int runs;
+
     private By searchBarLocator = By.id("twotabsearchtextbox");
     private By SearchButtonLocator = By.id("nav-search-submit-text");
     private By videoElementLocator = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
     private By bookResultElementLocator = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
 
-    public AmazonPage(WebDriver driver) {
-        this.driver = driver;
+    public AmazonPage(int runs) {
+        this.runs = runs;
     }
 
-    public void accessAmazon() throws InterruptedException {
+    public void accessAmazon() {
         driver.get(Constants.PageObjects.AMAZON_URL);
-        JOptionPane.showMessageDialog(null, "Website accessed");
-        Thread.sleep(5000);
     }
 
     public void searchAmazon() {
@@ -56,11 +60,15 @@ public class AmazonPage {
         driver.findElement(bookResultElementLocator).click();
     }
 
-    public void runAllScenarios() throws InterruptedException {
+    public void runAllScenarios() {
         accessAmazon();
         searchAmazon();
-        accessVideoResult();
-        backAction();
-        accessBookResult();
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < this.runs; i++) {
+            runAllScenarios();
+        }
     }
 }

@@ -40,4 +40,14 @@ public class Driver {
         logger.info("Driver initialized !");
         return instance;
     }
+
+    public static void closeWebBrowser(){
+        logger.info("Closing Driver ...");
+        if (null != instance){
+            instance.quit();
+        }
+        instance = null;
+        logger.info("Driver closed !");
+    }
+
 }

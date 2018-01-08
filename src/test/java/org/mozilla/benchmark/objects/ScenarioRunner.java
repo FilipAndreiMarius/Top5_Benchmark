@@ -63,6 +63,7 @@ public class ScenarioRunner extends Thread {
         compress.start();
 
         try {
+            Driver.closeWebBrowser();
             compress.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

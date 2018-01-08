@@ -22,6 +22,11 @@ public class Runner {
         for (int i = 0; i < threads.length; i++) {
             threads[i] = new ScenarioRunner(getScenarioName(scenarios[i]));
             threads[i].start();
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
