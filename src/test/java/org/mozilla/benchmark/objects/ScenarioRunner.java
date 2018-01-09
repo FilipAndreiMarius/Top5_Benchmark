@@ -2,10 +2,8 @@ package org.mozilla.benchmark.objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.Runner;
-import org.mozilla.benchmark.pageObjects.FacebookPage;
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.Scenarios;
+import org.mozilla.benchmark.utils.ScenarioManager;
 import org.mozilla.benchmark.utils.TimeManager;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
 
@@ -19,10 +17,6 @@ public class ScenarioRunner extends Thread {
 
     private static final Logger logger = LogManager.getLogger(ScenarioRunner.class.getName());
 
-    private static String getClassNameFromTestName(String testName) {
-        return testName.substring(0, 1).toUpperCase() + testName.substring(1) + "Page";
-    }
-
     public ScenarioRunner(String testName) {
 
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
@@ -33,7 +27,7 @@ public class ScenarioRunner extends Thread {
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", testName);
         recordVideo.start();
 
-        String className = "org.mozilla.benchmark.pageObjects." + getClassNameFromTestName(testName);
+        String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(testName);
 
         Class<?> clazz;
         try {

@@ -41,6 +41,17 @@ public class FileManager {
         }
     }
 
+    public static Boolean fileFound(String fileName, String directoryName) {
+        File folder = new File(directoryName);
+        File[] files = folder.listFiles();
+        for (File file : files) {
+            if (fileName.equals(file.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static Boolean createDirectories(String filename) {
         File dir = new File(filename);
         logger.info("Creating: " + filename + " ... ");
