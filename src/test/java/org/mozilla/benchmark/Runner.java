@@ -2,7 +2,7 @@ package org.mozilla.benchmark;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.ScenarioRunner;
+import org.mozilla.benchmark.objects.*;
 import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.ScenarioManager;
@@ -22,19 +22,18 @@ public class Runner {
         if (scenarios.size() == 0){
             logger.warn("There are no scenarios to execute !!!");
         }else{
-            logger.info("Executing scenarios " + scenarios);
+            logger.info("List of scenarios to execute: " + scenarios);
         }
 
-/*        String[] scenarios = Constants.Execution.EXECUTED_SCENARIOS;
-        Thread[] threads = new Thread[scenarios.length];
+        Thread[] threads = new Thread[scenarios.size()];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new ScenarioRunner(ScenarioManager.getScenarioName(scenarios[i]));
+            threads[i] = new ScenarioRunner(ScenarioManager.getScenarioName(scenarios.get(i)));
             threads[i].start();
             try {
                 threads[i].join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 }

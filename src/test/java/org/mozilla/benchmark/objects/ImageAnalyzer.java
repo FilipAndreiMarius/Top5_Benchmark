@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.FileManager;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
@@ -30,10 +31,43 @@ public class ImageAnalyzer {
     private int lastFound;
 
     ImageAnalyzer(String testName) {
-        this.patterns = initializePatterns(testName);
+        this.patterns = validatePatterns(initializePatterns(testName), testName);
         this.images = initializeImages(testName);
         this.results = analyzeAndShowResults(testName);
         this.lastFound = 0;
+    }
+
+    private Boolean isImagePresentInPatternsFolder(String testName, ImageDetails image) {
+        return FileManager.fileFound(image.getName(), Constants.Paths.PATTERNS_PATH + File.separator + testName);
+    }
+
+    private ArrayList<ImagePattern> validatePatterns(ArrayList<ImagePattern> initialImagePatternList, String testName) {
+
+        logger.info("Validating patterns ...");
+        Iterator imagePatternIterator = initialImagePatternList.iterator();
+        while (imagePatternIterator.hasNext()) {
+            ImagePattern imagePattern = (ImagePattern) imagePatternIterator.next();
+            Iterator imageElementIterator = imagePattern.getImageElements().iterator();
+            while (imageElementIterator.hasNext()) {
+                ImageElement imageElement = (ImageElement) imageElementIterator.next();
+                Iterator imagesDetailsIterator = imageElement.getImageDetails().iterator();
+                while (imagesDetailsIterator.hasNext()) {
+                    ImageDetails image = (ImageDetails) imagesDetailsIterator.next();
+                    if (!isImagePresentInPatternsFolder(testName, image)) {
+                        logger.warn("[" + image.getName() + "] NOT found in " + Constants.Paths.PATTERNS_PATH + File.separator + testName + " folder. Removing from [" + imageElement.getName() + "] element");
+                        imagesDetailsIterator.remove();
+                    } else {
+                        logger.debug("[" + image.getName() + "] found!");
+                    }
+                }
+                if (imageElement.getImageDetails().size() == 0) {
+                    logger.warn("[" + imageElement.getName() + "] has no patterns. Removing element");
+                    imageElementIterator.remove();
+                }
+            }
+        }
+        logger.info("Pattern validation complete!");
+        return initialImagePatternList;
     }
 
     private ArrayList<ImagePattern> initializePatterns(String testName) {

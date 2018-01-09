@@ -2,7 +2,6 @@ package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xpath.operations.Bool;
 
 import java.util.ArrayList;
 
@@ -28,11 +27,11 @@ public class ScenarioManager {
         logger.info("Validating scenarios ...");
         for (String scenario : scenarios) {
             if (FileManager.fileFound(scenario, directoryName)){
-                logger.info("[" + scenario + "] found!");
+                logger.debug("[" + scenario + "] found!");
                 scenarioList.add(scenario);
             }
             else {
-                logger.warn("[" + scenario + "] NOT found!!!");
+                logger.warn("[" + scenario + "] NOT found in " + Constants.Paths.RESOURCES_PATH + " folder !!! Skipping scenario ...");
             }
         }
         return scenarioList;
