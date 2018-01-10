@@ -3,6 +3,7 @@ package org.mozilla.benchmark.objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.ScenarioManager;
 import org.mozilla.benchmark.utils.TimeManager;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
@@ -57,7 +58,7 @@ public class ScenarioRunner extends Thread {
         compress.start();
 
         try {
-            Driver.closeWebBrowser();
+            DriverUtils.closeWebBrowser();
             compress.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

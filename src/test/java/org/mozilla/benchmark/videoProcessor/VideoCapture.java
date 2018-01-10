@@ -2,7 +2,6 @@ package org.mozilla.benchmark.videoProcessor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.Driver;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.FileManager;

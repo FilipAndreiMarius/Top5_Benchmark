@@ -1,9 +1,8 @@
-package org.mozilla.benchmark.objects;
+package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.TimeManager;
+import org.mozilla.benchmark.objects.TimestampContainer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -11,14 +10,14 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 /**
  * Created by Silviu on 03/01/2018.
  */
-public class Driver {
+public class DriverUtils {
 
-    private static final Logger logger = LogManager.getLogger(Driver.class.getName());
+    private static final Logger logger = LogManager.getLogger(DriverUtils.class.getName());
     private static WebDriver instance = null;
 
     public static WebDriver getInstance() {
         if (instance == null) {
-            synchronized (Driver.class) {
+            synchronized (DriverUtils.class) {
                 logger.info("Initializing Driver ...");
                 logger.info("Setting [" + Constants.Driver.WEBDRIVER_PROPERTY + "] property ...");
                 System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);

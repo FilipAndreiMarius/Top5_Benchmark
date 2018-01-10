@@ -2,67 +2,62 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.Driver;
+import org.mozilla.benchmark.utils.BasePage;
+import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import javax.swing.*;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
-public class AmazonPage extends Thread {
+public class AmazonPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(AmazonPage.class.getName());
-    private final WebDriver driver = Driver.getInstance();
     private int runs;
 
-    private By searchBarLocator = By.id("twotabsearchtextbox");
-    private By SearchButtonLocator = By.id("nav-search-submit-text");
-    private By videoElementLocator = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
-    private By bookResultElementLocator = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
+    private By SEARCH_BAR = By.id("twotabsearchtextbox");
+    private By SEARCH_BUTTON = By.className("nav-input");
+    private By VIDEO_PRODUCT = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
+    private By BOOK_PRODUCT = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
 
     public AmazonPage(int runs) {
         this.runs = runs;
     }
 
     public void accessAmazon() {
-        driver.get(Constants.PageObjects.AMAZON_URL);
+        logger.info("Accessing Amazon ...");
+        navigateToURL(Constants.PageObjects.AMAZON_URL);
     }
 
     public void searchAmazon() {
-        (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(searchBarLocator));
-        driver.findElement(searchBarLocator).sendKeys(Constants.PageObjects.AMAZON_SEARCH_ITEM);
-        (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(SearchButtonLocator));
-        driver.findElement(SearchButtonLocator).click();
+        logger.info("Searching [" + Constants.PageObjects.AMAZON_SEARCH_ITEM + "] ...");
+        sendKeys(SEARCH_BAR, Constants.PageObjects.AMAZON_SEARCH_ITEM);
+        click(SEARCH_BUTTON);
     }
 
 
-    public void accessVideoResult() throws InterruptedException {
-        Thread.sleep(5000);
-        (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.visibilityOfElementLocated(videoElementLocator));
-        driver.findElement(videoElementLocator).click();
+    public void accessVideoResult() {
+        logger.info("Navigate to video product ...");
+        click(VIDEO_PRODUCT);
     }
 
     public void backAction() {
-        driver.navigate().back();
+        logger.info("Navigate back ...");
+        navigateBack();
     }
 
     public void accessBookResult() {
-        (new WebDriverWait(driver, 7))
-                .until(ExpectedConditions.visibilityOfElementLocated(bookResultElementLocator));
-        driver.findElement(bookResultElementLocator).click();
+        logger.info("Navigate to book product ...");
+        click(BOOK_PRODUCT);
     }
 
     public void runAllScenarios() {
         accessAmazon();
         searchAmazon();
+        accessVideoResult();
+        backAction();
+        accessBookResult();
     }
 
     @Override

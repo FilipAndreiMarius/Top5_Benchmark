@@ -2,64 +2,43 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.Driver;
-import org.mozilla.benchmark.objects.ImageAnalyzer;
-import org.mozilla.benchmark.objects.TimestampContainer;
+import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.TimeManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.sql.Timestamp;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
-public class GooglePage extends Thread {
+public class GooglePage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
-    private final WebDriver driver = Driver.getInstance();
     private int runs;
 
-    private By googleSearchBarLocator = By.id("lst-ib");
-    private By googleSearchButtonLocator = By.className("lsb");
-    private By googleImageLocator = By.xpath("//*[@class='q qs']");
+    private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
+    private By GOOGLE_IMAGE = By.xpath("//*[@class='q qs']");
 
     public GooglePage(int runs) {
         this.runs = runs;
     }
 
     public void accessImage() {
-        (new WebDriverWait(driver, 5))
-                .until(ExpectedConditions.presenceOfElementLocated(googleImageLocator));
-        driver.findElement(googleImageLocator).click();
+        logger.info("Selecting [Images] section ...");
+        click(GOOGLE_IMAGE);
     }
 
-    public void accessGsearch() {
-        driver.get(Constants.PageObjects.GSEARCH_URL);
+    public void navigateToHomePage() {
+        logger.info("Accessing Google ...");
+        navigateToURL(Constants.PageObjects.GSEARCH_URL);
     }
 
-    public void searchGoogle() {
-        try {
-            driver.findElement(googleSearchBarLocator).sendKeys(Constants.PageObjects.SEARCH_ITEM);
-            (new WebDriverWait(driver, 5))
-                    .until(ExpectedConditions.presenceOfElementLocated(googleSearchButtonLocator));
-            Actions actions = new Actions(driver);
-            actions.sendKeys(driver.findElement(googleSearchButtonLocator), Keys.ENTER).build().perform();
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            logger.fatal("Interrupted ! ", e);
-        }
+    public void search() {
+        logger.info("Searching [" + Constants.PageObjects.SEARCH_ITEM + "] ...");
+        sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, Constants.PageObjects.SEARCH_ITEM);
     }
 
     public void runAllScenarios() {
-        accessGsearch();
-        searchGoogle();
+        navigateToHomePage();
+        search();
         accessImage();
     }
 

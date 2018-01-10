@@ -2,7 +2,7 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.Driver;
+import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 public class FacebookPage extends Thread{
 
     private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
-    private final WebDriver driver = Driver.getInstance();
+    private final WebDriver driver = DriverUtils.getInstance();
     private int runs;
     //login locators
     private By userNameLocator = By.id("email");
