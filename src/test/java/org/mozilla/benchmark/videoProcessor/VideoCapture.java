@@ -53,7 +53,7 @@ public class VideoCapture extends Thread {
                     String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {
                         logger.info("Start recording video ...");
-                        logger.info("Executing FFMPEG command: " + ffmpegStartVideoCommand(videoOutputPath, videoName));
+                        logger.info("Executing FFMPEG command: [" + ffmpegStartVideoCommand(videoOutputPath, videoName) + "]");
                         ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", ffmpegStartVideoCommand(videoOutputPath, videoName));
                         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -70,7 +70,7 @@ public class VideoCapture extends Thread {
                         String inputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName() + File.separator + videoName;
                         String outputPath = video60FpsOutputPath + File.separator + videoName;
                         String convertCommand = convertTo60Fps(inputPath, outputPath);
-                        logger.info("Executing conversion command:" + convertCommand);
+                        logger.info("Executing conversion command: [" + convertCommand + "]");
                         ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe", "/c", convertCommand);
                         BuilderCompress.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         BuilderCompress.redirectError(ProcessBuilder.Redirect.INHERIT);
@@ -86,7 +86,7 @@ public class VideoCapture extends Thread {
                     String output = Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(output)) {
                         String splitCommand = splitIntoFrames(input, output);
-                        logger.info("Executing split command: " + splitCommand);
+                        logger.info("Executing split command: [" + splitCommand + "]");
                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe", "/c", splitCommand);
                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);

@@ -32,7 +32,7 @@ public class FileManager {
             for (File file : files) {
                 if (getIntFromString(file.getName()) < frames) {
                     if (file.delete()) {
-                        logger.debug("Deleted " + file.getName());
+                        logger.debug("Deleted: [" + file.getName() + "]");
                     } else {
                         logger.error("Failed to delete " + file.getName());
                     }
@@ -54,12 +54,12 @@ public class FileManager {
 
     public static Boolean createDirectories(String filename) {
         File dir = new File(filename);
-        logger.info("Creating: " + filename + " ... ");
+        logger.info("Creating: [" + filename + "] ... ");
         boolean successful = dir.mkdirs();
         if (successful) {
-            logger.debug("Directories created successfully !!!");
+            logger.debug("[" + filename + "] created successfully !!!");
         } else {
-            logger.error("Failed to create the directories !!!");
+            logger.error("Failed to create [" + filename + "] !!!");
         }
         return successful;
     }

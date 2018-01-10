@@ -20,15 +20,15 @@ public class Driver {
         if (instance == null) {
             synchronized (Driver.class) {
                 logger.info("Initializing Driver ...");
-                logger.info("Setting " + Constants.Driver.WEBDRIVER_PROPERTY + " property ...");
+                logger.info("Setting [" + Constants.Driver.WEBDRIVER_PROPERTY + "] property ...");
                 System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
                 FirefoxOptions options = new FirefoxOptions();
                 if (Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES != null) {
-                    logger.info("Adding " + Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + " preference ...");
+                    logger.info("Adding [" + Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + "] preference ...");
                     options.addPreference(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE, Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES);
                 }
                 if (Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED != null) {
-                    logger.info("Adding " + Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE + " preference ...");
+                    logger.info("Adding [" + Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE + "] preference ...");
                     options.addPreference(Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE, Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED);
                 }
                 instance = new FirefoxDriver(options);

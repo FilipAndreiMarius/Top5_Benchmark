@@ -125,8 +125,8 @@ public class ImageAnalyzer {
                 for (int j = pattern_counter; j < element.getImageDetails().size(); j++) {
                     for (int k = image_counter; k < images.size(); k++) {
                         String patternPath = Constants.Paths.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
-                        logger.info(k + " - [" + element.getName() + "] - Searching for pattern " + patternPath +
-                                " in " + images.get(k));
+                        logger.info(k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
+                                "] in [" + images.get(k) + "]");
                         if (searchImage(images.get(k), patternPath, element.getImageDetails().get(j).getSimilarity())) {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
                                 pattern_counter = j + 1;
