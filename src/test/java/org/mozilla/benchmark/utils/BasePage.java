@@ -69,6 +69,16 @@ public class BasePage extends Thread{
         }
     }
 
+    public void click(WebElement element){
+        waitForElementToBeClickable(element);
+        try {
+            element.click();
+        } catch (Exception e) {
+            logger.error(String.format("The following element is not clickable: [%s]", element));
+        }
+
+    }
+
     public void sendKeys(By selector, String value) {
         WebElement element = getElement(selector);
         clearField(element);
@@ -147,6 +157,15 @@ public class BasePage extends Thread{
             wait.until(ExpectedConditions.elementToBeClickable(selector));
         } catch (Exception e) {
             logger.error("The following element is not clickable: " + selector);
+        }
+    }
+
+    public void waitForElementToBeClickable(WebElement element){
+        try {
+            wait = new WebDriverWait(_driver, timeout);
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+        } catch (Exception e) {
+            logger.error("The following element is not clickable: " + element);
         }
     }
 

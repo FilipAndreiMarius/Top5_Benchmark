@@ -2,60 +2,65 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
-public class FacebookPage extends Thread{
+public class FacebookPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
-    private final WebDriver driver = DriverUtils.getInstance();
     private int runs;
-    //login locators
-    private By userNameLocator = By.id("email");
-    private By passwordLocator = By.id("pass");
-    private By loginButtonLocator = By.id("loginbutton");
 
-    //group locators
-    private By groupButtonLocator = By.className("_5afe");
-
-    //home locator
-    private By homeButtonLocator = By.id("u_0_c");
-
-    //access User
-    private By accessUserLocator = By.className("_5pb8 _8o _8s lfloat _ohe");
+    private By USER_NAME = By.id("email");
+    private By USER_PASSWORD = By.id("pass");
+    private By LOGIN_BUTTON = By.id("loginbutton");
+    private By GROUP_AUTOMATION = By.className("_5afe");
+    private By HOME_BUTTON = By.cssSelector("a[href*='https://www.facebook.com/?ref=tn_tnmn']");
+    private By USER_PROFILE = By.id("js_ng");
 
     public FacebookPage(int runs) {
         this.runs = runs;
     }
 
-    public void LoginFacebook() {
-        driver.get(Constants.PageObjects.FACEBOOK_URL);
-        driver.findElement(this.userNameLocator).sendKeys(Constants.PageObjects.FACEBOOK_USER_NAME);
-        driver.findElement(this.passwordLocator).sendKeys(Constants.PageObjects.FACEBOOK_PASS);
-        driver.findElement(this.loginButtonLocator).click();
+    public void navigateToHomePage() {
+        logger.info("Accessing Facebook ...");
+        navigateToURL(Constants.PageObjects.FACEBOOK_URL);
     }
+
+    public void login() {
+        sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
+        sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
+        click(LOGIN_BUTTON);
+    }
+
 
     public void accessGroup() {
-        driver.findElements(groupButtonLocator).get(3).click();
+        WebElement group = getElements(GROUP_AUTOMATION).get(3);
+        click(group);
     }
 
-    public void goHome() {
-        driver.findElement(homeButtonLocator).click();
+    public void homeLink() {
+        click(HOME_BUTTON);
     }
 
     public void accessUser() {
-        driver.findElement(accessUserLocator).click();
+        click(USER_PROFILE);
     }
 
     public void runAllScenarios() {
-        LoginFacebook();
+        navigateToHomePage();
+        login();
         accessGroup();
-        goHome();
+        homeLink();
+        accessUser();
     }
 
     @Override
