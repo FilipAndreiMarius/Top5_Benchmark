@@ -1,5 +1,6 @@
 package org.mozilla.benchmark.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
@@ -7,12 +8,16 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by silviu.checherita on 1/10/2018.
  */
-public class BasePage extends Thread{
+public class BasePage extends Thread {
 
     private static int timeout = 10;
     private static final Logger logger = LogManager.getLogger(BasePage.class.getName());
@@ -69,7 +74,7 @@ public class BasePage extends Thread{
         }
     }
 
-    public void click(WebElement element){
+    public void click(WebElement element) {
         waitForElementToBeClickable(element);
         try {
             element.click();
@@ -160,7 +165,7 @@ public class BasePage extends Thread{
         }
     }
 
-    public void waitForElementToBeClickable(WebElement element){
+    public void waitForElementToBeClickable(WebElement element) {
         try {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -175,6 +180,25 @@ public class BasePage extends Thread{
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void captureElementScreenshot(By selector, String destination) {
+        waitForElementToDisplay(selector);
+        WebElement element = getElement(selector);
+        int imageX = element.getLocation().getX();
+        int imageY = element.getLocation().getY();
+        int imageWidth = element.getSize().getWidth();
+        int imageHeight = element.getSize().getHeight();
+        File screen = ((TakesScreenshot) _driver).getScreenshotAs(OutputType.FILE);
+        BufferedImage img;
+        try {
+            img = ImageIO.read(screen);
+            BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
+            ImageIO.write(dest, "png", screen);
+            FileUtils.copyFile(screen, new File(destination));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
