@@ -55,7 +55,8 @@ public class Constants {
 
     public static final class Extensions {
 
-        public static final String VIDEO_EXTENSION = PropertiesManager.getVideoExtension();
+        public static final String VIDEO_EXTENSION = "." + PropertiesManager.getVideoExtension();
+        public static final String SCREENSHOT_EXTENSION = PropertiesManager.getScreenshotExtension();
         public static final String JSON_EXTENSION = ".json";
 
         private Extensions() {

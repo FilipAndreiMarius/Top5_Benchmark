@@ -44,6 +44,10 @@ public class PropertiesManager {
         return getString("videoExtension");
     }
 
+    public static String getScreenshotExtension() {
+        return getString("screenshotExtension");
+    }
+
     public static Boolean getGfxWebrenderEnabled() {
         return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE);
     }

@@ -33,7 +33,7 @@ public class BasePage extends Thread {
         try {
             _driver.navigate().to(URL);
         } catch (Exception e) {
-            logger.error("FAILURE: URL did not load: " + URL);
+            logger.error(String.format("Could NOT load [%s]: [%s]", URL, e));
         }
     }
 
@@ -41,7 +41,7 @@ public class BasePage extends Thread {
         try {
             _driver.navigate().back();
         } catch (Exception e) {
-            logger.error("FAILURE: Could not navigate back to previous page.");
+            logger.error(String.format("Could NOT navigate to previous page: [%s]", e));
         }
     }
 
@@ -50,7 +50,7 @@ public class BasePage extends Thread {
         try {
             return _driver.findElement(selector);
         } catch (Exception e) {
-            logger.error(String.format("Element %s does not exist - proceeding", selector));
+            logger.error(String.format("Element [%s] does not exist - proceeding", selector));
         }
         return null;
     }
@@ -60,8 +60,9 @@ public class BasePage extends Thread {
         try {
             return _driver.findElements(selector);
         } catch (Exception e) {
-            throw new NoSuchElementException(String.format("The following element did not display: [%s] ", selector.toString()));
+            logger.error(String.format("The following element did not display: [%s] - [%s]", selector, e));
         }
+        return null;
     }
 
     public void click(By selector) {
@@ -70,7 +71,7 @@ public class BasePage extends Thread {
         try {
             element.click();
         } catch (Exception e) {
-            logger.error(String.format("The following element is not clickable: [%s]", selector));
+            logger.error(String.format("The following element is not clickable: [%s] - [%s]", selector, e));
         }
     }
 
@@ -79,7 +80,7 @@ public class BasePage extends Thread {
         try {
             element.click();
         } catch (Exception e) {
-            logger.error(String.format("The following element is not clickable: [%s]", element));
+            logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
         }
 
     }
@@ -90,7 +91,7 @@ public class BasePage extends Thread {
         try {
             element.sendKeys(value);
         } catch (Exception e) {
-            logger.error(String.format("Error in sending [%s] to the following element: [%s]", value, selector.toString()));
+            logger.error(String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e));
         }
     }
 
@@ -102,7 +103,7 @@ public class BasePage extends Thread {
             Actions actions = new Actions(_driver);
             actions.sendKeys(element, Keys.ENTER).build().perform();
         } catch (Exception e) {
-            logger.error(String.format("Error in sending [%s] to the following element: [%s]", value, selector.toString()));
+            logger.error(String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e));
         }
     }
 
@@ -111,14 +112,14 @@ public class BasePage extends Thread {
             element.clear();
             waitForElementTextToBeEmpty(element);
         } catch (Exception e) {
-            System.out.print(String.format("The following element could not be cleared: [%s]", element.getText()));
+            logger.error(String.format("The following element could not be cleared: [%s] - [%s]", element, e));
         }
     }
 
     public void waitForElementToDisplay(By selector) {
         WebElement element = getElement(selector);
         while (!element.isDisplayed()) {
-            System.out.println("Waiting for element to display: " + selector);
+            logger.debug(String.format("Waiting for element to display: [%s]", selector));
             driverSleep(200);
         }
     }
@@ -134,7 +135,7 @@ public class BasePage extends Thread {
                 text = element.getText();
             }
         } catch (Exception e) {
-            System.out.print(String.format("The following element could not be cleared: [%s]", element.getText()));
+            logger.error(String.format("The following element could not be cleared: [%s] - [%s]", element, e));
         }
     }
 
@@ -143,7 +144,7 @@ public class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.presenceOfElementLocated(selector));
         } catch (Exception e) {
-            throw new NoSuchElementException(String.format("The following element was not visible: %s", selector));
+            logger.error(String.format("The following element was not visible: [%s] - [%s]", selector, e));
         }
     }
 
@@ -152,7 +153,7 @@ public class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
         } catch (Exception e) {
-            throw new NoSuchElementException(String.format("The following element was not visible: %s ", selector));
+            logger.error(String.format("The following element was not visible: [%s] - [%s]", selector, e));
         }
     }
 
@@ -161,7 +162,7 @@ public class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.elementToBeClickable(selector));
         } catch (Exception e) {
-            logger.error("The following element is not clickable: " + selector);
+            logger.error(String.format("The following element is not clickable: [%s] - [%s]", selector, e));
         }
     }
 
@@ -170,16 +171,25 @@ public class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception e) {
-            logger.error("The following element is not clickable: " + element);
+            logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
+        }
+    }
+
+    public void waitForElementToDisplay(WebElement element) {
+        try {
+            wait = new WebDriverWait(_driver, timeout);
+            wait.until(ExpectedConditions.visibilityOf(element));
+        } catch (Exception e) {
+            logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
         }
     }
 
     public void driverSleep(final long millis) {
-        System.out.println((String.format("sleeping %d ms", millis)));
+        logger.info((String.format("Sleeping %d ms", millis)));
         try {
             Thread.sleep(millis);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        } catch (InterruptedException e) {
+            logger.error(String.format("Sleep interrupted: [%s]", e));
         }
     }
 
@@ -193,12 +203,34 @@ public class BasePage extends Thread {
         File screen = ((TakesScreenshot) _driver).getScreenshotAs(OutputType.FILE);
         BufferedImage img;
         try {
+            logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", selector, destination));
             img = ImageIO.read(screen);
             BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
-            ImageIO.write(dest, "png", screen);
+            ImageIO.write(dest, Constants.Extensions.SCREENSHOT_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
+            logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(String.format("Could not save screenshot for element: [%s] - [%s]", selector, e));
+        }
+    }
+
+    public void captureElementScreenshot(WebElement element, String destination) {
+        waitForElementToDisplay(element);
+        int imageX = element.getLocation().getX();
+        int imageY = element.getLocation().getY();
+        int imageWidth = element.getSize().getWidth();
+        int imageHeight = element.getSize().getHeight();
+        File screen = ((TakesScreenshot) _driver).getScreenshotAs(OutputType.FILE);
+        BufferedImage img;
+        try {
+            logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", element.toString(), destination));
+            img = ImageIO.read(screen);
+            BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
+            ImageIO.write(dest, Constants.Extensions.SCREENSHOT_EXTENSION, screen);
+            FileUtils.copyFile(screen, new File(destination));
+            logger.debug("Screenshot saved !!!");
+        } catch (IOException e) {
+            logger.error(String.format("Could not save screenshot for element: [%s] - [%s]", element, e));
         }
     }
 }

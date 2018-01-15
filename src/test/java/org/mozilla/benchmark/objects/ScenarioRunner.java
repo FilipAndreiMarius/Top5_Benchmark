@@ -84,8 +84,8 @@ public class ScenarioRunner extends Thread {
         }
 
         logger.info("Video Processing done !!!");
-
+/*
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
+        System.out.println(testName + " search results: " + imgAnalyzer.getResults());*/
     }
 }
