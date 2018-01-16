@@ -10,12 +10,12 @@ public class ImagePattern {
     private String name;
     private ArrayList<ImageElement> imageElements;
 
-    public ImagePattern(String name, ArrayList<ImageElement> imageElements){
+    public ImagePattern(String name, ArrayList<ImageElement> imageElements) {
         this.name = name;
         this.imageElements = imageElements;
     }
 
-    public ImagePattern(String name){
+    public ImagePattern(String name) {
         this.name = name;
         this.imageElements = new ArrayList<ImageElement>();
     }

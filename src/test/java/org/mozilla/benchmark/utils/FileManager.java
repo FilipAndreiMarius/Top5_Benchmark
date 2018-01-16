@@ -44,12 +44,30 @@ public class FileManager {
     public static Boolean fileFound(String fileName, String directoryName) {
         File folder = new File(directoryName);
         File[] files = folder.listFiles();
+        if (files == null || files.length == 0) {
+            return false;
+        }
         for (File file : files) {
-            if (fileName.equals(file.getName())){
+            if (fileName.equals(file.getName())) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static int filesFoundCount(String fileName, String directoryName) {
+        int count = 0;
+        File folder = new File(directoryName);
+        File[] files = folder.listFiles();
+        if (files == null || files.length == 0) {
+            return 0;
+        }
+        for (File file : files) {
+            if ((file.getName().contains(fileName))) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public static Boolean createDirectories(String filename) {

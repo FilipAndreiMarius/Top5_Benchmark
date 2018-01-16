@@ -35,7 +35,7 @@ public class ScenarioRunner extends Thread {
             clazz = Class.forName(className);
             Constructor<?> constructor = clazz.getConstructor(int.class);
             Object instance = constructor.newInstance(Constants.Execution.NUMBER_OF_RUNS);
-            ((Thread)instance).start();
+            ((Thread) instance).start();
         } catch (ClassNotFoundException e) {
             logger.error("Class " + className + " not found ! " + e);
         } catch (NoSuchMethodException e) {

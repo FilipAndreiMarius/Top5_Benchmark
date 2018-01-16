@@ -40,9 +40,9 @@ public class DriverUtils {
         return instance;
     }
 
-    public static void closeWebBrowser(){
+    public static void closeWebBrowser() {
         logger.info("Closing Driver ...");
-        if (null != instance){
+        if (null != instance) {
             instance.quit();
         }
         instance = null;

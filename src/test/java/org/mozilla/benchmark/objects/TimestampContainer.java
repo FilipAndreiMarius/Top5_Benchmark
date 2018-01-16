@@ -14,12 +14,12 @@ public class TimestampContainer {
     private Timestamp ffmpeg;
     private Timestamp maximize;
 
-    protected TimestampContainer(){
+    protected TimestampContainer() {
     }
 
     public static TimestampContainer getInstance() {
-        if(instance == null) {
-            synchronized(TimestampContainer.class) {
+        if (instance == null) {
+            synchronized (TimestampContainer.class) {
                 instance = new TimestampContainer();
             }
         }

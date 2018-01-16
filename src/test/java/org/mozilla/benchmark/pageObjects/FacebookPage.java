@@ -4,10 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.ScenarioManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.io.File;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -16,6 +15,7 @@ public class FacebookPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
     private int runs;
+    private static final String TEST_NAME = "facebook";
 
     private By USER_NAME = By.id("email");
     private By USER_PASSWORD = By.id("pass");
@@ -34,8 +34,8 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        captureElementScreenshot(USER_NAME, Constants.Paths.PATTERNS_PATH + File.separator + "facebook" + File.separator + "zero2.png");
-        captureElementScreenshot(USER_PASSWORD, Constants.Paths.PATTERNS_PATH + File.separator + "facebook" + File.separator + "zero3.png");
+        makeScreenshot(USER_NAME, "zero");
+        makeScreenshot(USER_PASSWORD, "zero");
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -44,18 +44,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        captureElementScreenshot(group, Constants.Paths.PATTERNS_PATH + File.separator + "facebook" + File.separator + "zero4.png");
+        makeScreenshot(group, "zero");
         click(group);
     }
 
     public void homeLink() {
-        captureElementScreenshot(HOME_BUTTON, Constants.Paths.PATTERNS_PATH + File.separator + "facebook" + File.separator + "zero5.png");
+        makeScreenshot(HOME_BUTTON, "zero");
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        captureElementScreenshot(feed, Constants.Paths.PATTERNS_PATH + File.separator + "facebook" + File.separator + "zero6.png");
+        makeScreenshot(feed, "zero");
     }
 
     public void runAllScenarios() {
@@ -64,6 +64,14 @@ public class FacebookPage extends BasePage {
         accessGroup();
         homeLink();
         accessUser();
+    }
+
+    private void makeScreenshot(WebElement element, String elementName) {
+        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, TEST_NAME));
+    }
+
+    private void makeScreenshot(By element, String elementName) {
+        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, TEST_NAME));
     }
 
     public int getRuns() {

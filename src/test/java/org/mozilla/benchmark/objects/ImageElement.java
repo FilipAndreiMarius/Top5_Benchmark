@@ -9,12 +9,12 @@ public class ImageElement {
     private String name;
     private ArrayList<ImageDetails> imageDetails;
 
-    public ImageElement(String name, ArrayList<ImageDetails> imageDetails){
+    public ImageElement(String name, ArrayList<ImageDetails> imageDetails) {
         this.name = name;
         this.imageDetails = imageDetails;
     }
 
-    public ImageElement(String name){
+    public ImageElement(String name) {
         this.name = name;
         this.imageDetails = new ArrayList<>();
     }

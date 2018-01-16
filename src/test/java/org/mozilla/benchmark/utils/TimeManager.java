@@ -8,14 +8,14 @@ import java.text.SimpleDateFormat;
  */
 public class TimeManager {
 
-    public static int getTimestampDifference(Timestamp one, Timestamp two){
+    public static int getTimestampDifference(Timestamp one, Timestamp two) {
 
-        if (one == null || two == null){
+        if (one == null || two == null) {
             return 0;
         }
 
         long milliseconds = one.getTime() - two.getTime();
-        return  (int) milliseconds / 1000;
+        return (int) milliseconds / 1000;
     }
 
     public static String getFormattedTimestamp(Timestamp t) {

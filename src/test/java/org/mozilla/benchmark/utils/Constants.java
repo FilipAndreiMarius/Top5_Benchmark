@@ -49,6 +49,7 @@ public class Constants {
     public static final class Video {
 
         public static final int FPS = PropertiesManager.getFps();
+
         private Video() {
         }
     }

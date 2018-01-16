@@ -16,12 +16,13 @@ import java.util.ArrayList;
 public class Runner {
 
     private static final Logger logger = LogManager.getLogger(Runner.class.getName());
+
     public static void main(String args[]) throws IOException {
 
         ArrayList<String> scenarios = ScenarioManager.validateScenarios(Constants.Execution.EXECUTED_SCENARIOS, Constants.Paths.RESOURCES_PATH);
-        if (scenarios.size() == 0){
+        if (scenarios.size() == 0) {
             logger.warn("There are no scenarios to execute !!!");
-        }else{
+        } else {
             logger.info("List of scenarios to execute: " + scenarios);
         }
 
