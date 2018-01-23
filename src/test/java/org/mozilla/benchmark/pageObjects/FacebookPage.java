@@ -34,8 +34,8 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        makeScreenshot(USER_NAME, "zero");
-        makeScreenshot(USER_PASSWORD, "zero");
+        makeScreenshot(USER_NAME, "zero", TEST_NAME);
+        makeScreenshot(USER_PASSWORD, "zero", TEST_NAME);
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -44,18 +44,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        makeScreenshot(group, "zero");
+        makeScreenshot(group, "zero", TEST_NAME);
         click(group);
     }
 
     public void homeLink() {
-        makeScreenshot(HOME_BUTTON, "zero");
+        makeScreenshot(HOME_BUTTON, "zero", TEST_NAME);
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        makeScreenshot(feed, "zero");
+        makeScreenshot(feed, "zero", TEST_NAME);
     }
 
     public void runAllScenarios() {
@@ -64,14 +64,6 @@ public class FacebookPage extends BasePage {
         accessGroup();
         homeLink();
         accessUser();
-    }
-
-    private void makeScreenshot(WebElement element, String elementName) {
-        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, TEST_NAME));
-    }
-
-    private void makeScreenshot(By element, String elementName) {
-        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, TEST_NAME));
     }
 
     public int getRuns() {

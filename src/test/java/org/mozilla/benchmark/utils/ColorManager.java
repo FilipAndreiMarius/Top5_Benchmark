@@ -13,7 +13,7 @@ public class ColorManager {
     private static final String RGB_PATTERN = "rgb *\\( *([0-9]+), *([0-9]+), *([0-9]+) *\\)";
 
     public static Color getColorFromString(String input) {
-
+        input = input.replaceAll("\\s+","");
         Pattern rgbPattern = Pattern.compile(RGB_PATTERN);
         Matcher rgbMatcher = rgbPattern.matcher(input);
 

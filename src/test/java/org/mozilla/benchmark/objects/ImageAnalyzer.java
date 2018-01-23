@@ -98,12 +98,12 @@ public class ImageAnalyzer {
         return images;
     }
 
-    private Boolean searchImage(String imagePath1, String imagePath2, float similarity) {
+    private Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
         try {
             Finder finder = new Finder(imagePath1, new Region(286, 164, 108, 23));
             Pattern pattern = new Pattern(imagePath2).similar(similarity);
             finder.find(pattern);
-            return finder.hasNext();
+            return (ImageSearchTypes.POSITIVE == searchType) == finder.hasNext();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -127,7 +127,8 @@ public class ImageAnalyzer {
                         String patternPath = Constants.Paths.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
                         logger.info(k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
                                 "] in [" + images.get(k) + "]");
-                        if (searchImage(images.get(k), patternPath, element.getImageDetails().get(j).getSimilarity())) {
+                        ImageDetails imageDetails = element.getImageDetails().get(j);
+                        if (searchImage(images.get(k), patternPath, imageDetails.getSearchType(), imageDetails.getSimilarity())) {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
                                 pattern_counter = j + 1;
                             } else {

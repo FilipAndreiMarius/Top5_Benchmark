@@ -22,11 +22,11 @@ public class ScenarioRunner extends Thread {
 
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
-
+/*
         logger.info("Start Video Process ...");
 
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", testName);
-        recordVideo.start();
+        recordVideo.start();*/
 
         String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(testName);
 
@@ -48,6 +48,7 @@ public class ScenarioRunner extends Thread {
             logger.error("Invocation target exception ! " + e);
         }
 
+/*
         try {
             recordVideo.join();
         } catch (InterruptedException e) {
@@ -82,6 +83,7 @@ public class ScenarioRunner extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+*/
 
         logger.info("Video Processing done !!!");
 /*

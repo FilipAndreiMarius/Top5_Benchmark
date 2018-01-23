@@ -4,11 +4,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +45,15 @@ public class BasePage extends Thread {
         } catch (Exception e) {
             logger.error(String.format("Could NOT navigate to previous page: [%s]", e));
         }
+    }
+
+    public Dimension getWindowSize() {
+        try {
+            return _driver.manage().window().getSize();
+        } catch (Exception e) {
+            logger.error(String.format("Could NOT get window size: [%s]", e));
+        }
+        return null;
     }
 
     public WebElement getElement(By selector) {
@@ -232,5 +243,33 @@ public class BasePage extends Thread {
         } catch (IOException e) {
             logger.error(String.format("Could not save screenshot for element: [%s] - [%s]", element, e));
         }
+    }
+
+    public void createBackgroundImage(Dimension dimension, Color color, String destination) {
+        try {
+            logger.info(String.format("Saving image at the following destination: [%s] ...", destination));
+            BufferedImage image = new BufferedImage(dimension.getWidth(), dimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graphics = image.createGraphics();
+            graphics.setPaint(color);
+            graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+
+            File outputFile = new File(destination);
+            ImageIO.write(image, Constants.Extensions.SCREENSHOT_EXTENSION, outputFile);
+            logger.debug("Image created !!!");
+        } catch (IOException e) {
+            logger.error(String.format("Could not create image [%s]: [%s]", destination, e));
+        }
+    }
+
+    public void makeBackground(Color color, String elementName, String testName) {
+        createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), ScenarioManager.getPatternName(elementName, testName));
+    }
+
+    public void makeScreenshot(WebElement element, String elementName, String testName) {
+        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+    }
+
+    public void makeScreenshot(By element, String elementName, String testName) {
+        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
     }
 }

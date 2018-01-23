@@ -6,10 +6,12 @@ package org.mozilla.benchmark.objects;
 public class ImageDetails {
 
     private String name;
+    private ImageSearchTypes searchType;
     private float similarity;
 
-    public ImageDetails(String name, float similarity) {
+    public ImageDetails(String name, ImageSearchTypes searchType, float similarity) {
         this.name = name;
+        this.searchType = searchType;
         this.similarity = similarity;
     }
 
@@ -19,6 +21,14 @@ public class ImageDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ImageSearchTypes getSearchType() {
+        return searchType;
+    }
+
+    public void setSearchType(ImageSearchTypes searchType) {
+        this.searchType = searchType;
     }
 
     public float getSimilarity() {
