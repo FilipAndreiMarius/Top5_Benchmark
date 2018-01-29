@@ -15,6 +15,7 @@ public class FacebookPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
     private int runs;
+    private Boolean takeScreenshot;
     private static final String TEST_NAME = "facebook";
 
     private By USER_NAME = By.id("email");
@@ -24,8 +25,9 @@ public class FacebookPage extends BasePage {
     private By HOME_BUTTON = By.cssSelector("a[href*='https://www.facebook.com/?ref=tn_tnmn']");
     private By FALLBACK_FEED = By.id("fallback_feed");
 
-    public FacebookPage(int runs) {
+    public FacebookPage(int runs, Boolean takeScreenshot) {
         this.runs = runs;
+        this.takeScreenshot = takeScreenshot;
     }
 
     public void navigateToHomePage() {
@@ -34,8 +36,8 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        makeScreenshot(USER_NAME, "zero", TEST_NAME);
-        makeScreenshot(USER_PASSWORD, "zero", TEST_NAME);
+        createScreenshot(USER_NAME, "zero", TEST_NAME, getTakeScreenshot());
+        createScreenshot(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot());
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -44,18 +46,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        makeScreenshot(group, "zero", TEST_NAME);
+        createScreenshot(group, "zero", TEST_NAME, getTakeScreenshot());
         click(group);
     }
 
     public void homeLink() {
-        makeScreenshot(HOME_BUTTON, "zero", TEST_NAME);
+        createScreenshot(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot());
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        makeScreenshot(feed, "zero", TEST_NAME);
+        //createScreenshot(feed, "zero", TEST_NAME);
     }
 
     public void runAllScenarios() {
@@ -68,6 +70,9 @@ public class FacebookPage extends BasePage {
 
     public int getRuns() {
         return this.runs;
+    }
+    public Boolean getTakeScreenshot() {
+        return this.takeScreenshot;
     }
 
     @Override

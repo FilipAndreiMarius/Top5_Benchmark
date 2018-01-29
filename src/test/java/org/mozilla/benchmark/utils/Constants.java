@@ -30,7 +30,7 @@ public class Constants {
         public static final String VIDEOS_PATH = ROOT_PATH + File.separator + VIDEOS_FOLDER;
         public static final String FPS_60_VIDEO_PATH = ROOT_PATH + File.separator + FPS_60_VIDEO_FOLDER;
 
-        public static final String PATTERNS_PATH = RESOURCES_PATH + File.separator + PATTERNS_FOLDER;
+        public static final String PATTERNS_PATH = ROOT_PATH + File.separator + PATTERNS_FOLDER;
         public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
 
         private Paths() {

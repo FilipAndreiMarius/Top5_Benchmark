@@ -3,17 +3,17 @@ package org.mozilla.benchmark.videoProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.TimestampContainer;
-import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.FileManager;
-import org.mozilla.benchmark.utils.SystemManager;
-import org.mozilla.benchmark.utils.TimeManager;
+import org.mozilla.benchmark.utils.*;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 
 public class VideoCapture extends Thread {
 
     private static final Logger logger = LogManager.getLogger(SystemManager.class.getName());
+    private static final String CREATE_PATTERNS = "createPatterns";
     private static final String START_VIDEO = "runVideo";
     private static final String COMPRESS_VIDEO = "compressVideo";
     private static final String SPLIT_VIDEO_TO_FRAMES = "splitVideo";
@@ -47,6 +47,30 @@ public class VideoCapture extends Thread {
             Process p;
 
             switch (this.command) {
+
+                case CREATE_PATTERNS:
+                    logger.info("Start creating patterns ...");
+                    String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(getTestName());
+
+                    Class<?> clazz;
+                    try {
+                        clazz = Class.forName(className);
+                        Constructor<?> constructor = clazz.getConstructor(int.class, Boolean.class);
+                        Object instance = constructor.newInstance(1, true);
+                        ((Thread) instance).run();
+                    } catch (ClassNotFoundException e) {
+                        logger.error("Class " + className + " not found ! " + e);
+                    } catch (NoSuchMethodException e) {
+                        logger.error("Method not found ! " + e);
+                    } catch (InstantiationException e) {
+                        logger.error("Could not instantiate " + className + " ! " + e);
+                    } catch (IllegalAccessException e) {
+                        logger.error("Illegal access ! " + e);
+                    } catch (InvocationTargetException e) {
+                        logger.error("Invocation target exception ! " + e);
+                    }
+                    logger.info("Creating patterns done !!!");
+                    break;
 
                 case START_VIDEO:
                     String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();

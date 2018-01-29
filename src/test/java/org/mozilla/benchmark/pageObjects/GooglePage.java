@@ -17,6 +17,7 @@ public class GooglePage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
     private int runs;
+    private Boolean takeScreenshot;
     private static final String TEST_NAME = "google";
 
     private By GOOGLE_LOGO = By.id("hplogo");
@@ -24,8 +25,9 @@ public class GooglePage extends BasePage {
     private By GOOGLE_IMAGE = By.xpath("//*[@class='q qs']");
     private By GOOGLE_BACKGROUND = By.xpath("//*[@id='gsr']");
 
-    public GooglePage(int runs) {
+    public GooglePage(int runs, Boolean takeScreenshot) {
         this.runs = runs;
+        this.takeScreenshot = takeScreenshot;
     }
 
     public void accessImage() {
@@ -36,7 +38,7 @@ public class GooglePage extends BasePage {
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
         navigateToURL(Constants.PageObjects.GSEARCH_URL);
-        makeBackground(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")), "firstNonBlank", TEST_NAME);
+        createScreenshot(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")), "firstNonBlank", TEST_NAME, getTakeScreenshot());
     }
 
     public void search() {
@@ -50,9 +52,16 @@ public class GooglePage extends BasePage {
         accessImage();
     }
 
+    public int getRuns() {
+        return this.runs;
+    }
+    public Boolean getTakeScreenshot() {
+        return this.takeScreenshot;
+    }
+
     @Override
     public void run() {
-        for (int i = 0; i < this.runs; i++) {
+        for (int i = 0; i < getRuns(); i++) {
             runAllScenarios();
         }
     }

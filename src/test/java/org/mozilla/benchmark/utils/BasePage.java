@@ -21,15 +21,14 @@ import java.util.List;
  */
 public class BasePage extends Thread {
 
-    private static int timeout = 10;
     private static final Logger logger = LogManager.getLogger(BasePage.class.getName());
+    public static WebDriver _driver;
+    private static int timeout = 10;
+    public WebDriverWait wait;
 
     public BasePage() {
         _driver = DriverUtils.getInstance();
     }
-
-    public static WebDriver _driver;
-    public WebDriverWait wait;
 
     public void navigateToURL(String URL) {
         try {
@@ -253,23 +252,31 @@ public class BasePage extends Thread {
             graphics.setPaint(color);
             graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 
-            File outputFile = new File(destination);
-            ImageIO.write(image, Constants.Extensions.SCREENSHOT_EXTENSION, outputFile);
-            logger.debug("Image created !!!");
+            if (FileManager.createDirectories(destination)) {
+                File outputFile = new File(destination);
+                ImageIO.write(image, Constants.Extensions.SCREENSHOT_EXTENSION, outputFile);
+                logger.debug("Image created !!!");
+            }
         } catch (IOException e) {
             logger.error(String.format("Could not create image [%s]: [%s]", destination, e));
         }
     }
 
-    public void makeBackground(Color color, String elementName, String testName) {
-        createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), ScenarioManager.getPatternName(elementName, testName));
+    public void createScreenshot(Color color, String elementName, String testName, Boolean takeScreenshot) {
+        if (takeScreenshot) {
+            createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), ScenarioManager.getPatternName(elementName, testName));
+        }
     }
 
-    public void makeScreenshot(WebElement element, String elementName, String testName) {
-        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+    public void createScreenshot(WebElement element, String elementName, String testName, Boolean takeScreenshot) {
+        if (takeScreenshot) {
+            captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+        }
     }
 
-    public void makeScreenshot(By element, String elementName, String testName) {
-        captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+    public void createScreenshot(By element, String elementName, String testName, Boolean takeScreenshot) {
+        if (takeScreenshot) {
+            captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+        }
     }
 }

@@ -20,22 +20,33 @@ public class ScenarioRunner extends Thread {
 
     public ScenarioRunner(String testName) {
 
+        Thread createPatterns = new VideoCapture("createPatterns", testName);
+        createPatterns.run();
+
+        try {
+            createPatterns.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        DriverUtils.closeWebBrowser();
+
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
-/*
+
         logger.info("Start Video Process ...");
 
         Thread recordVideo = new VideoCapture("30", "50", "runVideo", testName);
-        recordVideo.start();*/
+        recordVideo.start();
 
         String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(testName);
 
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
-            Constructor<?> constructor = clazz.getConstructor(int.class);
-            Object instance = constructor.newInstance(Constants.Execution.NUMBER_OF_RUNS);
-            ((Thread) instance).start();
+            Constructor<?> constructor = clazz.getConstructor(int.class, Boolean.class);
+            Object instance = constructor.newInstance(Constants.Execution.NUMBER_OF_RUNS, false);
+            ((Thread) instance).run();
         } catch (ClassNotFoundException e) {
             logger.error("Class " + className + " not found ! " + e);
         } catch (NoSuchMethodException e) {
@@ -48,7 +59,6 @@ public class ScenarioRunner extends Thread {
             logger.error("Invocation target exception ! " + e);
         }
 
-/*
         try {
             recordVideo.join();
         } catch (InterruptedException e) {
@@ -83,7 +93,6 @@ public class ScenarioRunner extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
 
         logger.info("Video Processing done !!!");
 /*

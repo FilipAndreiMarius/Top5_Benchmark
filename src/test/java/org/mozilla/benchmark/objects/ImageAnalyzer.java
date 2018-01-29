@@ -31,7 +31,7 @@ public class ImageAnalyzer {
     private int lastFound;
 
     ImageAnalyzer(String testName) {
-        this.patterns = validatePatterns(initializePatterns(testName), testName);
+        this.patterns = initializePatterns(testName);
         this.images = initializeImages(testName);
         this.results = analyzeAndShowResults(testName);
         this.lastFound = 0;

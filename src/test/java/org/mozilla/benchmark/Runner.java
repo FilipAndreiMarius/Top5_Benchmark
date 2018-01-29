@@ -9,6 +9,7 @@ import org.mozilla.benchmark.utils.ScenarioManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by silviu.checherita on 12/13/2017.
@@ -19,16 +20,16 @@ public class Runner {
 
     public static void main(String args[]) throws IOException {
 
-        ArrayList<String> scenarios = ScenarioManager.validateScenarios(Constants.Execution.EXECUTED_SCENARIOS, Constants.Paths.RESOURCES_PATH);
-        if (scenarios.size() == 0) {
+        String[] scenarios = Constants.Execution.EXECUTED_SCENARIOS;
+        if (scenarios.length == 0) {
             logger.warn("There are no scenarios to execute !!!");
         } else {
-            logger.info("List of scenarios to execute: " + scenarios);
+            logger.info("List of scenarios to execute: " + Arrays.toString(scenarios));
         }
 
-        Thread[] threads = new Thread[scenarios.size()];
+        Thread[] threads = new Thread[scenarios.length];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new ScenarioRunner(ScenarioManager.getScenarioName(scenarios.get(i)));
+            threads[i] = new ScenarioRunner(scenarios[i]);
             threads[i].start();
             try {
                 threads[i].join();
