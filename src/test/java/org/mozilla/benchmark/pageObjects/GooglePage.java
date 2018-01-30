@@ -5,10 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.ColorManager;
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.ScenarioManager;
 import org.openqa.selenium.*;
-
-import java.awt.*;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -38,7 +35,8 @@ public class GooglePage extends BasePage {
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
         navigateToURL(Constants.PageObjects.GSEARCH_URL);
-        createScreenshot(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")), "firstNonBlank", TEST_NAME, getTakeScreenshot());
+        addPattern(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")),
+                "firstNonBlank", TEST_NAME, getTakeScreenshot());
     }
 
     public void search() {

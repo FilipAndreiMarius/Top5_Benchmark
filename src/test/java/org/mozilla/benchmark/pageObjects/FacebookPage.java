@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.ScenarioManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -36,8 +35,9 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        createScreenshot(USER_NAME, "zero", TEST_NAME, getTakeScreenshot());
-        createScreenshot(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(USER_NAME, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", TEST_NAME, getTakeScreenshot());
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -46,18 +46,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        createScreenshot(group, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(group, "zero", TEST_NAME, getTakeScreenshot());
         click(group);
     }
 
     public void homeLink() {
-        createScreenshot(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot());
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        //createScreenshot(feed, "zero", TEST_NAME);
+        addPattern(feed, "zero", TEST_NAME, getTakeScreenshot());
     }
 
     public void runAllScenarios() {
@@ -65,7 +65,7 @@ public class FacebookPage extends BasePage {
         login();
         accessGroup();
         homeLink();
-        accessUser();
+        //accessUser();
     }
 
     public int getRuns() {

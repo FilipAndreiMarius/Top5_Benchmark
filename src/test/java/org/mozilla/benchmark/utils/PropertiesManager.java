@@ -33,7 +33,11 @@ public class PropertiesManager {
     }
 
     public static int getNumberOfRuns() {
-        return getInteger("numberOfRuns");
+        return getInteger("number_of_runs");
+    }
+
+    public static Boolean getExitIfErrorsFound() {
+        return getBoolean("exit_if_errors_found");
     }
 
     public static int getFps() {
@@ -41,11 +45,11 @@ public class PropertiesManager {
     }
 
     public static String getVideoExtension() {
-        return getString("videoExtension");
+        return getString("video_extension");
     }
 
-    public static String getScreenshotExtension() {
-        return getString("screenshotExtension");
+    public static String getImageExtension() {
+        return getString("image_extension");
     }
 
     public static Boolean getGfxWebrenderEnabled() {
@@ -56,8 +60,8 @@ public class PropertiesManager {
         return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
     }
 
-    public static String[] getExecutedScenarios() {
-        return getString("executedScenarios").split(",");
+    public static String[] getScenariosToExecute() {
+        return getString("scenarios_to_execute").split(",");
     }
 
     public static Properties loadProperties(String inputFilePath) {

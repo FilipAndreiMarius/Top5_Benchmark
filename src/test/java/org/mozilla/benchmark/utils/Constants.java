@@ -1,9 +1,6 @@
 package org.mozilla.benchmark.utils;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Created by Silviu on 06/12/2017.
@@ -22,6 +19,8 @@ public class Constants {
         private static final String TEST_FOLDER = "test";
         private static final String RESOURCES_FOLDER = "resources";
         private static final String CONFIG_PROPERTIES_FILE_NAME = "config.properties";
+        private static final String LOAD_DONE_FILE_NAME = "load_done.png";
+        private static final String LOAD_PENDING_FILE_NAME = "load_pending.png";
 
         public static final String ROOT_PATH = PROJECT_LOCATION + File.separator + RUNS_FOLDER + File.separator + TimeManager.getFormattedTimestamp(TimeManager.getCurrentTimestamp());
         public static final String RESOURCES_PATH = PROJECT_LOCATION + File.separator + SRC_FOLDER + File.separator +
@@ -32,6 +31,8 @@ public class Constants {
 
         public static final String PATTERNS_PATH = ROOT_PATH + File.separator + PATTERNS_FOLDER;
         public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
+        public static final String LOAD_DONE_PATH = RESOURCES_PATH + File.separator + LOAD_DONE_FILE_NAME;
+        public static final String LOAD_PENDING_PATH = RESOURCES_PATH + File.separator + LOAD_PENDING_FILE_NAME;
 
         private Paths() {
         }
@@ -40,7 +41,7 @@ public class Constants {
     public static final class Execution {
 
         public static final int NUMBER_OF_RUNS = PropertiesManager.getNumberOfRuns();
-        public static final String[] EXECUTED_SCENARIOS = PropertiesManager.getExecutedScenarios();
+        public static final String[] EXECUTED_SCENARIOS = PropertiesManager.getScenariosToExecute();
 
         private Execution() {
         }
@@ -57,7 +58,7 @@ public class Constants {
     public static final class Extensions {
 
         public static final String VIDEO_EXTENSION = "." + PropertiesManager.getVideoExtension();
-        public static final String SCREENSHOT_EXTENSION = PropertiesManager.getScreenshotExtension();
+        public static final String SCREENSHOT_EXTENSION = PropertiesManager.getImageExtension();
         public static final String JSON_EXTENSION = ".json";
 
         private Extensions() {

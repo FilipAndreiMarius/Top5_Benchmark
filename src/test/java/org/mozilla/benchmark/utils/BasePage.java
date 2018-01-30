@@ -30,11 +30,14 @@ public class BasePage extends Thread {
         _driver = DriverUtils.getInstance();
     }
 
-    public void navigateToURL(String URL) {
+    public void navigateToURL(String url) {
         try {
-            _driver.navigate().to(URL);
+            _driver.navigate().to(url);
         } catch (Exception e) {
-            logger.error(String.format("Could NOT load [%s]: [%s]", URL, e));
+            logger.error(String.format("Could NOT load [%s]: [%s]", url, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -43,6 +46,9 @@ public class BasePage extends Thread {
             _driver.navigate().back();
         } catch (Exception e) {
             logger.error(String.format("Could NOT navigate to previous page: [%s]", e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -51,6 +57,9 @@ public class BasePage extends Thread {
             return _driver.manage().window().getSize();
         } catch (Exception e) {
             logger.error(String.format("Could NOT get window size: [%s]", e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
         return null;
     }
@@ -61,6 +70,9 @@ public class BasePage extends Thread {
             return _driver.findElement(selector);
         } catch (Exception e) {
             logger.error(String.format("Element [%s] does not exist - proceeding", selector));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
         return null;
     }
@@ -71,6 +83,9 @@ public class BasePage extends Thread {
             return _driver.findElements(selector);
         } catch (Exception e) {
             logger.error(String.format("The following element did not display: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
         return null;
     }
@@ -82,6 +97,9 @@ public class BasePage extends Thread {
             element.click();
         } catch (Exception e) {
             logger.error(String.format("The following element is not clickable: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -91,6 +109,9 @@ public class BasePage extends Thread {
             element.click();
         } catch (Exception e) {
             logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
 
     }
@@ -102,6 +123,9 @@ public class BasePage extends Thread {
             element.sendKeys(value);
         } catch (Exception e) {
             logger.error(String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -114,6 +138,9 @@ public class BasePage extends Thread {
             actions.sendKeys(element, Keys.ENTER).build().perform();
         } catch (Exception e) {
             logger.error(String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -123,6 +150,9 @@ public class BasePage extends Thread {
             waitForElementTextToBeEmpty(element);
         } catch (Exception e) {
             logger.error(String.format("The following element could not be cleared: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -146,6 +176,9 @@ public class BasePage extends Thread {
             }
         } catch (Exception e) {
             logger.error(String.format("The following element could not be cleared: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -155,6 +188,9 @@ public class BasePage extends Thread {
             wait.until(ExpectedConditions.presenceOfElementLocated(selector));
         } catch (Exception e) {
             logger.error(String.format("The following element was not visible: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -164,6 +200,9 @@ public class BasePage extends Thread {
             wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
         } catch (Exception e) {
             logger.error(String.format("The following element was not visible: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -173,6 +212,9 @@ public class BasePage extends Thread {
             wait.until(ExpectedConditions.elementToBeClickable(selector));
         } catch (Exception e) {
             logger.error(String.format("The following element is not clickable: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -182,6 +224,9 @@ public class BasePage extends Thread {
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception e) {
             logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -191,6 +236,9 @@ public class BasePage extends Thread {
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Exception e) {
             logger.error(String.format("The following element is not clickable: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -200,6 +248,9 @@ public class BasePage extends Thread {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
             logger.error(String.format("Sleep interrupted: [%s]", e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -221,6 +272,9 @@ public class BasePage extends Thread {
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
             logger.error(String.format("Could not save screenshot for element: [%s] - [%s]", selector, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -241,6 +295,9 @@ public class BasePage extends Thread {
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
             logger.error(String.format("Could not save screenshot for element: [%s] - [%s]", element, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
@@ -259,24 +316,33 @@ public class BasePage extends Thread {
             }
         } catch (IOException e) {
             logger.error(String.format("Could not create image [%s]: [%s]", destination, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         }
     }
 
-    public void createScreenshot(Color color, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot) {
         if (takeScreenshot) {
             createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), ScenarioManager.getPatternName(elementName, testName));
         }
     }
 
-    public void createScreenshot(WebElement element, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot) {
         if (takeScreenshot) {
             captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
         }
     }
 
-    public void createScreenshot(By element, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot) {
         if (takeScreenshot) {
             captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+        }
+    }
+
+    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot) {
+        if (takeScreenshot) {
+            FileManager.copyImage(source, ScenarioManager.getPatternName(elementName, testName));
         }
     }
 }

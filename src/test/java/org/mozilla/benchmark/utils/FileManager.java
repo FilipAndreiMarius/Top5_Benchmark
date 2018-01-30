@@ -1,9 +1,11 @@
 package org.mozilla.benchmark.utils;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by Silviu on 06/12/2017.
@@ -80,5 +82,15 @@ public class FileManager {
             logger.error("Failed to create [" + filename + "] !!!");
         }
         return successful;
+    }
+
+    public static void copyImage(String sourcePath, String destinationPath) {
+        File source = new File(sourcePath);
+        File destination = new File(destinationPath);
+        try {
+            FileUtils.copyFile(source, destination);
+        } catch (IOException e) {
+            logger.error("Failed to copy file!!!" + e);
+        }
     }
 }
