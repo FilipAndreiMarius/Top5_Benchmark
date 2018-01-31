@@ -2,9 +2,11 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.ColorManager;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.ImagePatternUtils;
 import org.openqa.selenium.*;
 
 /**
@@ -36,7 +38,7 @@ public class GooglePage extends BasePage {
         logger.info("Accessing Google ...");
         navigateToURL(Constants.PageObjects.GSEARCH_URL);
         addPattern(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")),
-                "firstNonBlank", TEST_NAME, getTakeScreenshot());
+                "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE);
     }
 
     public void search() {

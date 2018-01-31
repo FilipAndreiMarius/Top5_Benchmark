@@ -1,5 +1,7 @@
 package org.mozilla.benchmark.objects;
 
+import org.mozilla.benchmark.utils.ImagePatternUtils;
+
 import java.util.ArrayList;
 
 /**
@@ -20,6 +22,11 @@ public class ImagePattern {
         this.imageElements = new ArrayList<ImageElement>();
     }
 
+    public ImagePattern() {
+        this.name = "";
+        this.imageElements = new ArrayList<ImageElement>();
+    }
+
     public String getName() {
         return name;
     }
@@ -34,5 +41,57 @@ public class ImagePattern {
 
     public void setImageElements(ArrayList<ImageElement> imageElements) {
         this.imageElements = imageElements;
+    }
+
+    public static ImagePattern createDynamicPattern(String testName, String elementName, String imageDetailsName, ImageSearchTypes searchType) {
+        ImagePattern imagePattern = ImagePatternUtils.getInstance();
+        if (!imagePattern.getName().equals(testName)) {
+            imagePattern.setName(testName);
+        }
+        if (imagePattern.getImageElements().size() == 0) {
+            ImageElement imageElement = new ImageElement(elementName);
+            ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
+            imageElement.getImageDetails().add(imageDetails);
+            imagePattern.getImageElements().add(imageElement);
+        } else {
+            ImageElement imageElementFound = findImageElementFromList(elementName, imagePattern.getImageElements());
+            if (imageElementFound != null) {
+                ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
+                imageElementFound.getImageDetails().add(imageDetails);
+            } else {
+                ImageElement imageElement = new ImageElement(elementName);
+                ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
+                imageElement.getImageDetails().add(imageDetails);
+                imagePattern.getImageElements().add(imageElement);
+            }
+        }
+
+        return imagePattern;
+    }
+
+    private static ImageElement findImageElementFromList(String elementName, ArrayList<ImageElement> imageElements) {
+        for (ImageElement imageElement : imageElements) {
+            if (imageElement.getName().equals(elementName)) {
+                return imageElement;
+            }
+        }
+        return null;
+    }
+
+
+    public String toString() {
+        ImagePattern imagePattern = ImagePatternUtils.getInstance();
+        System.out.println(imagePattern.getName());
+        if (imagePattern.getImageElements().size() > 0) {
+            for (ImageElement imageElement : imagePattern.getImageElements()) {
+                System.out.println(imageElement.getName());
+                if (imageElement.getImageDetails().size() > 0) {
+                    for (ImageDetails imageDetails : imageElement.getImageDetails()) {
+                        System.out.println(imageDetails.getName() + " - " + imageDetails.getSearchType());
+                    }
+                }
+            }
+        }
+        return "";
     }
 }

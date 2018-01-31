@@ -2,8 +2,10 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.ImagePatternUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -35,9 +37,9 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        addPattern(USER_NAME, "zero", TEST_NAME, getTakeScreenshot());
-        addPattern(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot());
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(USER_NAME, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
+        addPattern(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE);
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -46,18 +48,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        addPattern(group, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(group, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
         click(group);
     }
 
     public void homeLink() {
-        addPattern(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        addPattern(feed, "zero", TEST_NAME, getTakeScreenshot());
+        addPattern(feed, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
     }
 
     public void runAllScenarios() {

@@ -3,6 +3,8 @@ package org.mozilla.benchmark.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.ImagePattern;
+import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
@@ -322,27 +324,43 @@ public class BasePage extends Thread {
         }
     }
 
-    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
-            createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), ScenarioManager.getPatternName(elementName, testName));
+            String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
+            if (PropertiesManager.getDynamicPatterns()){
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+            }
         }
     }
 
-    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
-            captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+            String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            captureElementScreenshot(element, imageDetailsName);
+            if (PropertiesManager.getDynamicPatterns()){
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+            }
         }
     }
 
-    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
-            captureElementScreenshot(element, ScenarioManager.getPatternName(elementName, testName));
+            String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            captureElementScreenshot(element, imageDetailsName);
+            if (PropertiesManager.getDynamicPatterns()){
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+            }
         }
     }
 
-    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot) {
+    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
-            FileManager.copyImage(source, ScenarioManager.getPatternName(elementName, testName));
+            String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            FileManager.copyImage(source, imageDetailsName);
+            if (PropertiesManager.getDynamicPatterns()){
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+            }
         }
     }
 }

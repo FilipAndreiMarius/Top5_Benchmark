@@ -40,6 +40,10 @@ public class PropertiesManager {
         return getBoolean("exit_if_errors_found");
     }
 
+    public static Boolean getDynamicPatterns() {
+        return getBoolean("dynamic_patterns");
+    }
+
     public static int getFps() {
         return getInteger("fps");
     }
