@@ -269,7 +269,7 @@ public class BasePage extends Thread {
             logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", selector, destination));
             img = ImageIO.read(screen);
             BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
-            ImageIO.write(dest, Constants.Extensions.SCREENSHOT_EXTENSION, screen);
+            ImageIO.write(dest, Constants.Extensions.IMAGE_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
@@ -292,7 +292,7 @@ public class BasePage extends Thread {
             logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", element.toString(), destination));
             img = ImageIO.read(screen);
             BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
-            ImageIO.write(dest, Constants.Extensions.SCREENSHOT_EXTENSION, screen);
+            ImageIO.write(dest, Constants.Extensions.IMAGE_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
@@ -309,11 +309,11 @@ public class BasePage extends Thread {
             BufferedImage image = new BufferedImage(dimension.getWidth(), dimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = image.createGraphics();
             graphics.setPaint(color);
-            graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            graphics.fillRect(0, 0, 1900, 930);
 
             if (FileManager.createDirectories(destination)) {
                 File outputFile = new File(destination);
-                ImageIO.write(image, Constants.Extensions.SCREENSHOT_EXTENSION, outputFile);
+                ImageIO.write(image, Constants.Extensions.IMAGE_EXTENSION, outputFile);
                 logger.debug("Image created !!!");
             }
         } catch (IOException e) {
@@ -327,9 +327,10 @@ public class BasePage extends Thread {
     public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
             }
         }
     }
@@ -337,9 +338,10 @@ public class BasePage extends Thread {
     public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             captureElementScreenshot(element, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
             }
         }
     }
@@ -347,9 +349,10 @@ public class BasePage extends Thread {
     public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             captureElementScreenshot(element, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
             }
         }
     }
@@ -357,9 +360,10 @@ public class BasePage extends Thread {
     public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             FileManager.copyImage(source, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsName, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
             }
         }
     }

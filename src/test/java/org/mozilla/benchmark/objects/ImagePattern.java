@@ -43,30 +43,32 @@ public class ImagePattern {
         this.imageElements = imageElements;
     }
 
-    public static ImagePattern createDynamicPattern(String testName, String elementName, String imageDetailsName, ImageSearchTypes searchType) {
+    public static void createDynamicPattern(String testName, String elementName, String imageDetailsName, ImageSearchTypes searchType) {
         ImagePattern imagePattern = ImagePatternUtils.getInstance();
         if (!imagePattern.getName().equals(testName)) {
             imagePattern.setName(testName);
         }
         if (imagePattern.getImageElements().size() == 0) {
-            ImageElement imageElement = new ImageElement(elementName);
-            ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
-            imageElement.getImageDetails().add(imageDetails);
-            imagePattern.getImageElements().add(imageElement);
+            addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, searchType);
         } else {
             ImageElement imageElementFound = findImageElementFromList(elementName, imagePattern.getImageElements());
             if (imageElementFound != null) {
-                ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
-                imageElementFound.getImageDetails().add(imageDetails);
+                addImageDetailsToImageElement(imageElementFound, imageDetailsName, searchType);
             } else {
-                ImageElement imageElement = new ImageElement(elementName);
-                ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
-                imageElement.getImageDetails().add(imageDetails);
-                imagePattern.getImageElements().add(imageElement);
+                addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, searchType);
             }
         }
+    }
 
-        return imagePattern;
+    private static void addImageDetailsToImageElement(ImageElement imageElement, String imageDetailsName, ImageSearchTypes searchType) {
+        ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, 0.95f);
+        imageElement.getImageDetails().add(imageDetails);
+    }
+
+    private static void addImageElementsToImagePattern(ImagePattern imagePattern, String elementName, String imageDetailsName, ImageSearchTypes searchType) {
+        ImageElement imageElement = new ImageElement(elementName);
+        addImageDetailsToImageElement(imageElement, imageDetailsName, searchType);
+        imagePattern.getImageElements().add(imageElement);
     }
 
     private static ImageElement findImageElementFromList(String elementName, ArrayList<ImageElement> imageElements) {

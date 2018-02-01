@@ -22,4 +22,10 @@ public class ImagePatternUtils {
         logger.info("Image Pattern Object initialized !");
         return instance;
     }
+
+    public static void closeInstance() {
+        logger.info("Closing Image Pattern Instance ...");
+        instance = null;
+        logger.info("Image Pattern Instance closed !");
+    }
 }

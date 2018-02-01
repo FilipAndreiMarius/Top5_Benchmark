@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.ImagePatternUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -45,7 +46,6 @@ public class FacebookPage extends BasePage {
         click(LOGIN_BUTTON);
     }
 
-
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
         addPattern(group, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
@@ -73,6 +73,7 @@ public class FacebookPage extends BasePage {
     public int getRuns() {
         return this.runs;
     }
+
     public Boolean getTakeScreenshot() {
         return this.takeScreenshot;
     }
@@ -82,6 +83,7 @@ public class FacebookPage extends BasePage {
         for (int i = 0; i < getRuns(); i++) {
             runAllScenarios();
         }
+        DriverUtils.closeWebBrowser();
     }
 }
 

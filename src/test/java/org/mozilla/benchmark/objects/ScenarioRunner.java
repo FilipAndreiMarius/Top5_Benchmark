@@ -20,7 +20,7 @@ public class ScenarioRunner extends Thread {
 
     public ScenarioRunner(String testName) {
 
-        Thread createPatterns = new VideoCapture("createPatterns", testName);
+        Thread createPatterns = new VideoCapture(VideoCaptureCommands.CREATE_PATTERNS, testName);
         createPatterns.run();
 
         try {
@@ -29,14 +29,12 @@ public class ScenarioRunner extends Thread {
             e.printStackTrace();
         }
 
-        DriverUtils.closeWebBrowser();
-
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
 
         logger.info("Start Video Process ...");
 
-        Thread recordVideo = new VideoCapture("30", "50", "runVideo", testName);
+        Thread recordVideo = new VideoCapture("30", "50", VideoCaptureCommands.START_VIDEO, testName);
         recordVideo.start();
 
         String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(testName);
@@ -65,18 +63,17 @@ public class ScenarioRunner extends Thread {
             e.printStackTrace();
         }
 
-        Thread compress = new VideoCapture("compressVideo", testName);
+        Thread compress = new VideoCapture(VideoCaptureCommands.COMPRESS_VIDEO, testName);
         compress.start();
 
         try {
-            DriverUtils.closeWebBrowser();
             compress.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
 
-        Thread splitVideo = new VideoCapture("splitVideo", testName);
+        Thread splitVideo = new VideoCapture(VideoCaptureCommands.SPLIT_VIDEO_TO_FRAMES, testName);
         splitVideo.start();
 
         try {
@@ -85,7 +82,7 @@ public class ScenarioRunner extends Thread {
             e.printStackTrace();
         }
 
-        Thread removeFrames = new VideoCapture("removeFrames", testName);
+        Thread removeFrames = new VideoCapture(VideoCaptureCommands.REMOVE_FRAMES, testName);
         removeFrames.start();
 
         try {
@@ -95,8 +92,8 @@ public class ScenarioRunner extends Thread {
         }
 
         logger.info("Video Processing done !!!");
-/*
+
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());*/
+        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
     }
 }

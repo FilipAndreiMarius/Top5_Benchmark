@@ -3,6 +3,7 @@ package org.mozilla.benchmark.videoProcessor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.TimestampContainer;
+import org.mozilla.benchmark.objects.VideoCaptureCommands;
 import org.mozilla.benchmark.utils.*;
 
 import java.io.File;
@@ -22,32 +23,27 @@ public class VideoCapture extends Thread {
     private String frames;
     private String duration;
     private String location;
-    private String command;
+    private VideoCaptureCommands command;
     private String testName;
 
-    public VideoCapture(String frames, String duration, String command, String testName) {
+    public VideoCapture(String frames, String duration, VideoCaptureCommands command, String testName) {
         this.frames = frames;
         this.duration = duration;
         this.command = command;
         this.testName = testName;
     }
 
-    public VideoCapture(String command, String testName) {
+    public VideoCapture(VideoCaptureCommands command, String testName) {
         this.testName = testName;
         this.command = command;
     }
 
     @Override
     public void run() {
-
         String videoName = getTestName() + Constants.Extensions.VIDEO_EXTENSION;
-
         try {
-
             Process p;
-
             switch (this.command) {
-
                 case CREATE_PATTERNS:
                     logger.info("Start creating patterns ...");
                     String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(getTestName());
@@ -192,11 +188,11 @@ public class VideoCapture extends Thread {
         this.location = location;
     }
 
-    public String getCommand() {
+    public VideoCaptureCommands getCommand() {
         return command;
     }
 
-    public void setCommand(String command) {
+    public void setCommand(VideoCaptureCommands command) {
         this.command = command;
     }
 

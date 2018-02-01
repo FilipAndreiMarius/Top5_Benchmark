@@ -37,17 +37,32 @@ public class ScenarioManager {
         return scenarioList;
     }
 
-    public static String getPatternName(String imageElementName, String testName) {
+    public static String getPatternPathForTest(String testName) {
         StringBuffer patternPath = new StringBuffer().append(Constants.Paths.PATTERNS_PATH)
                 .append(File.separator)
                 .append(testName)
                 .append(File.separator);
-        int elementIndex = FileManager.filesFoundCount(imageElementName, patternPath.toString()) + 1;
+        return patternPath.toString();
+    }
+
+    public static String getPatternName(String imageElementName, String testName) {
+        String patternPath = getPatternPathForTest(testName);
+        int elementIndex = FileManager.filesFoundCount(imageElementName, patternPath) + 1;
         StringBuffer patternName = new StringBuffer().append(patternPath)
                 .append(imageElementName)
                 .append(elementIndex)
                 .append(".")
-                .append(Constants.Extensions.SCREENSHOT_EXTENSION);
+                .append(Constants.Extensions.IMAGE_EXTENSION);
+        return patternName.toString();
+    }
+
+    public static String getPatternNameShort(String imageElementName, String testName) {
+        String patternPath = getPatternPathForTest(testName);
+        int elementIndex = FileManager.filesFoundCount(imageElementName, patternPath) + 1;
+        StringBuffer patternName = new StringBuffer().append(imageElementName)
+                .append(elementIndex)
+                .append(".")
+                .append(Constants.Extensions.IMAGE_EXTENSION);
         return patternName.toString();
     }
 }

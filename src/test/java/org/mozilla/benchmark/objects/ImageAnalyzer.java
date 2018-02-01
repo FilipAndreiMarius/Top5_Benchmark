@@ -6,6 +6,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.FileManager;
+import org.mozilla.benchmark.utils.ImagePatternUtils;
+import org.mozilla.benchmark.utils.PropertiesManager;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
@@ -70,20 +72,26 @@ public class ImageAnalyzer {
         return initialImagePatternList;
     }
 
-    private ArrayList<ImagePattern> initializePatterns(String testName) {
+    private static ArrayList<ImagePattern> initializePatterns(String testName) {
 
         ArrayList<ImagePattern> patternList = new ArrayList<>();
-        String jsonPath = Constants.Paths.RESOURCES_PATH + File.separator + testName.toLowerCase() + Constants.Extensions.JSON_EXTENSION;
+        ImagePattern pattern;
 
         for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
             try {
-                ImagePattern pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
+                if (!PropertiesManager.getDynamicPatterns()) {
+                    String jsonPath = Constants.Paths.RESOURCES_PATH + File.separator + testName.toLowerCase() + Constants.Extensions.JSON_EXTENSION;
+                    pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
+                } else {
+                    pattern = ImagePatternUtils.getInstance();
+                }
                 pattern.setName(testName + "_run_" + (i + 1));
                 patternList.add(pattern);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
+        ImagePatternUtils.closeInstance();
         return patternList;
     }
 

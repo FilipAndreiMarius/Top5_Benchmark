@@ -3,10 +3,7 @@ package org.mozilla.benchmark.pageObjects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
-import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.ColorManager;
-import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.ImagePatternUtils;
+import org.mozilla.benchmark.utils.*;
 import org.openqa.selenium.*;
 
 /**
@@ -64,6 +61,7 @@ public class GooglePage extends BasePage {
         for (int i = 0; i < getRuns(); i++) {
             runAllScenarios();
         }
+        DriverUtils.closeWebBrowser();
     }
 }
 

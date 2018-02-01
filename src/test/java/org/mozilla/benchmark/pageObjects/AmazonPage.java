@@ -65,5 +65,6 @@ public class AmazonPage extends BasePage {
         for (int i = 0; i < this.runs; i++) {
             runAllScenarios();
         }
+        DriverUtils.closeWebBrowser();
     }
 }
