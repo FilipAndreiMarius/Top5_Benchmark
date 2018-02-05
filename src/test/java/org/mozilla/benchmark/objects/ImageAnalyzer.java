@@ -111,37 +111,35 @@ public class ImageAnalyzer {
     }
 
     private static Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
-        try {
-
-            if (ImageSearchTypes.NEGATIVE.equals(searchType)) {
-                BufferedImage pattern = ImageIO.read(new File(imagePath1));
-                Color colorPattern = new Color(pattern.getRGB(0, 0));
-
-                BufferedImage image = ImageIO.read(new File(imagePath2));
-                for (int i = 0; i < image.getWidth(); i++) {
-                    Color colorImage = new Color(image.getRGB(i, image.getHeight() / 2));
-                    if (!colorImage.equals(colorPattern)) {
-                        return false;
+        switch (searchType) {
+            case NEGATIVE: {
+                try {
+                    BufferedImage pattern = ImageIO.read(new File(imagePath1));
+                    Color colorPattern = new Color(pattern.getRGB(0, 0));
+                    BufferedImage image = ImageIO.read(new File(imagePath2));
+                    for (int i = 0; i < image.getWidth(); i++) {
+                        Color colorImage = new Color(image.getRGB(i, image.getHeight() / 2));
+                        if (!colorImage.equals(colorPattern))
+                            return true;
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } else {
-                Pattern pattern = new Pattern(imagePath1).similar(similarity);
-                Finder finder = new Finder(imagePath2);
-
-                finder.find(pattern);
-                System.out.println("find [" + imagePath1 + "] in [" + imagePath2 + "]");
-                System.out.println("Pattern found: " + finder.hasNext());
-                if (finder.hasNext()) {
-                    return ImageSearchTypes.POSITIVE.equals(searchType);
-                } else {
-                    return ImageSearchTypes.NEGATIVE.equals(searchType);
+                return false;
+            }
+            case POSITIVE: {
+                try {
+                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
+                    Finder finder = new Finder(imagePath2);
+                    finder.find(pattern);
+                    return finder.hasNext();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     private JsonObject analyzeAndShowResults(String testName) {
@@ -204,9 +202,9 @@ public class ImageAnalyzer {
     }
 
     public static void main(String[] args) {
-        System.out.println(searchImage("C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T14_55_54\\patterns\\google\\firstNonBlank2.png",
-                "C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T14_55_54\\images\\google\\image.000329.png",
-                ImageSearchTypes.NEGATIVE, 0.4f));
+        System.out.println(searchImage("C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T19_44_32\\patterns\\google\\firstNonBlank2.png",
+                "C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T19_44_32\\images\\google\\image.000495.png",
+                ImageSearchTypes.NEGATIVE, 0.95f));
     }
 }
 

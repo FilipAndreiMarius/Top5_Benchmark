@@ -305,13 +305,13 @@ public class BasePage extends Thread {
         }
     }
 
-    public void createBackgroundImage(Dimension dimension, Color color, String destination) {
+    public void createBackgroundImage(Color color, String destination) {
         try {
             logger.info(String.format("Saving image at the following destination: [%s] ...", destination));
-            BufferedImage image = new BufferedImage(dimension.getWidth() - 100, dimension.getHeight() - 100, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = image.createGraphics();
             graphics.setPaint(color);
-            graphics.fillRect(0, 0, dimension.getWidth() - 100, dimension.getHeight() -100);
+            graphics.fillRect(0, 0, 1, 1);
 
             if (FileManager.createDirectories(destination)) {
                 File outputFile = new File(destination);
@@ -330,7 +330,7 @@ public class BasePage extends Thread {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
-            createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
+            createBackgroundImage(new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
                 ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
             }
