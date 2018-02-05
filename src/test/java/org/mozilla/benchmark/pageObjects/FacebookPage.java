@@ -38,9 +38,9 @@ public class FacebookPage extends BasePage {
     }
 
     public void login() {
-        addPattern(USER_NAME, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
-        addPattern(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE);
+        addPattern(USER_NAME, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(USER_PASSWORD, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE, 0.95f);
         sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
         sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
@@ -48,18 +48,18 @@ public class FacebookPage extends BasePage {
 
     public void accessGroup() {
         WebElement group = getElements(GROUP_AUTOMATION).get(3);
-        addPattern(group, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
+        addPattern(group, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
         click(group);
     }
 
     public void homeLink() {
-        addPattern(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
+        addPattern(HOME_BUTTON, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
         click(HOME_BUTTON);
     }
 
     public void accessUser() {
         WebElement feed = getElement(FALLBACK_FEED);
-        addPattern(feed, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE);
+        addPattern(feed, "zero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
     }
 
     public void runAllScenarios() {

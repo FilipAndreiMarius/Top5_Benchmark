@@ -27,9 +27,11 @@ public class BasePage extends Thread {
     public static WebDriver _driver;
     private static int timeout = 10;
     public WebDriverWait wait;
+    public static String BROWSER_BG_COLOR = "#f9f9f9";
 
     public BasePage() {
         _driver = DriverUtils.getInstance();
+        driverSleep(1000);
     }
 
     public void navigateToURL(String url) {
@@ -306,10 +308,10 @@ public class BasePage extends Thread {
     public void createBackgroundImage(Dimension dimension, Color color, String destination) {
         try {
             logger.info(String.format("Saving image at the following destination: [%s] ...", destination));
-            BufferedImage image = new BufferedImage(dimension.getWidth(), dimension.getHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage image = new BufferedImage(dimension.getWidth() - 100, dimension.getHeight() - 100, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = image.createGraphics();
             graphics.setPaint(color);
-            graphics.fillRect(0, 0, 1900, 930);
+            graphics.fillRect(0, 0, dimension.getWidth() - 100, dimension.getHeight() -100);
 
             if (FileManager.createDirectories(destination)) {
                 File outputFile = new File(destination);
@@ -324,46 +326,46 @@ public class BasePage extends Thread {
         }
     }
 
-    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
+    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             createBackgroundImage(getWindowSize(), new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
+    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             captureElementScreenshot(element, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
+    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             captureElementScreenshot(element, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType) {
+    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
         if (takeScreenshot) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
             FileManager.copyImage(source, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType);
+                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }

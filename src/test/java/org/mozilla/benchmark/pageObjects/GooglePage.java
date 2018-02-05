@@ -34,8 +34,9 @@ public class GooglePage extends BasePage {
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
         navigateToURL(Constants.PageObjects.GSEARCH_URL);
-        addPattern(ColorManager.getColorFromString(getElement(GOOGLE_BACKGROUND).getCssValue("background-color")),
-                "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE);
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(ColorManager.getColorFromString(BROWSER_BG_COLOR),
+                "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE, 0.98f);
     }
 
     public void search() {

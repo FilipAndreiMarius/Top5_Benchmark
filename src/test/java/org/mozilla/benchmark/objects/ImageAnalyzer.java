@@ -12,10 +12,14 @@ import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.util.*;
 
 import static org.apache.commons.io.FileUtils.iterateFiles;
@@ -106,16 +110,38 @@ public class ImageAnalyzer {
         return images;
     }
 
-    private Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
+    private static Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
         try {
-            Finder finder = new Finder(imagePath1, new Region(286, 164, 108, 23));
-            Pattern pattern = new Pattern(imagePath2).similar(similarity);
-            finder.find(pattern);
-            return (ImageSearchTypes.POSITIVE == searchType) == finder.hasNext();
+
+            if (ImageSearchTypes.NEGATIVE.equals(searchType)) {
+                BufferedImage pattern = ImageIO.read(new File(imagePath1));
+                Color colorPattern = new Color(pattern.getRGB(0, 0));
+
+                BufferedImage image = ImageIO.read(new File(imagePath2));
+                for (int i = 0; i < image.getWidth(); i++) {
+                    Color colorImage = new Color(image.getRGB(i, image.getHeight() / 2));
+                    if (!colorImage.equals(colorPattern)) {
+                        return false;
+                    }
+                }
+            } else {
+                Pattern pattern = new Pattern(imagePath1).similar(similarity);
+                Finder finder = new Finder(imagePath2);
+
+                finder.find(pattern);
+                System.out.println("find [" + imagePath1 + "] in [" + imagePath2 + "]");
+                System.out.println("Pattern found: " + finder.hasNext());
+                if (finder.hasNext()) {
+                    return ImageSearchTypes.POSITIVE.equals(searchType);
+                } else {
+                    return ImageSearchTypes.NEGATIVE.equals(searchType);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
+        return false;
     }
 
     private JsonObject analyzeAndShowResults(String testName) {
@@ -136,7 +162,7 @@ public class ImageAnalyzer {
                         logger.info(k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
                                 "] in [" + images.get(k) + "]");
                         ImageDetails imageDetails = element.getImageDetails().get(j);
-                        if (searchImage(images.get(k), patternPath, imageDetails.getSearchType(), imageDetails.getSimilarity())) {
+                        if (searchImage(patternPath, images.get(k), imageDetails.getSearchType(), imageDetails.getSimilarity())) {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
                                 pattern_counter = j + 1;
                             } else {
@@ -175,6 +201,12 @@ public class ImageAnalyzer {
 
     public int getLastFound() {
         return this.lastFound;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(searchImage("C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T14_55_54\\patterns\\google\\firstNonBlank2.png",
+                "C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T14_55_54\\images\\google\\image.000329.png",
+                ImageSearchTypes.NEGATIVE, 0.4f));
     }
 }
 
