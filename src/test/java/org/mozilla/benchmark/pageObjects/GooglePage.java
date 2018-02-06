@@ -17,28 +17,46 @@ public class GooglePage extends BasePage {
     private static final String TEST_NAME = "google";
     private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
     private By GOOGLE_IMAGE = By.xpath("//*[@class='q qs']");
+    private By ENGLISH_LANGUAGE = By.xpath("//*[contains(text(), 'English')]");
+
+    //sidebar images
+    private By SIDEBAR_IMAGE_1 = By.id("uid_dimg_0");
+    private By SIDEBAR_IMAGE_2 = By.id("uid_dimg_1");
+    private By SIDEBAR_IMAGE_3 = By.id("uid_dimg_2");
+    private By SIDEBAR_IMAGE_4 = By.id("uid_dimg_3");
+    private By SIDEBAR_IMAGE_5 = By.id("uid_dimg_4");
+    private By SIDEBAR_IMAGE_6 = By.id("uid_dimg_5");
+
+
 
     public GooglePage(int runs, Boolean takeScreenshot) {
         this.runs = runs;
         this.takeScreenshot = takeScreenshot;
     }
 
-    public void accessImage() {
-        logger.info("Selecting [Images] section ...");
-        click(GOOGLE_IMAGE);
-    }
-
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
         navigateToURL(Constants.PageObjects.GSEARCH_URL);
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
-        addPattern(ColorManager.getColorFromString(BROWSER_BG_COLOR),
-                "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE, 0.98f);
+        click(ENGLISH_LANGUAGE);
     }
 
     public void search() {
         logger.info("Searching [" + Constants.PageObjects.SEARCH_ITEM + "] ...");
         sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, Constants.PageObjects.SEARCH_ITEM);
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "navigationStart", TEST_NAME, takeScreenshot, ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(ColorManager.getColorFromString(BROWSER_BG_COLOR),
+                "firstNonBlank", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.NEGATIVE, 0.98f);
+        addPattern(SIDEBAR_IMAGE_1,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(SIDEBAR_IMAGE_2,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(SIDEBAR_IMAGE_3,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(SIDEBAR_IMAGE_4,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(SIDEBAR_IMAGE_5,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+        addPattern(SIDEBAR_IMAGE_6,"hero", TEST_NAME, getTakeScreenshot(), ImageSearchTypes.POSITIVE, 0.95f);
+    }
+
+    public void accessImage() {
+        logger.info("Selecting [Images] section ...");
+        click(GOOGLE_IMAGE);
     }
 
     public void runAllScenarios() {
