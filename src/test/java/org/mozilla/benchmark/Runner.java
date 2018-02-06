@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.*;
 import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.FileManager;
+import org.mozilla.benchmark.utils.PropertiesManager;
 import org.mozilla.benchmark.utils.ScenarioManager;
 
 import java.io.IOException;
@@ -23,8 +24,11 @@ public class Runner {
         String[] scenarios = Constants.Execution.EXECUTED_SCENARIOS;
         if (scenarios.length == 0) {
             logger.warn("There are no scenarios to execute !!!");
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
         } else {
-            logger.info("List of scenarios to execute: " + Arrays.toString(scenarios));
+            logger.info(String.format("List of scenarios to execute: %s", Arrays.toString(scenarios)));
         }
 
         Thread[] threads = new Thread[scenarios.length];
@@ -34,7 +38,7 @@ public class Runner {
             try {
                 threads[i].join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.fatal(String.format("[%s] was interrupted: [%s]", threads[i], e));
             }
         }
     }

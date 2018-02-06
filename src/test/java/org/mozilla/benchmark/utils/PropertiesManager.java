@@ -44,8 +44,16 @@ public class PropertiesManager {
         return getBoolean("dynamic_patterns");
     }
 
-    public static int getFps() {
-        return getInteger("fps");
+    public static int getFfmpegInitialFps() {
+        return getInteger("ffmpeg_initial_fps");
+    }
+
+    public static int getFfmpegFinalFps() {
+        return getInteger("ffmpeg_final_fps");
+    }
+
+    public static int getFfmpegRecordDuration() {
+        return getInteger("ffmpeg_record_duration");
     }
 
     public static String getVideoExtension() {

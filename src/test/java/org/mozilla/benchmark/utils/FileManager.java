@@ -15,7 +15,7 @@ public class FileManager {
     private static final Logger logger = LogManager.getLogger(FileManager.class.getName());
 
     public static int transformSecondsToFrames(int seconds) {
-        return seconds * Constants.Video.FPS;
+        return seconds * Constants.Video.FFMPEG_FINAL_FPS;
     }
 
     public static int getIntFromString(String s) {

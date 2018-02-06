@@ -33,6 +33,7 @@ public class Constants {
         public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
         public static final String LOAD_DONE_PATH = RESOURCES_PATH + File.separator + LOAD_DONE_FILE_NAME;
         public static final String LOAD_PENDING_PATH = RESOURCES_PATH + File.separator + LOAD_PENDING_FILE_NAME;
+        public static final String PAGE_OBJECT_CLASS_PATH = "org.mozilla.benchmark.pageObjects.";
 
         private Paths() {
         }
@@ -49,7 +50,9 @@ public class Constants {
 
     public static final class Video {
 
-        public static final int FPS = PropertiesManager.getFps();
+        public static final int FFMPEG_FINAL_FPS = PropertiesManager.getFfmpegFinalFps();
+        public static final int FFMPEG_INITIAL_FPS = PropertiesManager.getFfmpegInitialFps();
+        public static final int FFMPEG_RECORD_DURATION = PropertiesManager.getFfmpegRecordDuration();
 
         private Video() {
         }

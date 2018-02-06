@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
  * Created by Silviu on 13/12/2017.
  */
 public class TimeManager {
+    private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH_mm_ss";
 
     public static int getTimestampDifference(Timestamp one, Timestamp two) {
 
@@ -19,7 +20,7 @@ public class TimeManager {
     }
 
     public static String getFormattedTimestamp(Timestamp t) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH_mm_ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         return dateFormat.format(t);
     }
 

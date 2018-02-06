@@ -34,10 +34,10 @@ public class ScenarioRunner extends Thread {
 
         logger.info("Start Video Process ...");
 
-        Thread recordVideo = new VideoCapture("30", "50", VideoCaptureCommands.START_VIDEO, testName);
+        Thread recordVideo = new VideoCapture(Constants.Video.FFMPEG_INITIAL_FPS, Constants.Video.FFMPEG_RECORD_DURATION, VideoCaptureCommands.START_VIDEO, testName);
         recordVideo.start();
 
-        String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(testName);
+        String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(testName);
 
         Class<?> clazz;
         try {

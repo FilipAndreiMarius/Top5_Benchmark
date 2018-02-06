@@ -15,11 +15,8 @@ public class GooglePage extends BasePage {
     private int runs;
     private Boolean takeScreenshot;
     private static final String TEST_NAME = "google";
-
-    private By GOOGLE_LOGO = By.id("hplogo");
     private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
     private By GOOGLE_IMAGE = By.xpath("//*[@class='q qs']");
-    private By GOOGLE_BACKGROUND = By.xpath("//*[@id='gsr']");
 
     public GooglePage(int runs, Boolean takeScreenshot) {
         this.runs = runs;

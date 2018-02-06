@@ -14,19 +14,14 @@ import java.sql.Timestamp;
 public class VideoCapture extends Thread {
 
     private static final Logger logger = LogManager.getLogger(SystemManager.class.getName());
-    private static final String CREATE_PATTERNS = "createPatterns";
-    private static final String START_VIDEO = "runVideo";
-    private static final String COMPRESS_VIDEO = "compressVideo";
-    private static final String SPLIT_VIDEO_TO_FRAMES = "splitVideo";
-    private static final String REMOVE_FRAMES = "removeFrames";
 
-    private String frames;
-    private String duration;
+    private int frames;
+    private int duration;
     private String location;
     private VideoCaptureCommands command;
     private String testName;
 
-    public VideoCapture(String frames, String duration, VideoCaptureCommands command, String testName) {
+    public VideoCapture(int frames, int duration, VideoCaptureCommands command, String testName) {
         this.frames = frames;
         this.duration = duration;
         this.command = command;
@@ -137,9 +132,8 @@ public class VideoCapture extends Thread {
                 .append(" -vcodec libx264")
                 .append(" -preset ultrafast")
                 .append(" -crf 0")
-                .append(" -acodec pcm_s16le")
-                .append(" -r " + this.frames)
-                .append(" -t " + this.duration)
+                .append(" -r ").append(getFrames())
+                .append(" -t ").append(getDuration())
                 .append(" ")
                 .append(path)
                 .append(File.separator)
@@ -149,7 +143,7 @@ public class VideoCapture extends Thread {
 
     private String convertTo60Fps(String fileInput, String fileOutput) {
         StringBuilder command = new StringBuilder();
-        command.append("ffmpeg  -i " + fileInput)
+        command.append("ffmpeg  -i ").append(fileInput)
                 .append(" -vcodec h264 -an -vf fps=60 ")
                 .append(fileOutput);
         return command.toString();
@@ -157,26 +151,27 @@ public class VideoCapture extends Thread {
 
     private String splitIntoFrames(String fileInput, String fileOutput) {
         StringBuilder command = new StringBuilder();
-        command.append("ffmpeg  -i " + fileInput)
+        command.append("ffmpeg  -i ").append(fileInput)
                 .append(" -qscale -1 ")
                 .append(fileOutput)
-                .append("\\image.%6d.png");
+                .append(File.separator)
+                .append("image.%6d.png");
         return command.toString();
     }
 
-    public String getFrames() {
+    public int getFrames() {
         return this.frames;
     }
 
-    public void setFrames(String frames) {
+    public void setFrames(int frames) {
         this.frames = frames;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return this.duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 

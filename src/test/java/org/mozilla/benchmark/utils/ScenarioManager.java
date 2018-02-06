@@ -14,13 +14,14 @@ import java.util.ArrayList;
 public class ScenarioManager {
 
     private static final Logger logger = LogManager.getLogger(ScenarioManager.class.getName());
+    private static final String CLASS_NAME_SUFFIX = "Page";
 
     public static String getScenarioName(String jsonName) {
         return jsonName.replace(Constants.Extensions.JSON_EXTENSION, "");
     }
 
     public static String getClassNameFromTestName(String testName) {
-        return testName.substring(0, 1).toUpperCase() + testName.substring(1) + "Page";
+        return testName.substring(0, 1).toUpperCase() + testName.substring(1) + CLASS_NAME_SUFFIX;
     }
 
     public static ArrayList<String> validateScenarios(String[] scenarios, String directoryName) {

@@ -8,5 +8,5 @@ public enum  VideoCaptureCommands {
     START_VIDEO,
     COMPRESS_VIDEO,
     SPLIT_VIDEO_TO_FRAMES,
-    REMOVE_FRAMES;
+    REMOVE_FRAMES
 }
