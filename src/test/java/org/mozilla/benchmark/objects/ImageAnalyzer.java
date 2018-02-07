@@ -168,7 +168,6 @@ public class ImageAnalyzer {
                                 pattern_counter = 0;
                                 this.lastFound = image_counter + 1;
                             }
-                            image_counter = k + 1;
                             break;
                         } else {
                             image_counter = k + 1;

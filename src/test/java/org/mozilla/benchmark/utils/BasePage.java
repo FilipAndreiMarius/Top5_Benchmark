@@ -350,11 +350,13 @@ public class BasePage extends Thread {
 
     public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
         if (takeScreenshot) {
-            String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
-            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
-            captureElementScreenshot(element, imageDetailsName);
-            if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+            for (WebElement elem : getElements(element)){
+                String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
+                String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
+                captureElementScreenshot(elem, imageDetailsName);
+                if (PropertiesManager.getDynamicPatterns()){
+                    ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+                }
             }
         }
     }

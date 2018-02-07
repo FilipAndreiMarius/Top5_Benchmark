@@ -114,7 +114,7 @@ public class Constants {
 
         //GoogleSearch constants
         public static final String GSEARCH_URL = "https://google.com";
-        public static final String SEARCH_ITEM = "barack Obama";
+        public static final String SEARCH_ITEM = "barack obama";
 
         //Youtube constants
         public static final String YOUTUBE_ITEM = "sarah jeffery recorder";
