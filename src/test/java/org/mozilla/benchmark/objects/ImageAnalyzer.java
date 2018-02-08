@@ -87,7 +87,7 @@ public class ImageAnalyzer {
                     String jsonPath = Constants.Paths.RESOURCES_PATH + File.separator + testName.toLowerCase() + Constants.Extensions.JSON_EXTENSION;
                     pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
                 } else {
-                    pattern = ImagePatternUtils.getInstance();
+                    pattern = new Gson().fromJson(new Gson().toJson(ImagePatternUtils.getInstance()), ImagePattern.class);
                 }
                 pattern.setName(testName + "_run_" + (i + 1));
                 patternList.add(pattern);
@@ -112,7 +112,7 @@ public class ImageAnalyzer {
 
     private static Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
         switch (searchType) {
-            case NEGATIVE: {
+            case BACKGROUND: {
                 try {
                     BufferedImage pattern = ImageIO.read(new File(imagePath1));
                     Color colorPattern = new Color(pattern.getRGB(0, 0));
@@ -133,6 +133,16 @@ public class ImageAnalyzer {
                     Finder finder = new Finder(imagePath2);
                     finder.find(pattern);
                     return finder.hasNext();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            case NEGATIVE: {
+                try {
+                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
+                    Finder finder = new Finder(imagePath2);
+                    finder.find(pattern);
+                    return !finder.hasNext();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -164,7 +174,9 @@ public class ImageAnalyzer {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
                                 pattern_counter = j + 1;
                             } else {
-                                result.addProperty(element.getName(), image_counter + 1);
+                                if (!("startingPoint").equals(element.getName())) {
+                                    result.addProperty(element.getName(), image_counter + 1);
+                                }
                                 pattern_counter = 0;
                                 this.lastFound = image_counter + 1;
                             }

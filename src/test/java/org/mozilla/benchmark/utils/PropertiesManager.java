@@ -26,6 +26,11 @@ public class PropertiesManager {
         return isNullOrEmpty(value) ? 0 : Integer.valueOf(value);
     }
 
+    private static float getFloat(String key) {
+        String value = getString(key);
+        return isNullOrEmpty(value) ? 0 : Float.valueOf(value);
+    }
+
     private static Boolean getBoolean(String key) {
         String value = getString(key);
 
@@ -43,6 +48,8 @@ public class PropertiesManager {
     public static Boolean getDynamicPatterns() {
         return getBoolean("dynamic_patterns");
     }
+
+    public static float getDefaultSimilarity() { return getFloat("default_similarity"); }
 
     public static int getFfmpegInitialFps() {
         return getInteger("ffmpeg_initial_fps");

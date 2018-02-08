@@ -5,5 +5,6 @@ package org.mozilla.benchmark.objects;
  */
 public enum ImageSearchTypes {
     POSITIVE,
-    NEGATIVE
+    NEGATIVE,
+    BACKGROUND
 }

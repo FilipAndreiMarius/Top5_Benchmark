@@ -80,6 +80,10 @@ public class ImagePattern {
         return null;
     }
 
+    public ImagePattern clone(){
+        return this.clone();
+    }
+
     public String toString() {
         ImagePattern imagePattern = ImagePatternUtils.getInstance();
         System.out.println(imagePattern.getName());
