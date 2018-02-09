@@ -7,7 +7,6 @@ import org.mozilla.benchmark.utils.*;
 import org.openqa.selenium.*;
 
 import java.awt.*;
-import java.util.List;
 
 /**
  * Created by andrei.filip on 10/30/2017.

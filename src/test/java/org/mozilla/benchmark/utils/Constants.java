@@ -22,7 +22,8 @@ public class Constants {
         private static final String LOAD_DONE_FILE_NAME = "load_done.png";
         private static final String LOAD_PENDING_FILE_NAME = "load_pending.png";
 
-        public static final String ROOT_PATH = PROJECT_LOCATION + File.separator + RUNS_FOLDER + File.separator + TimeManager.getFormattedTimestamp(TimeManager.getCurrentTimestamp());
+        public static final String ROOT_PATH = PROJECT_LOCATION + File.separator + RUNS_FOLDER + File.separator +
+                TimeManager.getFormattedTimestamp(TimeManager.getCurrentTimestamp());
         public static final String RESOURCES_PATH = PROJECT_LOCATION + File.separator + SRC_FOLDER + File.separator +
                 TEST_FOLDER + File.separator + RESOURCES_FOLDER;
         public static final String SPLIT_VIDEO_PATH = ROOT_PATH + File.separator + IMAGES_FOLDER;
@@ -82,18 +83,9 @@ public class Constants {
     public static final class Driver {
 
         public static final String WEBDRIVER_PROPERTY = "webdriver.gecko.driver";
-        public static final String WEBDRIVER_PATH = Paths.PROJECT_LOCATION + "\\libs\\geckodriver.exe";
+        public static final String WEBDRIVER_PATH = Paths.PROJECT_LOCATION + File.separator + "libs" + File.separator + "geckodriver.exe";
 
         private Driver() {
-        }
-    }
-
-    public final class Patterns {
-
-        public static final String AMAZON_IMAGE_FOLDER = "C:\\Git\\Benchmark\\Ui_Tests\\60FpsVideos\\Video_Frames\\Amazon0.41200816949697131.mp4";
-        public static final String AMAZON_PATTERN_FOLDER = "C:\\Users\\andrei.filip\\IdeaProjects\\SikuliCompare\\Patterns\\Amazon_Patterns";
-
-        private Patterns() {
         }
     }
 
@@ -118,10 +110,10 @@ public class Constants {
 
         //Youtube constants
         public static final String YOUTUBE_ITEM = "sarah jeffery recorder";
-        public static final String YOUTUBE_URL = "https://www.Youtube.com";
+        public static final String YOUTUBE_URL = "https://www.youtube.com";
 
         //Amazon constants
-        public static final String AMAZON_URL = "https://www.Amazon.com";
+        public static final String AMAZON_URL = "https://www.amazon.com";
         public static final String AMAZON_SEARCH_ITEM = "lord of the rings";
 
         private PageObjects() {

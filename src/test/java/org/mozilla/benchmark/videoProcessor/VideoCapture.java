@@ -41,7 +41,7 @@ public class VideoCapture extends Thread {
             switch (this.command) {
                 case CREATE_PATTERNS:
                     logger.info("Start creating patterns ...");
-                    String className = "org.mozilla.benchmark.pageObjects." + ScenarioManager.getClassNameFromTestName(getTestName());
+                    String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(getTestName());
 
                     Class<?> clazz;
                     try {
@@ -127,11 +127,7 @@ public class VideoCapture extends Thread {
 
     private String ffmpegStartVideoCommand(String path, String videoName) {
         StringBuilder command = new StringBuilder();
-        command.append("ffmpeg -f dshow -i video=")
-                .append("screen-capture-recorder")
-                .append(" -vcodec libx264")
-                .append(" -preset ultrafast")
-                .append(" -crf 0")
+        command.append("ffmpeg -f dshow -rtbufsize 2G -i video=screen-capture-recorder -vcodec libx264 -preset ultrafast -crf 0")
                 .append(" -r ").append(getFrames())
                 .append(" -t ").append(getDuration())
                 .append(" ")
