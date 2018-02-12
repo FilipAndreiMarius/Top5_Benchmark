@@ -2,10 +2,7 @@ package org.mozilla.benchmark.objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.utils.Constants;
-import org.mozilla.benchmark.utils.DriverUtils;
-import org.mozilla.benchmark.utils.ScenarioManager;
-import org.mozilla.benchmark.utils.TimeManager;
+import org.mozilla.benchmark.utils.*;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
 
 import java.lang.reflect.Constructor;
@@ -20,44 +17,48 @@ public class ScenarioRunner extends Thread {
 
     public ScenarioRunner(String testName) {
 
-        Thread createPatterns = new VideoCapture(VideoCaptureCommands.CREATE_PATTERNS, testName);
-        createPatterns.run();
-
-        try {
-            createPatterns.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        logger.info("Start creating cookies ...");
+        Thread createCookies = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.SAVE_COOKIES);
+        if (createCookies != null) {
+            createCookies.run();
+            try {
+                createCookies.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.fatal("Cannot create cookies !!!");
         }
+        logger.info("Creating cookies done !!!");
+
+        logger.info("Start creating patterns ...");
+        Thread createPatterns = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.SAVE_PATTERN);
+        if (createPatterns != null) {
+            createPatterns.run();
+            try {
+                createPatterns.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.fatal("Cannot create patterns !!!");
+        }
+        logger.info("Creating patterns done !!!");
 
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
 
-        logger.info("Start Video Process ...");
+/*        logger.info("Start Video Process ...");
 
         Thread recordVideo = new VideoCapture(Constants.Video.FFMPEG_INITIAL_FPS, Constants.Video.FFMPEG_RECORD_DURATION, VideoCaptureCommands.START_VIDEO, testName);
-        recordVideo.start();
+        recordVideo.start();*/
 
-        String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(testName);
-
-        Class<?> clazz;
-        try {
-            clazz = Class.forName(className);
-            Constructor<?> constructor = clazz.getConstructor(int.class, Boolean.class);
-            Object instance = constructor.newInstance(Constants.Execution.NUMBER_OF_RUNS, false);
-            ((Thread) instance).run();
-        } catch (ClassNotFoundException e) {
-            logger.error("Class " + className + " not found ! " + e);
-        } catch (NoSuchMethodException e) {
-            logger.error("Method not found ! " + e);
-        } catch (InstantiationException e) {
-            logger.error("Could not instantiate " + className + " ! " + e);
-        } catch (IllegalAccessException e) {
-            logger.error("Illegal access ! " + e);
-        } catch (InvocationTargetException e) {
-            logger.error("Invocation target exception ! " + e);
+        Thread executeFlows = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.EXECUTE_FLOW);
+        if (executeFlows != null) {
+            executeFlows.run();
         }
 
-        try {
+/*        try {
             recordVideo.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -71,7 +72,6 @@ public class ScenarioRunner extends Thread {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
         Thread splitVideo = new VideoCapture(VideoCaptureCommands.SPLIT_VIDEO_TO_FRAMES, testName);
         splitVideo.start();
@@ -94,6 +94,6 @@ public class ScenarioRunner extends Thread {
         logger.info("Video Processing done !!!");
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
+        System.out.println(testName + " search results: " + imgAnalyzer.getResults());*/
     }
 }

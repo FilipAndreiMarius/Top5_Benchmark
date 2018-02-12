@@ -3,6 +3,7 @@ package org.mozilla.benchmark.pageObjects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
+import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.*;
 import org.openqa.selenium.*;
 
@@ -15,7 +16,7 @@ public class GooglePage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
     private int runs;
-    private Boolean takeScreenshot;
+    private PageNavigationTypes navigationType;
     private static final String TEST_NAME = "google";
 
     private By GOOGLE_LOGO = By.id("hplogo");
@@ -38,9 +39,9 @@ public class GooglePage extends BasePage {
     //first row of image search results
     private By FIRST_ROW_IMAGE_RESULTS = By.xpath("//*[@data-row='0']");
 
-    public GooglePage(int runs, Boolean takeScreenshot) {
+    public GooglePage(int runs, PageNavigationTypes navigationType) {
         this.runs = runs;
-        this.takeScreenshot = takeScreenshot;
+        this.navigationType = navigationType;
     }
 
     public void navigateToHomePage() {
@@ -86,24 +87,24 @@ public class GooglePage extends BasePage {
     public int getRuns() {
         return this.runs;
     }
-    public Boolean getTakeScreenshot() {
-        return this.takeScreenshot;
+    public PageNavigationTypes getNavigationType() {
+        return this.navigationType;
     }
 
     private void addPattern(String source, String elementName, ImageSearchTypes searchType) {
-        addPattern(source, elementName, TEST_NAME, getTakeScreenshot(), searchType, PropertiesManager.getDefaultSimilarity());
+        addPattern(source, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
     }
 
     private void addPattern(By selector, String elementName, ImageSearchTypes searchType) {
-        addPattern(selector, elementName, TEST_NAME, getTakeScreenshot(), searchType, PropertiesManager.getDefaultSimilarity());
+        addPattern(selector, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
     }
 
     private void addPattern(Color color, String elementName, ImageSearchTypes searchType) {
-        addPattern(color, elementName, TEST_NAME, getTakeScreenshot(), searchType, PropertiesManager.getDefaultSimilarity());
+        addPattern(color, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
     }
 
     private void addPattern(WebElement webElement, String elementName, ImageSearchTypes searchType) {
-        addPattern(webElement, elementName, TEST_NAME, getTakeScreenshot(), searchType, PropertiesManager.getDefaultSimilarity());
+        addPattern(webElement, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
     }
 
     private void changeToEnglishVersion() {

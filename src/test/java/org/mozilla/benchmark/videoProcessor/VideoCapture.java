@@ -2,6 +2,7 @@ package org.mozilla.benchmark.videoProcessor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.objects.VideoCaptureCommands;
 import org.mozilla.benchmark.utils.*;
@@ -39,30 +40,6 @@ public class VideoCapture extends Thread {
         try {
             Process p;
             switch (this.command) {
-                case CREATE_PATTERNS:
-                    logger.info("Start creating patterns ...");
-                    String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(getTestName());
-
-                    Class<?> clazz;
-                    try {
-                        clazz = Class.forName(className);
-                        Constructor<?> constructor = clazz.getConstructor(int.class, Boolean.class);
-                        Object instance = constructor.newInstance(1, true);
-                        ((Thread) instance).run();
-                    } catch (ClassNotFoundException e) {
-                        logger.error("Class " + className + " not found ! " + e);
-                    } catch (NoSuchMethodException e) {
-                        logger.error("Method not found ! " + e);
-                    } catch (InstantiationException e) {
-                        logger.error("Could not instantiate " + className + " ! " + e);
-                    } catch (IllegalAccessException e) {
-                        logger.error("Illegal access ! " + e);
-                    } catch (InvocationTargetException e) {
-                        logger.error("Invocation target exception ! " + e);
-                    }
-                    logger.info("Creating patterns done !!!");
-                    break;
-
                 case START_VIDEO:
                     String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {

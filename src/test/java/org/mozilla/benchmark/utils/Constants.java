@@ -13,6 +13,7 @@ public class Constants {
         private static final String RUNS_FOLDER = "runs";
         private static final String IMAGES_FOLDER = "images";
         private static final String VIDEOS_FOLDER = "videos";
+        private static final String COOKIES_FOLDER = "cookies";
         private static final String FPS_60_VIDEO_FOLDER = "60FpsVideos";
         private static final String PATTERNS_FOLDER = "patterns";
         private static final String SRC_FOLDER = "src";
@@ -29,6 +30,7 @@ public class Constants {
         public static final String SPLIT_VIDEO_PATH = ROOT_PATH + File.separator + IMAGES_FOLDER;
         public static final String VIDEOS_PATH = ROOT_PATH + File.separator + VIDEOS_FOLDER;
         public static final String FPS_60_VIDEO_PATH = ROOT_PATH + File.separator + FPS_60_VIDEO_FOLDER;
+        public static final String COOKIES = ROOT_PATH + File.separator + COOKIES_FOLDER;
 
         public static final String PATTERNS_PATH = ROOT_PATH + File.separator + PATTERNS_FOLDER;
         public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
@@ -92,8 +94,10 @@ public class Constants {
     public final class PageObjects {
 
         //Gmail constants
-        public static final String YOUTUBE_LINK = "http://benjamin.smedbergs.us/tests/youtube-notification-mail/youtube-notification-mail-complete.html";
-        public static final String GMAIL_URL = "https://accounts.google.com/";
+        public static final String GMAIL_YOUTUBE_LINK = "http://benjamin.smedbergs.us/tests/youtube-notification-mail/youtube-notification-mail-complete.html";
+        public static final String GMAIL_URL = "https://mail.google.com/mail/";
+        public static final String GMAIL_USER_NAME = "benckmark.automation@gmail.com";
+        public static final String GMAIL_PASSWORD = "Softvision10";
         //credentials
         public static final String USER_NAME = "andrei.filip@softvision.ro";
         public static final String PASS = "slackwarE112";

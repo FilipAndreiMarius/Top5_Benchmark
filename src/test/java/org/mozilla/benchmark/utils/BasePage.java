@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.objects.ImagePattern;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
+import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
@@ -14,9 +15,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created by silviu.checherita on 1/10/2018.
@@ -66,6 +68,69 @@ public class BasePage extends Thread {
             }
         }
         return null;
+    }
+
+    public void storeCookieInformation(String cookieFile) {
+        if (FileManager.createDirectories(cookieFile)) {
+            File file = new File(cookieFile);
+            try {
+                file.delete();
+                file.createNewFile();
+                FileWriter fileWriter = new FileWriter(file);
+                BufferedWriter writeBuffer = new BufferedWriter(fileWriter);
+                for (org.openqa.selenium.Cookie cook : _driver.manage().getCookies()) {
+                    String writeup = cook.getName() + ";" + cook.getValue() + ";" + cook.getDomain() + ";" + cook.getPath() + ";" + cook.getExpiry() + ";" + cook.isSecure();
+                    writeBuffer.write(writeup);
+                    System.out.println(writeup);
+                    writeBuffer.newLine();
+                }
+                writeBuffer.flush();
+                writeBuffer.close();
+                fileWriter.close();
+            } catch (Exception e) {
+                logger.error(String.format("Could not store cookie information !!! [%s]", e));
+                if (PropertiesManager.getExitIfErrorsFound()) {
+                    System.exit(1);
+                }
+            }
+        }
+    }
+
+    public void getCookieInformation(String cookieFile) {
+        try {
+            File file = new File(cookieFile);
+            System.out.println(file);
+            FileReader fileReader = new FileReader(file);
+            BufferedReader buffReader = new BufferedReader(fileReader);
+            String strLine;
+            while ((strLine = buffReader.readLine()) != null) {
+                StringTokenizer token = new StringTokenizer(strLine, ";");
+
+                while (token.hasMoreTokens()) {
+
+                    String name = token.nextToken();
+                    String value = token.nextToken();
+                    String domain = token.nextToken();
+                    String path = token.nextToken();
+                    System.out.println(name);
+                    Date expiry = null;
+
+                    String val;
+                    if (!(val = token.nextToken()).equals("null")) {
+                        expiry = new Date(val);
+                    }
+                    Boolean isSecure = Boolean.parseBoolean(token.nextToken());
+                    Cookie ck = new Cookie(name, value, domain, path, expiry, isSecure);
+                    System.out.println(ck);
+                    _driver.manage().addCookie(ck);
+                }
+            }
+        } catch (Exception e) {
+            logger.error(String.format("Could not retrieve cookie information !!! [%s]", e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
+        }
     }
 
     public WebElement getElement(By selector) {
@@ -326,48 +391,48 @@ public class BasePage extends Thread {
         }
     }
 
-    public void addPattern(Color color, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
-        if (takeScreenshot) {
+    public void addPattern(Color color, String elementName, String testName, PageNavigationTypes navigationType, ImageSearchTypes searchType, float similarity) {
+        if (PageNavigationTypes.SAVE_PATTERN.equals(navigationType)) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
-            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, testName);
             createBackgroundImage(new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
-            if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+            if (PropertiesManager.getDynamicPatterns()) {
+                ImagePattern.createDynamicPattern(testName, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(WebElement element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
-        if (takeScreenshot) {
+    public void addPattern(WebElement element, String elementName, String testName, PageNavigationTypes navigationType, ImageSearchTypes searchType, float similarity) {
+        if (PageNavigationTypes.SAVE_PATTERN.equals(navigationType)) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
-            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, testName);
             captureElementScreenshot(element, imageDetailsName);
-            if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+            if (PropertiesManager.getDynamicPatterns()) {
+                ImagePattern.createDynamicPattern(testName, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(By element, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
-        if (takeScreenshot) {
-            for (WebElement elem : getElements(element)){
+    public void addPattern(By element, String elementName, String testName, PageNavigationTypes navigationType, ImageSearchTypes searchType, float similarity) {
+        if (PageNavigationTypes.SAVE_PATTERN.equals(navigationType)) {
+            for (WebElement elem : getElements(element)) {
                 String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
-                String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
+                String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, testName);
                 captureElementScreenshot(elem, imageDetailsName);
-                if (PropertiesManager.getDynamicPatterns()){
-                    ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+                if (PropertiesManager.getDynamicPatterns()) {
+                    ImagePattern.createDynamicPattern(testName, elementName, imageDetailsNameShort, searchType, similarity);
                 }
             }
         }
     }
 
-    public void addPattern(String source, String elementName, String testName, Boolean takeScreenshot, ImageSearchTypes searchType, float similarity) {
-        if (takeScreenshot) {
+    public void addPattern(String source, String elementName, String testName, PageNavigationTypes navigationType, ImageSearchTypes searchType, float similarity) {
+        if (PageNavigationTypes.SAVE_PATTERN.equals(navigationType)) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, testName);
-            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName,testName);
+            String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, testName);
             FileManager.copyImage(source, imageDetailsName);
-            if (PropertiesManager.getDynamicPatterns()){
-                ImagePattern.createDynamicPattern(testName,elementName, imageDetailsNameShort, searchType, similarity);
+            if (PropertiesManager.getDynamicPatterns()) {
+                ImagePattern.createDynamicPattern(testName, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
