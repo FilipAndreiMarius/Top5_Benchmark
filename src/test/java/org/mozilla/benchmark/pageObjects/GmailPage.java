@@ -41,11 +41,13 @@ public class GmailPage extends BasePage {
         navigateToUrl(Constants.PageObjects.GMAIL_YOUTUBE_LINK);
         driverSleep(2000);
         click(HYPERLINK_INSIDE_MAIL);
+        driverSleep(4000);
     }
 
     public void runAllScenarios() {
         navigateToHomePage();
         accessYoutubeLink();
+        closeAllTabsExceptFirst();
     }
 
     public int getRuns() {

@@ -33,7 +33,7 @@ public class ScenarioRunner extends Thread {
         }
         logger.info("Creating patterns done !!!");
 
-        /*logger.info("Start Video Process ...");
+        logger.info("Start Video Process ...");
         Thread recordVideo = new VideoCapture(Constants.Video.FFMPEG_INITIAL_FPS, Constants.Video.FFMPEG_RECORD_DURATION, VideoCaptureCommands.START_VIDEO, testName);
         recordVideo.start();
 
@@ -78,6 +78,6 @@ public class ScenarioRunner extends Thread {
         logger.info("Video Processing done !!!");
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());*/
+        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
     }
 }

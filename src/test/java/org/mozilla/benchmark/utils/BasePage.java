@@ -49,6 +49,25 @@ public class BasePage extends Thread {
         }
     }
 
+    public void closeAllTabsExceptFirst() {
+        try {
+            int numberOfTabs = _driver.getWindowHandles().size();
+            if (numberOfTabs > 1) {
+                for (int i = numberOfTabs - 1; i > 0; i--) {
+                    String winHandle = _driver.getWindowHandles().toArray()[i].toString();
+                    _driver.switchTo().window(winHandle);
+                    _driver.close();
+                }
+                _driver.switchTo().window(_driver.getWindowHandles().toArray()[0].toString());
+            }
+        } catch (Exception e) {
+            logger.error(String.format("Could NOT close all tabs except first: [%s]", e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
+        }
+    }
+
     public void navigateBack() {
         try {
             _driver.navigate().back();

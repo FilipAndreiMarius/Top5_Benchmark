@@ -28,6 +28,7 @@ public class DriverUtils {
                 FirefoxProfile profile = null;
                 try {
                     profile = new FirefoxProfile(new File(Constants.Paths.PROFILE_PATH));
+
                 }catch (Exception e){
                     logger.fatal(String.format("Cannot find Profile file !!! [%s]", e));
                     if (PropertiesManager.getExitIfErrorsFound()) {
@@ -36,7 +37,7 @@ public class DriverUtils {
                 }
                 FirefoxOptions options = new FirefoxOptions();
                 options.setProfile(profile);
-                options.addPreference("browser.link.open_newwindow", 3);
+
                 if (Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES != null) {
                     logger.info("Adding [" + Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + "] preference ...");
                     options.addPreference(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE, Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES);
