@@ -34,7 +34,7 @@ public class FacebookPage extends BasePage {
 
     public void navigateToHomePage() {
         logger.info("Accessing Facebook ...");
-        navigateToURL(Constants.PageObjects.FACEBOOK_URL);
+        navigateToUrl(Constants.PageObjects.FACEBOOK_URL);
     }
 
     public void login() {

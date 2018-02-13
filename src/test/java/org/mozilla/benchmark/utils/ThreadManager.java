@@ -13,16 +13,15 @@ import java.lang.reflect.InvocationTargetException;
 public class ThreadManager {
 
     private static final Logger logger = LogManager.getLogger(ThreadManager.class.getName());
-    private static final int NUMBER_OF_EXECUTIONS = 1;
 
-    public static Thread getPageObjectThread(String testName, PageNavigationTypes type) {
+    public static Thread getPageObjectThread(String testName, int numberOfExecutions, PageNavigationTypes type) {
         String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(testName);
 
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
             Constructor<?> constructor = clazz.getConstructor(int.class, PageNavigationTypes.class);
-            Object instance = constructor.newInstance(NUMBER_OF_EXECUTIONS, type);
+            Object instance = constructor.newInstance(numberOfExecutions, type);
             return (Thread) instance;
         } catch (ClassNotFoundException e) {
             logger.error("Class " + className + " not found ! " + e);

@@ -9,14 +9,9 @@ import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.PropertiesManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
-import java.io.File;
-import java.net.MalformedURLException;
 
 
 /**
@@ -28,12 +23,6 @@ public class GmailPage extends BasePage {
     private int runs;
     private PageNavigationTypes navigationType;
     private static final String TEST_NAME = "gmail";
-    private static final String COOKIE_PATH = Constants.Paths.COOKIES + File.separator + TEST_NAME + File.separator + "cookies.data";
-
-    private By USER_NAME = By.id("identifierId");
-    private By USER_NAME_NEXT_BUTTON = By.id("identifierNext");
-    private By USER_PASSWORD = By.name("password");
-    private By USER_PASSWORD_NEXT_BUTTON = By.id("passwordNext");
     private By HYPERLINK_INSIDE_MAIL = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
 
     public GmailPage(int runs, PageNavigationTypes navigationType) {
@@ -42,36 +31,20 @@ public class GmailPage extends BasePage {
     }
 
     public void navigateToHomePage() {
-        if (!PageNavigationTypes.SAVE_COOKIES.equals(getNavigationType())) {
-            getCookieInformation(COOKIE_PATH);
-        }
         logger.info("Accessing Gmail ...");
-        navigateToURL(Constants.PageObjects.GMAIL_URL);
+        navigateToUrl(Constants.PageObjects.GMAIL_URL);
+        driverSleep(1000);
     }
 
-    public void login() {
-        if (PageNavigationTypes.SAVE_COOKIES.equals(getNavigationType())) {
-            sendKeys(USER_NAME, Constants.PageObjects.GMAIL_USER_NAME);
-            click(USER_NAME_NEXT_BUTTON);
-            driverSleep(500);
-            sendKeys(USER_PASSWORD, Constants.PageObjects.GMAIL_PASSWORD);
-            click(USER_PASSWORD_NEXT_BUTTON);
-            storeCookieInformation(COOKIE_PATH);
-            DriverUtils.closeWebBrowser();
-        }
-    }
 
     public void accessYoutubeLink() {
-        if (!PageNavigationTypes.SAVE_COOKIES.equals(getNavigationType())) {
-            navigateToURL(Constants.PageObjects.GMAIL_YOUTUBE_LINK);
-            click(HYPERLINK_INSIDE_MAIL);
-            driverSleep(3000);
-        }
+        navigateToUrl(Constants.PageObjects.GMAIL_YOUTUBE_LINK);
+        driverSleep(2000);
+        click(HYPERLINK_INSIDE_MAIL);
     }
 
     public void runAllScenarios() {
         navigateToHomePage();
-        login();
         accessYoutubeLink();
     }
 
