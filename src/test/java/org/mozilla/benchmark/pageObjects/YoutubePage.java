@@ -3,6 +3,7 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.DriverUtils;
@@ -18,24 +19,27 @@ public class YoutubePage extends BasePage{
 
     private static final Logger logger = LogManager.getLogger(YoutubePage.class.getName());
     private int runs;
+    private PageNavigationTypes navigationType;
 
     private By YOUTUBE_SEARCH_BAR = By.name("search_query");
     private By YOUTUBE_SEARCH_BUTTON = By.id("search-icon-legacy");
     private By YOUTUBE_FIRST_VIDEO = By.cssSelector("a[href*='/watch?v=G2944Wc2V_4']");
     private By YOUTUBE_SECOND_VIDEO = By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-compact-video-renderer']");
+    private By YOUTUBE_TRENDING_LINK = By.xpath("//*[contains(text(), 'Trending')]");
 
-    public YoutubePage(int runs) {
+    public YoutubePage(int runs, PageNavigationTypes navigationType) {
         this.runs = runs;
+        this.navigationType = navigationType;
     }
 
     public void accessYoutube() {
         logger.info("Accessing Youtube...");
-        navigateToURL(Constants.PageObjects.YOUTUBE_URL);
+        navigateToUrl(Constants.PageObjects.YOUTUBE_URL);
     }
 
     public void accessTrending() {
 
-       navigateToURL(Constants.PageObjects.YOUTUBE_TRENDING);
+       click(YOUTUBE_TRENDING_LINK);
     }
 
     public void searchInTrending() {
@@ -57,9 +61,9 @@ public class YoutubePage extends BasePage{
     public void runAllScenarios()  {
         accessYoutube();
         accessTrending();
-        searchInTrending();
+/*        searchInTrending();
         playFirstVideo();
-        playSecondVideo();
+        playSecondVideo();*/
     }
 
     @Override
