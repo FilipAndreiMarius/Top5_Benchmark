@@ -115,6 +115,7 @@ public class Constants {
         //Youtube constants
         public static final String YOUTUBE_ITEM = "sarah jeffery recorder";
         public static final String YOUTUBE_URL = "https://www.youtube.com";
+        public static final String YOUTUBE_TRENDING = "https://www.youtube.com/feed/trending";
 
         //Amazon constants
         public static final String AMAZON_URL = "https://www.amazon.com";
