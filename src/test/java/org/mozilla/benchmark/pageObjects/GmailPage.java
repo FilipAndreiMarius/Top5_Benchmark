@@ -24,6 +24,9 @@ public class GmailPage extends BasePage {
     private PageNavigationTypes navigationType;
     private static final String TEST_NAME = "gmail";
     private By HYPERLINK_INSIDE_MAIL = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
+    private By GMAIL_TEXT = By.id(":i");
+    private By CHAT_IFRAME = By.className("a1j");
+    private By CHAT_NEW_CONVERSATION = By.id("talk_roster"); //FIX THIS
 
     public GmailPage(int runs, PageNavigationTypes navigationType) {
         this.runs = runs;
@@ -33,13 +36,17 @@ public class GmailPage extends BasePage {
     public void navigateToHomePage() {
         logger.info("Accessing Gmail ...");
         navigateToUrl(Constants.PageObjects.GMAIL_URL);
-        driverSleep(1000);
+        addPattern(Constants.Paths.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
+        addPattern(Constants.Paths.GMAIL_LOADING_PATH, "firstNonBlank", ImageSearchTypes.POSITIVE);
+        addPattern(GMAIL_TEXT, "hero", ImageSearchTypes.POSITIVE);
+        addPattern(Constants.Paths.LOAD_DONE_PATH, "lastPaint", ImageSearchTypes.POSITIVE);
+        addPattern(getElementFromIframe(CHAT_IFRAME, CHAT_NEW_CONVERSATION), "lastPaint", ImageSearchTypes.POSITIVE);
     }
 
 
     public void accessYoutubeLink() {
         navigateToUrl(Constants.PageObjects.GMAIL_YOUTUBE_LINK);
-        driverSleep(2000);
+
         click(HYPERLINK_INSIDE_MAIL);
         driverSleep(4000);
     }

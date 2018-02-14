@@ -79,24 +79,4 @@ public class ImagePattern {
         }
         return null;
     }
-
-    public ImagePattern clone(){
-        return this.clone();
-    }
-
-    public String toString() {
-        ImagePattern imagePattern = ImagePatternUtils.getInstance();
-        System.out.println(imagePattern.getName());
-        if (imagePattern.getImageElements().size() > 0) {
-            for (ImageElement imageElement : imagePattern.getImageElements()) {
-                System.out.println(imageElement.getName());
-                if (imageElement.getImageDetails().size() > 0) {
-                    for (ImageDetails imageDetails : imageElement.getImageDetails()) {
-                        System.out.println(imageDetails.getName() + " - " + imageDetails.getSearchType());
-                    }
-                }
-            }
-        }
-        return "";
-    }
 }

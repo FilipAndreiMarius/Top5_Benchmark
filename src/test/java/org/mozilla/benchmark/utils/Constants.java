@@ -22,6 +22,7 @@ public class Constants {
         private static final String CONFIG_PROPERTIES_FILE_NAME = "config.properties";
         private static final String LOAD_DONE_FILE_NAME = "load_done.png";
         private static final String LOAD_PENDING_FILE_NAME = "load_pending.png";
+        private static final String GMAIL_LOADING_FILE_NAME = "gmail_loading.png";
         private static final String PROFILES_FOLDER = "profiles";
         private static final String PROFILE_FILE_NAME = "automation";
 
@@ -37,6 +38,7 @@ public class Constants {
         public static final String PROP_FILE_PATH = RESOURCES_PATH + File.separator + CONFIG_PROPERTIES_FILE_NAME;
         public static final String LOAD_DONE_PATH = RESOURCES_PATH + File.separator + LOAD_DONE_FILE_NAME;
         public static final String LOAD_PENDING_PATH = RESOURCES_PATH + File.separator + LOAD_PENDING_FILE_NAME;
+        public static final String GMAIL_LOADING_PATH = RESOURCES_PATH + File.separator + GMAIL_LOADING_FILE_NAME;
         public static final String PAGE_OBJECT_CLASS_PATH = "org.mozilla.benchmark.pageObjects.";
         public static final String PROFILE_PATH = RESOURCES_PATH + File.separator + PROFILES_FOLDER + File.separator + PROFILE_FILE_NAME;
 

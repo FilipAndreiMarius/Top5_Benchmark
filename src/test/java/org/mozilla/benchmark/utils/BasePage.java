@@ -38,9 +38,8 @@ public class BasePage extends Thread {
 
     public void navigateToUrl(String url) {
         try {
+            driverSleep(1000);
             _driver.navigate().to(url);
-            java.util.Set<java.lang.String> windowHandles = _driver.getWindowHandles();
-            System.out.println("HANDLES: " + windowHandles);
         } catch (Exception e) {
             logger.error(String.format("Could NOT load [%s]: [%s]", url, e));
             if (PropertiesManager.getExitIfErrorsFound()) {
@@ -89,6 +88,12 @@ public class BasePage extends Thread {
             }
         }
         return null;
+    }
+
+    public WebElement getElementFromIframe(By iframe, By selector) {
+        _driver.switchTo().defaultContent();
+        _driver.switchTo().frame(getElement(iframe));
+        return getElement(selector);
     }
 
     public WebElement getElement(By selector) {

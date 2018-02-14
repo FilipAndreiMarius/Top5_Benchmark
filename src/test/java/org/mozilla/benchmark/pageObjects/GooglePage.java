@@ -23,7 +23,6 @@ public class GooglePage extends BasePage {
     private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
     private By TOP_MENU = By.xpath("//*[@class='q qs']");
     private By TOP_RIGTH_MENU = By.xpath("//*[@class='gb_P']");
-    private By ENGLISH_LANGUAGE = By.xpath("//*[contains(text(), 'English')]");
 
     //sidebar images
     private By SIDEBAR_IMAGE_1 = By.id("uid_dimg_3");
@@ -47,16 +46,17 @@ public class GooglePage extends BasePage {
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
         navigateToUrl(Constants.PageObjects.GSEARCH_URL);
-        changeToEnglishVersion();
         addPattern(GOOGLE_LOGO, "startingPoint", ImageSearchTypes.POSITIVE);
         addPattern(Constants.Paths.LOAD_DONE_PATH, "startingPoint", ImageSearchTypes.POSITIVE);
     }
 
     public void search() {
-        logger.info("Searching [" + Constants.PageObjects.SEARCH_ITEM + "] ...");
-        sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, Constants.PageObjects.SEARCH_ITEM);
         addPattern(Constants.Paths.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(getElements(TOP_RIGTH_MENU).get(0), "firstNonBlank", ImageSearchTypes.NEGATIVE);
+
+        logger.info("Searching [" + Constants.PageObjects.SEARCH_ITEM + "] ...");
+        sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, Constants.PageObjects.SEARCH_ITEM);
+
         addPattern(TOP_STORIES_LIST,"hero", ImageSearchTypes.POSITIVE);
         addPattern(SIDEBAR_IMAGE_1,"hero", ImageSearchTypes.POSITIVE);
         addPattern(SIDEBAR_IMAGE_2,"hero", ImageSearchTypes.POSITIVE);
@@ -105,12 +105,6 @@ public class GooglePage extends BasePage {
 
     private void addPattern(WebElement webElement, String elementName, ImageSearchTypes searchType) {
         addPattern(webElement, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void changeToEnglishVersion() {
-        if (("Imagini").equals(getElements(TOP_RIGTH_MENU).get(1).getText())){
-            click(ENGLISH_LANGUAGE);
-        }
     }
 
     @Override
