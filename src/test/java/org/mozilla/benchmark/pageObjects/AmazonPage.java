@@ -6,7 +6,6 @@ import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -27,7 +26,7 @@ public class AmazonPage extends BasePage {
 
     public void accessAmazon() {
         logger.info("Accessing Amazon ...");
-        navigateToURL(Constants.PageObjects.AMAZON_URL);
+        navigateToUrl(Constants.PageObjects.AMAZON_URL);
     }
 
     public void searchAmazon() {

@@ -46,7 +46,7 @@ public class GooglePage extends BasePage {
 
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
-        navigateToURL(Constants.PageObjects.GSEARCH_URL);
+        navigateToUrl(Constants.PageObjects.GSEARCH_URL);
         changeToEnglishVersion();
         addPattern(GOOGLE_LOGO, "startingPoint", ImageSearchTypes.POSITIVE);
         addPattern(Constants.Paths.LOAD_DONE_PATH, "startingPoint", ImageSearchTypes.POSITIVE);

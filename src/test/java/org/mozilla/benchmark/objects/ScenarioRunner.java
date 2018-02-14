@@ -17,22 +17,10 @@ public class ScenarioRunner extends Thread {
 
     public ScenarioRunner(String testName) {
 
-        logger.info("Start creating cookies ...");
-        Thread createCookies = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.SAVE_COOKIES);
-        if (createCookies != null) {
-            createCookies.run();
-            try {
-                createCookies.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-            logger.fatal("Cannot create cookies !!!");
-        }
-        logger.info("Creating cookies done !!!");
-
+        TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         logger.info("Start creating patterns ...");
-        Thread createPatterns = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.SAVE_PATTERN);
+
+        Thread createPatterns = ThreadManager.getPageObjectThread(testName, 1, PageNavigationTypes.SAVE_PATTERN);
         if (createPatterns != null) {
             createPatterns.run();
             try {
@@ -45,20 +33,16 @@ public class ScenarioRunner extends Thread {
         }
         logger.info("Creating patterns done !!!");
 
-        TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
-        TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
-
-/*        logger.info("Start Video Process ...");
-
+        logger.info("Start Video Process ...");
         Thread recordVideo = new VideoCapture(Constants.Video.FFMPEG_INITIAL_FPS, Constants.Video.FFMPEG_RECORD_DURATION, VideoCaptureCommands.START_VIDEO, testName);
-        recordVideo.start();*/
+        recordVideo.start();
 
-        Thread executeFlows = ThreadManager.getPageObjectThread(testName, PageNavigationTypes.EXECUTE_FLOW);
+        Thread executeFlows = ThreadManager.getPageObjectThread(testName, Constants.Execution.NUMBER_OF_RUNS, PageNavigationTypes.EXECUTE_FLOW);
         if (executeFlows != null) {
             executeFlows.run();
         }
 
-/*        try {
+        try {
             recordVideo.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -94,6 +78,6 @@ public class ScenarioRunner extends Thread {
         logger.info("Video Processing done !!!");
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());*/
+        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
     }
 }

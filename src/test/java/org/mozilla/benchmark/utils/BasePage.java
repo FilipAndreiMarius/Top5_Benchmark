@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -33,14 +34,34 @@ public class BasePage extends Thread {
 
     public BasePage() {
         _driver = DriverUtils.getInstance();
-        driverSleep(1000);
     }
 
-    public void navigateToURL(String url) {
+    public void navigateToUrl(String url) {
         try {
             _driver.navigate().to(url);
+            java.util.Set<java.lang.String> windowHandles = _driver.getWindowHandles();
+            System.out.println("HANDLES: " + windowHandles);
         } catch (Exception e) {
             logger.error(String.format("Could NOT load [%s]: [%s]", url, e));
+            if (PropertiesManager.getExitIfErrorsFound()) {
+                System.exit(1);
+            }
+        }
+    }
+
+    public void closeAllTabsExceptFirst() {
+        try {
+            int numberOfTabs = _driver.getWindowHandles().size();
+            if (numberOfTabs > 1) {
+                for (int i = numberOfTabs - 1; i > 0; i--) {
+                    String winHandle = _driver.getWindowHandles().toArray()[i].toString();
+                    _driver.switchTo().window(winHandle);
+                    _driver.close();
+                }
+                _driver.switchTo().window(_driver.getWindowHandles().toArray()[0].toString());
+            }
+        } catch (Exception e) {
+            logger.error(String.format("Could NOT close all tabs except first: [%s]", e));
             if (PropertiesManager.getExitIfErrorsFound()) {
                 System.exit(1);
             }
@@ -68,69 +89,6 @@ public class BasePage extends Thread {
             }
         }
         return null;
-    }
-
-    public void storeCookieInformation(String cookieFile) {
-        if (FileManager.createDirectories(cookieFile)) {
-            File file = new File(cookieFile);
-            try {
-                file.delete();
-                file.createNewFile();
-                FileWriter fileWriter = new FileWriter(file);
-                BufferedWriter writeBuffer = new BufferedWriter(fileWriter);
-                for (org.openqa.selenium.Cookie cook : _driver.manage().getCookies()) {
-                    String writeup = cook.getName() + ";" + cook.getValue() + ";" + cook.getDomain() + ";" + cook.getPath() + ";" + cook.getExpiry() + ";" + cook.isSecure();
-                    writeBuffer.write(writeup);
-                    System.out.println(writeup);
-                    writeBuffer.newLine();
-                }
-                writeBuffer.flush();
-                writeBuffer.close();
-                fileWriter.close();
-            } catch (Exception e) {
-                logger.error(String.format("Could not store cookie information !!! [%s]", e));
-                if (PropertiesManager.getExitIfErrorsFound()) {
-                    System.exit(1);
-                }
-            }
-        }
-    }
-
-    public void getCookieInformation(String cookieFile) {
-        try {
-            File file = new File(cookieFile);
-            System.out.println(file);
-            FileReader fileReader = new FileReader(file);
-            BufferedReader buffReader = new BufferedReader(fileReader);
-            String strLine;
-            while ((strLine = buffReader.readLine()) != null) {
-                StringTokenizer token = new StringTokenizer(strLine, ";");
-
-                while (token.hasMoreTokens()) {
-
-                    String name = token.nextToken();
-                    String value = token.nextToken();
-                    String domain = token.nextToken();
-                    String path = token.nextToken();
-                    System.out.println(name);
-                    Date expiry = null;
-
-                    String val;
-                    if (!(val = token.nextToken()).equals("null")) {
-                        expiry = new Date(val);
-                    }
-                    Boolean isSecure = Boolean.parseBoolean(token.nextToken());
-                    Cookie ck = new Cookie(name, value, domain, path, expiry, isSecure);
-                    System.out.println(ck);
-                    _driver.manage().addCookie(ck);
-                }
-            }
-        } catch (Exception e) {
-            logger.error(String.format("Could not retrieve cookie information !!! [%s]", e));
-            if (PropertiesManager.getExitIfErrorsFound()) {
-                System.exit(1);
-            }
-        }
     }
 
     public WebElement getElement(By selector) {

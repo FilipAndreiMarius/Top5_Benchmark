@@ -41,6 +41,8 @@ public class VideoCapture extends Thread {
             Process p;
             switch (this.command) {
                 case START_VIDEO:
+                    TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
+                    System.out.println("FFMPEG START: " +TimestampContainer.getInstance().getFfmpeg());
                     String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {
                         logger.info("Start recording video ...");
@@ -91,7 +93,8 @@ public class VideoCapture extends Thread {
                     logger.info("Start removing unnecessary images  ...");
                     Timestamp ffmpeg = TimestampContainer.getInstance().getFfmpeg();
                     Timestamp maximize = TimestampContainer.getInstance().getMaximize();
-                    int secondsToRemove = TimeManager.getTimestampDifference(maximize, ffmpeg);
+                    int secondsToRemove = TimeManager.getTimestampDifference(maximize, ffmpeg) - 1;
+                    System.out.println("DIFFERENCE: " + secondsToRemove);
                     FileManager.removeFiles(Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName(), secondsToRemove);
                     logger.info("Removing unnecessary images done !!!");
                     break;
