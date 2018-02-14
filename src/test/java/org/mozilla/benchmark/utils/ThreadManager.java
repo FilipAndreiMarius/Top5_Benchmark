@@ -2,6 +2,7 @@ package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 
 import java.lang.reflect.Constructor;
@@ -15,7 +16,7 @@ public class ThreadManager {
     private static final Logger logger = LogManager.getLogger(ThreadManager.class.getName());
 
     public static Thread getPageObjectThread(String testName, int numberOfExecutions, PageNavigationTypes type) {
-        String className = Constants.Paths.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(testName);
+        String className = PathConstants.PAGE_OBJECT_CLASS_PATH + ScenarioManager.getClassNameFromTestName(testName);
 
         Class<?> clazz;
         try {

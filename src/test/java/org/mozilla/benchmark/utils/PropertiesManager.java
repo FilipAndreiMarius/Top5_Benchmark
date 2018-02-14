@@ -2,6 +2,8 @@ package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.FirefoxPrefsConstants;
+import org.mozilla.benchmark.constants.PathConstants;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.util.Properties;
 public class PropertiesManager {
 
     private static final Logger logger = LogManager.getLogger(PropertiesManager.class.getName());
-    private static Properties prop = loadProperties(Constants.Paths.PROP_FILE_PATH);
+    private static Properties prop = loadProperties(PathConstants.PROP_FILE_PATH);
 
     private static String getString(String key) {
         String value = prop.getProperty(key);
@@ -72,11 +74,11 @@ public class PropertiesManager {
     }
 
     public static Boolean getGfxWebrenderEnabled() {
-        return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE);
+        return getBoolean(FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE);
     }
 
     public static Boolean getGfxWebrenderBlobImages() {
-        return getBoolean(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
+        return getBoolean(FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
     }
 
     public static String[] getScenariosToExecute() {

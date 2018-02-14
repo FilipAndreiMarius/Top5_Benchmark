@@ -2,12 +2,14 @@ package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.FirefoxPrefsConstants;
+import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.constants.WebdriverConstants;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.firefox.internal.ProfilesIni;
 
 import java.io.File;
 
@@ -23,11 +25,11 @@ public class DriverUtils {
         if (instance == null) {
             synchronized (DriverUtils.class) {
                 logger.info("Initializing Driver ...");
-                logger.info("Setting [" + Constants.Driver.WEBDRIVER_PROPERTY + "] property ...");
-                System.setProperty(Constants.Driver.WEBDRIVER_PROPERTY, Constants.Driver.WEBDRIVER_PATH);
+                logger.info("Setting [" + WebdriverConstants.WEBDRIVER_PROPERTY + "] property ...");
+                System.setProperty(WebdriverConstants.WEBDRIVER_PROPERTY, WebdriverConstants.WEBDRIVER_PATH);
                 FirefoxProfile profile = null;
                 try {
-                    profile = new FirefoxProfile(new File(Constants.Paths.PROFILE_PATH));
+                    profile = new FirefoxProfile(new File(PathConstants.PROFILE_PATH));
 
                 }catch (Exception e){
                     logger.fatal(String.format("Cannot find Profile file !!! [%s]", e));
@@ -38,13 +40,13 @@ public class DriverUtils {
                 FirefoxOptions options = new FirefoxOptions();
                 options.setProfile(profile);
 
-                if (Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES != null) {
-                    logger.info("Adding [" + Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + "] preference ...");
-                    options.addPreference(Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE, Constants.FirefoxPrefs.GFX_WEBRENDER_BLOB_IMAGES);
+                if (FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES != null) {
+                    logger.info("Adding [" + FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + "] preference ...");
+                    options.addPreference(FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE, FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES);
                 }
-                if (Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED != null) {
-                    logger.info("Adding [" + Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE + "] preference ...");
-                    options.addPreference(Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED_PREFERENCE, Constants.FirefoxPrefs.GFX_WEBRENDER_ENABLED);
+                if (FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED != null) {
+                    logger.info("Adding [" + FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE + "] preference ...");
+                    options.addPreference(FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE, FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED);
                 }
 
 

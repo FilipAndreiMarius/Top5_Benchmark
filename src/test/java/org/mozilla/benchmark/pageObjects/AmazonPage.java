@@ -2,9 +2,9 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.DriverUtils;
-import org.mozilla.benchmark.utils.Constants;
 import org.openqa.selenium.By;
 
 /**
@@ -26,12 +26,12 @@ public class AmazonPage extends BasePage {
 
     public void accessAmazon() {
         logger.info("Accessing Amazon ...");
-        navigateToUrl(Constants.PageObjects.AMAZON_URL);
+        navigateToUrl(WebPageConstants.AMAZON_URL);
     }
 
     public void searchAmazon() {
-        logger.info("Searching [" + Constants.PageObjects.AMAZON_SEARCH_ITEM + "] ...");
-        sendKeys(SEARCH_BAR, Constants.PageObjects.AMAZON_SEARCH_ITEM);
+        logger.info("Searching [" + WebPageConstants.AMAZON_SEARCH_ITEM + "] ...");
+        sendKeys(SEARCH_BAR, WebPageConstants.AMAZON_SEARCH_ITEM);
         click(SEARCH_BUTTON);
     }
 

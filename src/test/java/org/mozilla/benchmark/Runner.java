@@ -2,8 +2,8 @@ package org.mozilla.benchmark;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.*;
-import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.constants.ExecutionConstants;
+import org.mozilla.benchmark.objects.ScenarioRunner;
 import org.mozilla.benchmark.utils.PropertiesManager;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ public class Runner {
 
     public static void main(String args[]) throws IOException {
 
-        String[] scenarios = Constants.Execution.EXECUTED_SCENARIOS;
+        String[] scenarios = ExecutionConstants.EXECUTED_SCENARIOS;
         if (scenarios.length == 0) {
             logger.warn("There are no scenarios to execute !!!");
             if (PropertiesManager.getExitIfErrorsFound()) {

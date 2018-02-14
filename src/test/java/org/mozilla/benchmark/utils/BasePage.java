@@ -3,6 +3,7 @@ package org.mozilla.benchmark.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.FileExtensionsConstants;
 import org.mozilla.benchmark.objects.ImagePattern;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
@@ -15,11 +16,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * Created by silviu.checherita on 1/10/2018.
@@ -299,7 +298,7 @@ public class BasePage extends Thread {
             logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", selector, destination));
             img = ImageIO.read(screen);
             BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
-            ImageIO.write(dest, Constants.Extensions.IMAGE_EXTENSION, screen);
+            ImageIO.write(dest, FileExtensionsConstants.IMAGE_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
@@ -322,7 +321,7 @@ public class BasePage extends Thread {
             logger.info(String.format("Saving screenshot for [%s] at the following destination: [%s] ...", element.toString(), destination));
             img = ImageIO.read(screen);
             BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
-            ImageIO.write(dest, Constants.Extensions.IMAGE_EXTENSION, screen);
+            ImageIO.write(dest, FileExtensionsConstants.IMAGE_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
             logger.debug("Screenshot saved !!!");
         } catch (IOException e) {
@@ -343,7 +342,7 @@ public class BasePage extends Thread {
 
             if (FileManager.createDirectories(destination)) {
                 File outputFile = new File(destination);
-                ImageIO.write(image, Constants.Extensions.IMAGE_EXTENSION, outputFile);
+                ImageIO.write(image, FileExtensionsConstants.IMAGE_EXTENSION, outputFile);
                 logger.debug("Image created !!!");
             }
         } catch (IOException e) {

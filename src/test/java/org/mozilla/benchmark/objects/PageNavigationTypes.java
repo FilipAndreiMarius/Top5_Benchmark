@@ -5,7 +5,6 @@ package org.mozilla.benchmark.objects;
  */
 
 public enum PageNavigationTypes {
-    SAVE_COOKIES,
     SAVE_PATTERN,
     EXECUTE_FLOW
 }

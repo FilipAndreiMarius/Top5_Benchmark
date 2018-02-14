@@ -2,6 +2,8 @@ package org.mozilla.benchmark.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.PathConstants;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ public class ScenarioManager {
     private static final String CLASS_NAME_SUFFIX = "Page";
 
     public static String getScenarioName(String jsonName) {
-        return jsonName.replace(Constants.Extensions.JSON_EXTENSION, "");
+        return jsonName.replace(FileExtensionsConstants.JSON_EXTENSION, "");
     }
 
     public static String getClassNameFromTestName(String testName) {
@@ -32,14 +34,14 @@ public class ScenarioManager {
                 logger.debug("[" + scenario + "] found!");
                 scenarioList.add(scenario);
             } else {
-                logger.warn("[" + scenario + "] NOT found in " + Constants.Paths.RESOURCES_PATH + " folder !!! Skipping scenario ...");
+                logger.warn("[" + scenario + "] NOT found in " + PathConstants.RESOURCES_PATH + " folder !!! Skipping scenario ...");
             }
         }
         return scenarioList;
     }
 
     public static String getPatternPathForTest(String testName) {
-        StringBuffer patternPath = new StringBuffer().append(Constants.Paths.PATTERNS_PATH)
+        StringBuffer patternPath = new StringBuffer().append(PathConstants.PATTERNS_PATH)
                 .append(File.separator)
                 .append(testName)
                 .append(File.separator);
@@ -53,7 +55,7 @@ public class ScenarioManager {
                 .append(imageElementName)
                 .append(elementIndex)
                 .append(".")
-                .append(Constants.Extensions.IMAGE_EXTENSION);
+                .append(FileExtensionsConstants.IMAGE_EXTENSION);
         return patternName.toString();
     }
 
@@ -63,7 +65,7 @@ public class ScenarioManager {
         StringBuffer patternName = new StringBuffer().append(imageElementName)
                 .append(elementIndex)
                 .append(".")
-                .append(Constants.Extensions.IMAGE_EXTENSION);
+                .append(FileExtensionsConstants.IMAGE_EXTENSION);
         return patternName.toString();
     }
 }

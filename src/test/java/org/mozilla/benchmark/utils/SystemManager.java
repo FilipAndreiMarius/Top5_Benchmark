@@ -4,7 +4,7 @@ import com.sun.management.OperatingSystemMXBean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.xalan.xsltc.runtime.InternalRuntimeError;
-import org.mozilla.benchmark.objects.ImageAnalyzer;
+import org.mozilla.benchmark.constants.SystemConstants;
 
 import javax.management.MBeanServerConnection;
 import java.lang.management.ManagementFactory;
@@ -37,19 +37,19 @@ public class SystemManager {
 
     public static Boolean checkCpuLoad() {
         int iteration = 0;
-        while (iteration < Constants.System.MAX_CPU_RETRIES) {
+        while (iteration < SystemConstants.MAX_CPU_RETRIES) {
             double cpuLoad = getCpuLoad();
-            if (cpuLoad > Constants.System.CPU_DESIRED) {
+            if (cpuLoad > SystemConstants.CPU_DESIRED) {
                 try {
                     logger.warn("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
-                    Thread.sleep(Constants.System.CPU_CHECK_REFRESH_RATE);
+                    Thread.sleep(SystemConstants.CPU_CHECK_REFRESH_RATE);
                     iteration++;
                 } catch (InterruptedException e) {
                     logger.fatal("Interrupted!", e);
                     return false;
                 }
             }
-            if (cpuLoad <= Constants.System.CPU_DESIRED && cpuLoad > 0.0) {
+            if (cpuLoad <= SystemConstants.CPU_DESIRED && cpuLoad > 0.0) {
                 return true;
             }
         }

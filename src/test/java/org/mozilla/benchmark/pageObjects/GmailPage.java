@@ -2,10 +2,11 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.Constants;
 import org.mozilla.benchmark.utils.DriverUtils;
 import org.mozilla.benchmark.utils.PropertiesManager;
 import org.openqa.selenium.By;
@@ -26,7 +27,7 @@ public class GmailPage extends BasePage {
     private By HYPERLINK_INSIDE_MAIL = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
     private By GMAIL_TEXT = By.id(":i");
     private By CHAT_IFRAME = By.className("a1j");
-    private By CHAT_NEW_CONVERSATION = By.id("talk_roster"); //FIX THIS
+    private By CONVERSATION_ICON = By.cssSelector(".VBgE5b");
 
     public GmailPage(int runs, PageNavigationTypes navigationType) {
         this.runs = runs;
@@ -35,17 +36,17 @@ public class GmailPage extends BasePage {
 
     public void navigateToHomePage() {
         logger.info("Accessing Gmail ...");
-        navigateToUrl(Constants.PageObjects.GMAIL_URL);
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.GMAIL_LOADING_PATH, "firstNonBlank", ImageSearchTypes.POSITIVE);
+        navigateToUrl(WebPageConstants.GMAIL_URL);
+        addPattern(PathConstants.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.GMAIL_LOADING_PATH, "firstNonBlank", ImageSearchTypes.POSITIVE);
         addPattern(GMAIL_TEXT, "hero", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_DONE_PATH, "lastPaint", ImageSearchTypes.POSITIVE);
-        addPattern(getElementFromIframe(CHAT_IFRAME, CHAT_NEW_CONVERSATION), "lastPaint", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_DONE_PATH, "lastPaint", ImageSearchTypes.POSITIVE);
+        addPattern(getElementFromIframe(CHAT_IFRAME, CONVERSATION_ICON), "lastPaint", ImageSearchTypes.POSITIVE);
     }
 
 
     public void accessYoutubeLink() {
-        navigateToUrl(Constants.PageObjects.GMAIL_YOUTUBE_LINK);
+        navigateToUrl(WebPageConstants.GMAIL_YOUTUBE_LINK);
 
         click(HYPERLINK_INSIDE_MAIL);
         driverSleep(4000);

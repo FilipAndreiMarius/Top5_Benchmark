@@ -17,9 +17,9 @@ public class ImagePatternUtils {
             synchronized (ImagePatternUtils.class) {
                 logger.info("Initializing Image Pattern Object ...");
                 instance = new ImagePattern();
+                logger.info("Image Pattern Object initialized !");
             }
         }
-        logger.info("Image Pattern Object initialized !");
         return instance;
     }
 

@@ -3,6 +3,7 @@ package org.mozilla.benchmark.utils;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.VideoConstants;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class FileManager {
     private static final Logger logger = LogManager.getLogger(FileManager.class.getName());
 
     public static int transformSecondsToFrames(int seconds) {
-        return seconds * Constants.Video.FFMPEG_FINAL_FPS;
+        return seconds * VideoConstants.FFMPEG_FINAL_FPS;
     }
 
     public static int getIntFromString(String s) {

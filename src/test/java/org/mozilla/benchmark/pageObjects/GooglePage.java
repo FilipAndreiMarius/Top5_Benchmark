@@ -2,10 +2,15 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
-import org.mozilla.benchmark.utils.*;
-import org.openqa.selenium.*;
+import org.mozilla.benchmark.utils.BasePage;
+import org.mozilla.benchmark.utils.DriverUtils;
+import org.mozilla.benchmark.utils.PropertiesManager;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.awt.*;
 
@@ -45,17 +50,17 @@ public class GooglePage extends BasePage {
 
     public void navigateToHomePage() {
         logger.info("Accessing Google ...");
-        navigateToUrl(Constants.PageObjects.GSEARCH_URL);
+        navigateToUrl(WebPageConstants.GSEARCH_URL);
         addPattern(GOOGLE_LOGO, "startingPoint", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_DONE_PATH, "startingPoint", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_DONE_PATH, "startingPoint", ImageSearchTypes.POSITIVE);
     }
 
     public void search() {
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(getElements(TOP_RIGTH_MENU).get(0), "firstNonBlank", ImageSearchTypes.NEGATIVE);
 
-        logger.info("Searching [" + Constants.PageObjects.SEARCH_ITEM + "] ...");
-        sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, Constants.PageObjects.SEARCH_ITEM);
+        logger.info("Searching [" + WebPageConstants.SEARCH_ITEM + "] ...");
+        sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, WebPageConstants.SEARCH_ITEM);
 
         addPattern(TOP_STORIES_LIST,"hero", ImageSearchTypes.POSITIVE);
         addPattern(SIDEBAR_IMAGE_1,"hero", ImageSearchTypes.POSITIVE);
@@ -64,17 +69,17 @@ public class GooglePage extends BasePage {
         addPattern(SIDEBAR_IMAGE_4,"hero", ImageSearchTypes.POSITIVE);
         addPattern(SIDEBAR_IMAGE_5,"hero", ImageSearchTypes.POSITIVE);
         addPattern(SIDEBAR_IMAGE_6,"hero", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_DONE_PATH, "lastPaint", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_DONE_PATH, "lastPaint", ImageSearchTypes.POSITIVE);
         driverSleep(1500);
     }
 
     public void accessImage() {
         logger.info("Selecting [Images] section ...");
         click(getElements(TOP_MENU).get(0));
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "imageStart", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_PENDING_PATH, "imageStart", ImageSearchTypes.POSITIVE);
         addPattern(getElements(TOP_MENU).get(0),"imageFirstNonBlank", ImageSearchTypes.POSITIVE);
         addPattern(FIRST_ROW_IMAGE_RESULTS, "imageHero", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_DONE_PATH, "imageLastPaint", ImageSearchTypes.POSITIVE);
+        addPattern(PathConstants.LOAD_DONE_PATH, "imageLastPaint", ImageSearchTypes.POSITIVE);
         driverSleep(1500);
     }
 

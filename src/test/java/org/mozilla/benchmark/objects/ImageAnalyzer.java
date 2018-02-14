@@ -4,13 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.utils.Constants;
+import org.mozilla.benchmark.constants.ExecutionConstants;
+import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.ImagePatternUtils;
 import org.mozilla.benchmark.utils.PropertiesManager;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
-import org.sikuli.script.Region;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,8 +20,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import static org.apache.commons.io.FileUtils.iterateFiles;
 
@@ -44,7 +45,7 @@ public class ImageAnalyzer {
     }
 
     private Boolean isImagePresentInPatternsFolder(String testName, ImageDetails image) {
-        return FileManager.fileFound(image.getName(), Constants.Paths.PATTERNS_PATH + File.separator + testName);
+        return FileManager.fileFound(image.getName(), PathConstants.PATTERNS_PATH + File.separator + testName);
     }
 
     private ArrayList<ImagePattern> validatePatterns(ArrayList<ImagePattern> initialImagePatternList, String testName) {
@@ -60,7 +61,7 @@ public class ImageAnalyzer {
                 while (imagesDetailsIterator.hasNext()) {
                     ImageDetails image = (ImageDetails) imagesDetailsIterator.next();
                     if (!isImagePresentInPatternsFolder(testName, image)) {
-                        logger.warn("[" + image.getName() + "] NOT found in " + Constants.Paths.PATTERNS_PATH + File.separator + testName + " folder. Removing from [" + imageElement.getName() + "] element");
+                        logger.warn("[" + image.getName() + "] NOT found in " + PathConstants.PATTERNS_PATH + File.separator + testName + " folder. Removing from [" + imageElement.getName() + "] element");
                         imagesDetailsIterator.remove();
                     } else {
                         logger.debug("[" + image.getName() + "] found!");
@@ -81,10 +82,10 @@ public class ImageAnalyzer {
         ArrayList<ImagePattern> patternList = new ArrayList<>();
         ImagePattern pattern;
 
-        for (int i = 0; i < Constants.Execution.NUMBER_OF_RUNS; i++) {
+        for (int i = 0; i < ExecutionConstants.NUMBER_OF_RUNS; i++) {
             try {
                 if (!PropertiesManager.getDynamicPatterns()) {
-                    String jsonPath = Constants.Paths.RESOURCES_PATH + File.separator + testName.toLowerCase() + Constants.Extensions.JSON_EXTENSION;
+                    String jsonPath = PathConstants.RESOURCES_PATH + File.separator + testName.toLowerCase() + FileExtensionsConstants.JSON_EXTENSION;
                     pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
                 } else {
                     pattern = new Gson().fromJson(new Gson().toJson(ImagePatternUtils.getInstance()), ImagePattern.class);
@@ -102,7 +103,7 @@ public class ImageAnalyzer {
     private ArrayList<String> initializeImages(String testName) {
 
         ArrayList<String> images = new ArrayList<>();
-        Iterator it = iterateFiles(new File(Constants.Paths.SPLIT_VIDEO_PATH + File.separator + testName), null, false);
+        Iterator it = iterateFiles(new File(PathConstants.SPLIT_VIDEO_PATH + File.separator + testName), null, false);
         while (it.hasNext()) {
             Object o = it.next();
             images.add(o.toString());
@@ -166,7 +167,7 @@ public class ImageAnalyzer {
             for (ImageElement element : pattern.getImageElements()) {
                 for (int j = pattern_counter; j < element.getImageDetails().size(); j++) {
                     for (int k = image_counter; k < images.size(); k++) {
-                        String patternPath = Constants.Paths.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
+                        String patternPath = PathConstants.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
                         logger.info(k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
                                 "] in [" + images.get(k) + "]");
                         ImageDetails imageDetails = element.getImageDetails().get(j);

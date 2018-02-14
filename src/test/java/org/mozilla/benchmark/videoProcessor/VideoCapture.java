@@ -2,14 +2,16 @@ package org.mozilla.benchmark.videoProcessor;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mozilla.benchmark.objects.PageNavigationTypes;
+import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.constants.VideoConstants;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.objects.VideoCaptureCommands;
-import org.mozilla.benchmark.utils.*;
+import org.mozilla.benchmark.utils.FileManager;
+import org.mozilla.benchmark.utils.SystemManager;
+import org.mozilla.benchmark.utils.TimeManager;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 
 public class VideoCapture extends Thread {
@@ -36,14 +38,14 @@ public class VideoCapture extends Thread {
 
     @Override
     public void run() {
-        String videoName = getTestName() + Constants.Extensions.VIDEO_EXTENSION;
+        String videoName = getTestName() + FileExtensionsConstants.VIDEO_EXTENSION;
         try {
             Process p;
             switch (this.command) {
                 case START_VIDEO:
                     TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
                     System.out.println("FFMPEG START: " +TimestampContainer.getInstance().getFfmpeg());
-                    String videoOutputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName();
+                    String videoOutputPath = PathConstants.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {
                         logger.info("Start recording video ...");
                         logger.info("Executing FFMPEG command: [" + ffmpegStartVideoCommand(videoOutputPath, videoName) + "]");
@@ -57,10 +59,10 @@ public class VideoCapture extends Thread {
                     break;
 
                 case COMPRESS_VIDEO:
-                    String video60FpsOutputPath = Constants.Paths.FPS_60_VIDEO_PATH + File.separator + getTestName();
+                    String video60FpsOutputPath = PathConstants.FPS_60_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(video60FpsOutputPath)) {
                         logger.info("Start video compression ... ");
-                        String inputPath = Constants.Paths.VIDEOS_PATH + File.separator + getTestName() + File.separator + videoName;
+                        String inputPath = PathConstants.VIDEOS_PATH + File.separator + getTestName() + File.separator + videoName;
                         String outputPath = video60FpsOutputPath + File.separator + videoName;
                         String convertCommand = convertTo60Fps(inputPath, outputPath);
                         logger.info("Executing conversion command: [" + convertCommand + "]");
@@ -75,8 +77,10 @@ public class VideoCapture extends Thread {
 
                 case SPLIT_VIDEO_TO_FRAMES:
                     logger.info("Start image split ...");
-                    String input = Constants.Paths.FPS_60_VIDEO_PATH + File.separator + getTestName() + File.separator + videoName;
-                    String output = Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName();
+                    Boolean isCompressionNeeded = VideoConstants.FFMPEG_FINAL_FPS != VideoConstants.FFMPEG_INITIAL_FPS;
+                    String input = (isCompressionNeeded ? PathConstants.FPS_60_VIDEO_PATH : PathConstants.VIDEOS_PATH)
+                            + File.separator + getTestName() + File.separator + videoName;
+                    String output = PathConstants.SPLIT_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(output)) {
                         String splitCommand = splitIntoFrames(input, output);
                         logger.info("Executing split command: [" + splitCommand + "]");
@@ -95,7 +99,7 @@ public class VideoCapture extends Thread {
                     Timestamp maximize = TimestampContainer.getInstance().getMaximize();
                     int secondsToRemove = TimeManager.getTimestampDifference(maximize, ffmpeg) - 1;
                     System.out.println("DIFFERENCE: " + secondsToRemove);
-                    FileManager.removeFiles(Constants.Paths.SPLIT_VIDEO_PATH + File.separator + getTestName(), secondsToRemove);
+                    FileManager.removeFiles(PathConstants.SPLIT_VIDEO_PATH + File.separator + getTestName(), secondsToRemove);
                     logger.info("Removing unnecessary images done !!!");
                     break;
             }
@@ -107,7 +111,7 @@ public class VideoCapture extends Thread {
 
     private String ffmpegStartVideoCommand(String path, String videoName) {
         StringBuilder command = new StringBuilder();
-        command.append("ffmpeg -f dshow -rtbufsize 2G -i video=screen-capture-recorder -vcodec libx264 -preset ultrafast -crf 0")
+        command.append("ffmpeg -f dshow -rtbufsize 2G -i video=screen-capture-recorder -vcodec h264 -preset ultrafast -crf 0")
                 .append(" -r ").append(getFrames())
                 .append(" -t ").append(getDuration())
                 .append(" ")

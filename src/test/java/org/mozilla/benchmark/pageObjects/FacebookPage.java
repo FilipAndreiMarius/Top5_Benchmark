@@ -2,9 +2,13 @@ package org.mozilla.benchmark.pageObjects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
-import org.mozilla.benchmark.utils.*;
+import org.mozilla.benchmark.utils.BasePage;
+import org.mozilla.benchmark.utils.DriverUtils;
+import org.mozilla.benchmark.utils.PropertiesManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -34,15 +38,15 @@ public class FacebookPage extends BasePage {
 
     public void navigateToHomePage() {
         logger.info("Accessing Facebook ...");
-        navigateToUrl(Constants.PageObjects.FACEBOOK_URL);
+        navigateToUrl(WebPageConstants.FACEBOOK_URL);
     }
 
     public void login() {
         addPattern(USER_NAME, "zero", ImageSearchTypes.POSITIVE);
         addPattern(USER_PASSWORD, "zero", ImageSearchTypes.POSITIVE);
-        addPattern(Constants.Paths.LOAD_PENDING_PATH, "zero", ImageSearchTypes.NEGATIVE);
-        sendKeys(USER_NAME, Constants.PageObjects.FACEBOOK_USER_NAME);
-        sendKeys(USER_PASSWORD, Constants.PageObjects.FACEBOOK_PASS);
+        addPattern(PathConstants.LOAD_PENDING_PATH, "zero", ImageSearchTypes.NEGATIVE);
+        sendKeys(USER_NAME, WebPageConstants.FACEBOOK_USER_NAME);
+        sendKeys(USER_PASSWORD, WebPageConstants.FACEBOOK_PASS);
         click(LOGIN_BUTTON);
     }
 

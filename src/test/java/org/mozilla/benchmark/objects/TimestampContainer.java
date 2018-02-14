@@ -1,7 +1,6 @@
 package org.mozilla.benchmark.objects;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by silviu.checherita on 12/13/2017.
