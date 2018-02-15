@@ -21,8 +21,8 @@ public class ThreadManager {
         Class<?> clazz;
         try {
             clazz = Class.forName(className);
-            Constructor<?> constructor = clazz.getConstructor(int.class, PageNavigationTypes.class);
-            Object instance = constructor.newInstance(numberOfExecutions, type);
+            Constructor<?> constructor = clazz.getConstructor(int.class, String.class, PageNavigationTypes.class);
+            Object instance = constructor.newInstance(numberOfExecutions, testName, type);
             return (Thread) instance;
         } catch (ClassNotFoundException e) {
             logger.error("Class " + className + " not found ! " + e);

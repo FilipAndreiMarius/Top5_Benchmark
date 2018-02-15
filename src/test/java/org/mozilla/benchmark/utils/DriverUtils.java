@@ -28,16 +28,14 @@ public class DriverUtils {
                 logger.info("Initializing Driver ...");
                 logger.info("Setting [" + WebdriverConstants.WEBDRIVER_PROPERTY + "] property ...");
                 System.setProperty(WebdriverConstants.WEBDRIVER_PROPERTY, WebdriverConstants.WEBDRIVER_PATH);
-                FirefoxProfile profile = null;
-                try {
-                    profile = new FirefoxProfile(new File(PathConstants.PROFILE_PATH));
 
-                }catch (Exception e){
-                    logger.fatal(String.format("Cannot find Profile file !!! [%s]", e));
-                    if (PropertiesManager.getExitIfErrorsFound()) {
-                        System.exit(1);
-                    }
+                File profileFile = new File(PropertiesManager.getProfilePath());
+                if(!profileFile.exists()) {
+                    logger.fatal(String.format("Could not locate Firefox Profile. Check if the provided path is correct: [%s]", profileFile));
+                    System.exit(1);
                 }
+
+                FirefoxProfile profile = new FirefoxProfile(profileFile);
                 FirefoxOptions options = new FirefoxOptions();
                 options.setProfile(profile);
 

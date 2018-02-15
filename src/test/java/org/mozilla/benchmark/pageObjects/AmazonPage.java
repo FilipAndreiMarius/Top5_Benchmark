@@ -20,9 +20,6 @@ import java.awt.*;
 public class AmazonPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(AmazonPage.class.getName());
-    private int runs;
-    private PageNavigationTypes navigationType;
-    private static final String TEST_NAME = "amazon";
 
     //patterns Section 1
     private By AMAZON_CART = By.id("nav-cart");
@@ -44,13 +41,8 @@ public class AmazonPage extends BasePage {
     private By VIDEO_PRODUCT = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
     private By BOOK_PRODUCT = By.xpath("//*[contains(text(),'The Lord of the Rings: 50th Anniversary, One Vol. Edition')]");
 
-    public PageNavigationTypes getNavigationType() {
-        return this.navigationType;
-    }
-
-    public AmazonPage(int runs, PageNavigationTypes navigationType) {
-        this.runs = runs;
-        this.navigationType = navigationType;
+    public AmazonPage(int runs, String testName, PageNavigationTypes navigationType) {
+        super(runs, testName, navigationType);
     }
 
     public void accessAmazon() {
@@ -109,29 +101,5 @@ public class AmazonPage extends BasePage {
         backAction();
         accessBookResult();
         resetRun();
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < this.runs; i++) {
-            runAllScenarios();
-        }
-        DriverUtils.closeWebBrowser();
-    }
-
-    private void addPattern(String source, String elementName, ImageSearchTypes searchType) {
-        addPattern(source, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(By selector, String elementName, ImageSearchTypes searchType) {
-        addPattern(selector, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(Color color, String elementName, ImageSearchTypes searchType) {
-        addPattern(color, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(WebElement webElement, String elementName, ImageSearchTypes searchType) {
-        addPattern(webElement, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
     }
 }

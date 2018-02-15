@@ -20,9 +20,6 @@ import java.awt.*;
 public class FacebookPage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
-    private int runs;
-    private PageNavigationTypes navigationType;
-    private static final String TEST_NAME = "facebook";
 
     private By USER_NAME = By.id("email");
     private By USER_PASSWORD = By.id("pass");
@@ -31,9 +28,8 @@ public class FacebookPage extends BasePage {
     private By HOME_BUTTON = By.cssSelector("a[href*='https://www.facebook.com/?ref=tn_tnmn']");
     private By FALLBACK_FEED = By.id("fallback_feed");
 
-    public FacebookPage(int runs, PageNavigationTypes navigationType) {
-        this.runs = runs;
-        this.navigationType = navigationType;
+    public FacebookPage(int runs, String testName, PageNavigationTypes navigationType) {
+        super(runs, testName, navigationType);
     }
 
     public void navigateToHomePage() {
@@ -72,38 +68,6 @@ public class FacebookPage extends BasePage {
         accessGroup();
         homeLink();
         //accessUser();
-    }
-
-    public int getRuns() {
-        return this.runs;
-    }
-
-    public PageNavigationTypes getNavigationType() {
-        return this.navigationType;
-    }
-
-    private void addPattern(String source, String elementName, ImageSearchTypes searchType) {
-        addPattern(source, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(By selector, String elementName, ImageSearchTypes searchType) {
-        addPattern(selector, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(Color color, String elementName, ImageSearchTypes searchType) {
-        addPattern(color, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(WebElement webElement, String elementName, ImageSearchTypes searchType) {
-        addPattern(webElement, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < getRuns(); i++) {
-            runAllScenarios();
-        }
-        DriverUtils.closeWebBrowser();
     }
 }
 

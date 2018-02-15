@@ -18,8 +18,6 @@ import org.openqa.selenium.WebElement;
 public class YoutubePage extends BasePage{
 
     private static final Logger logger = LogManager.getLogger(YoutubePage.class.getName());
-    private int runs;
-    private PageNavigationTypes navigationType;
 
     private By YOUTUBE_SEARCH_BAR = By.name("search_query");
     private By YOUTUBE_SEARCH_BUTTON = By.id("search-icon-legacy");
@@ -27,9 +25,8 @@ public class YoutubePage extends BasePage{
     private By YOUTUBE_SECOND_VIDEO = By.xpath("//*[@class='yt-simple-endpoint style-scope ytd-compact-video-renderer']");
     private By YOUTUBE_TRENDING_LINK = By.xpath("//*[contains(text(), 'Trending')]");
 
-    public YoutubePage(int runs, PageNavigationTypes navigationType) {
-        this.runs = runs;
-        this.navigationType = navigationType;
+    public YoutubePage(int runs, String testName, PageNavigationTypes navigationType) {
+        super(runs, testName, navigationType);
     }
 
     public void accessYoutube() {
@@ -48,14 +45,12 @@ public class YoutubePage extends BasePage{
     }
 
     public void playFirstVideo() {
-        WebElement firstVideo = getElement(YOUTUBE_FIRST_VIDEO);
-        click(firstVideo);
+        click(YOUTUBE_FIRST_VIDEO);
         driverSleep(3000);
     }
 
     public void playSecondVideo()  {
-        WebElement secondVideo = getElement(YOUTUBE_SECOND_VIDEO);
-        click(secondVideo);
+        click(YOUTUBE_SECOND_VIDEO);
     }
 
     public void runAllScenarios()  {
@@ -65,17 +60,6 @@ public class YoutubePage extends BasePage{
         playFirstVideo();
         playSecondVideo();
     }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < this.runs; i++) {
-            runAllScenarios();
-        }
-        DriverUtils.closeWebBrowser();
-    }
-
-
-
 }
 
 

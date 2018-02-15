@@ -20,9 +20,6 @@ import java.awt.*;
 public class GooglePage extends BasePage {
 
     private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
-    private int runs;
-    private PageNavigationTypes navigationType;
-    private static final String TEST_NAME = "google";
 
     private By GOOGLE_LOGO = By.id("hplogo");
     private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
@@ -43,9 +40,8 @@ public class GooglePage extends BasePage {
     //first row of image search results
     private By FIRST_ROW_IMAGE_RESULTS = By.xpath("//*[@data-row='0']");
 
-    public GooglePage(int runs, PageNavigationTypes navigationType) {
-        this.runs = runs;
-        this.navigationType = navigationType;
+    public GooglePage(int runs, String testName, PageNavigationTypes navigationType) {
+        super(runs, testName, navigationType);
     }
 
     public void navigateToHomePage() {
@@ -87,37 +83,6 @@ public class GooglePage extends BasePage {
         navigateToHomePage();
         search();
         accessImage();
-    }
-
-    public int getRuns() {
-        return this.runs;
-    }
-    public PageNavigationTypes getNavigationType() {
-        return this.navigationType;
-    }
-
-    private void addPattern(String source, String elementName, ImageSearchTypes searchType) {
-        addPattern(source, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(By selector, String elementName, ImageSearchTypes searchType) {
-        addPattern(selector, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(Color color, String elementName, ImageSearchTypes searchType) {
-        addPattern(color, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    private void addPattern(WebElement webElement, String elementName, ImageSearchTypes searchType) {
-        addPattern(webElement, elementName, TEST_NAME, getNavigationType(), searchType, PropertiesManager.getDefaultSimilarity());
-    }
-
-    @Override
-    public void run() {
-        for (int i = 0; i < getRuns(); i++) {
-            runAllScenarios();
-        }
-        DriverUtils.closeWebBrowser();
     }
 }
 

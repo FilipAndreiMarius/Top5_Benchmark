@@ -43,6 +43,10 @@ public class PropertiesManager {
         return getInteger("number_of_runs");
     }
 
+    public static String getProfilePath() {
+        return getString("profile_path");
+    }
+
     public static Boolean getExitIfErrorsFound() {
         return getBoolean("exit_if_errors_found");
     }
@@ -51,7 +55,9 @@ public class PropertiesManager {
         return getBoolean("dynamic_patterns");
     }
 
-    public static float getDefaultSimilarity() { return getFloat("default_similarity"); }
+    public static float getDefaultSimilarity() {
+        return getFloat("default_similarity");
+    }
 
     public static int getFfmpegInitialFps() {
         return getInteger("ffmpeg_initial_fps");
