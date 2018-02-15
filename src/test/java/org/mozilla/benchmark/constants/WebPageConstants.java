@@ -1,18 +1,18 @@
 package org.mozilla.benchmark.constants;
 
+import org.openqa.selenium.By;
+
 /**
  * Created by Silviu on 14/02/2018.
  */
 public final class WebPageConstants {
 
+    public static String HOME_PAGE_URL = "about:home";
+    public static By HOME_PAGE_PATTERN = By.xpath("//h3[contains(@class, 'section-title')]");
+
     //Gmail constants
     public static final String GMAIL_YOUTUBE_LINK = "http://benjamin.smedbergs.us/tests/youtube-notification-mail/youtube-notification-mail-complete.html";
     public static final String GMAIL_URL = "https://mail.google.com/mail/";
-    public static final String GMAIL_USER_NAME = "benckmark.automation@gmail.com";
-    public static final String GMAIL_PASSWORD = "Softvision10";
-    //credentials
-    public static final String USER_NAME = "andrei.filip@softvision.ro";
-    public static final String PASS = "slackwarE112";
 
     //Facebook constants
     public static final String FACEBOOK_URL = "https://www.facebook.com";

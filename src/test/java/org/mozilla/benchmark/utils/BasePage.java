@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImagePattern;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
@@ -26,9 +27,9 @@ import java.util.List;
 public class BasePage extends Thread {
 
     private static final Logger logger = LogManager.getLogger(BasePage.class.getName());
-    public static WebDriver _driver;
+    private static WebDriver _driver;
     private static int timeout = 10;
-    public WebDriverWait wait;
+    private WebDriverWait wait;
     public static String BROWSER_BG_COLOR = "#f9f9f9";
 
     public BasePage() {
@@ -64,6 +65,11 @@ public class BasePage extends Thread {
                 System.exit(1);
             }
         }
+    }
+
+    public void resetRun() {
+        closeAllTabsExceptFirst();
+        navigateToUrl(WebPageConstants.HOME_PAGE_URL);
     }
 
     public void navigateBack() {

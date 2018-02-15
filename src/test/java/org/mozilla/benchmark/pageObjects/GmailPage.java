@@ -35,6 +35,7 @@ public class GmailPage extends BasePage {
     }
 
     public void navigateToHomePage() {
+        addPattern(WebPageConstants.HOME_PAGE_PATTERN, "startingPoint", ImageSearchTypes.POSITIVE);
         logger.info("Accessing Gmail ...");
         navigateToUrl(WebPageConstants.GMAIL_URL);
         addPattern(PathConstants.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
@@ -55,7 +56,7 @@ public class GmailPage extends BasePage {
     public void runAllScenarios() {
         navigateToHomePage();
         accessYoutubeLink();
-        closeAllTabsExceptFirst();
+        resetRun();
     }
 
     public int getRuns() {
