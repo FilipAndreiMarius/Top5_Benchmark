@@ -82,8 +82,6 @@ public class ScenarioRunner extends Thread {
         logger.log(LoggerManagerLevel.INFO, "Video Processing done !!!", false);
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        logger.log(LoggerManagerLevel.INFO, "Video Processing done !!!", true);
-        MailBuilder mail = new MailBuilder(MailConstants.INFO_TITLE, imgAnalyzer.getResults().toString(), PropertiesManager.getResultsEmailRecipients());
-        mail.sendMail();
+        logger.log(LoggerManagerLevel.INFO, imgAnalyzer.getResults().toString(), true);
     }
 }
