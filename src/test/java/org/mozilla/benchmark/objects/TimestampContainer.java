@@ -13,7 +13,7 @@ public class TimestampContainer {
     private Timestamp ffmpeg;
     private Timestamp maximize;
 
-    protected TimestampContainer() {
+    private TimestampContainer() {
     }
 
     public static TimestampContainer getInstance() {

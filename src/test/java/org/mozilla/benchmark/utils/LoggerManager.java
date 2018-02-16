@@ -12,13 +12,13 @@ import org.mozilla.benchmark.objects.LoggerManagerLevel;
 public class LoggerManager {
 
     private final Logger logger;
+    private static final Boolean EXIT_IF_ERROR_FOUND = PropertiesManager.getExitIfErrorsFound();
 
     public LoggerManager(String className) {
         this.logger = LogManager.getLogger(className);
     }
 
     public void log(LoggerManagerLevel level, String message, Boolean emailNotification) {
-        System.out.println(logger);
 
         switch (level){
             case DEBUG: {
@@ -35,24 +35,34 @@ public class LoggerManager {
             }
             case INFO: {
                 this.logger.info(message);
+                createAndSendMail(MailConstants.INFO_TITLE, message, emailNotification);
                 break;
             }
             case FATAL: {
                 this.logger.fatal(message);
+                createAndSendMail(MailConstants.ERROR_TITLE, message, emailNotification);
+                exit();
                 break;
             }
             case ERROR: {
                 logger.error(message);
+                createAndSendMail(MailConstants.ERROR_TITLE, message, emailNotification);
+                exit();
                 break;
             }
         }
+    }
 
-        if (emailNotification){
-            MailBuilder mail = new MailBuilder(MailConstants.TITLE_ERROR, message, PropertiesManager.getErrorEmailRecipients());
-            mail.sendMail();
-        }
-        if (PropertiesManager.getExitIfErrorsFound() && (LoggerManagerLevel.FATAL.equals(level) || LoggerManagerLevel.ERROR.equals(level))) {
+    private static void exit(){
+        if (EXIT_IF_ERROR_FOUND) {
             System.exit(1);
+        }
+    }
+
+    private static void createAndSendMail(String title, String message, Boolean emailNotification){
+        if(emailNotification) {
+            MailBuilder mail = new MailBuilder(title, message, PropertiesManager.getErrorEmailRecipients());
+            mail.sendMail();
         }
     }
 }

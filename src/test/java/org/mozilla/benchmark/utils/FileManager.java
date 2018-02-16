@@ -1,9 +1,8 @@
 package org.mozilla.benchmark.utils;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.VideoConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +12,7 @@ import java.io.IOException;
  */
 public class FileManager {
 
-    private static final Logger logger = LogManager.getLogger(FileManager.class.getName());
+    private static final LoggerManager logger = new LoggerManager(FileManager.class.getName());
 
     public static int transformSecondsToFrames(int seconds) {
         return seconds * VideoConstants.FFMPEG_FINAL_FPS;
@@ -29,15 +28,15 @@ public class FileManager {
         int frames = transformSecondsToFrames(seconds);
 
         if (files == null) {
-            logger.warn("No files deleted");
+            logger.log(LoggerManagerLevel.WARN, "No files deleted", false);
         } else {
 
             for (File file : files) {
                 if (getIntFromString(file.getName()) < frames) {
                     if (file.delete()) {
-                        logger.debug("Deleted: [" + file.getName() + "]");
+                        logger.log(LoggerManagerLevel.DEBUG, String.format("Deleted: [%s]", file.getName()), false);
                     } else {
-                        logger.error("Failed to delete " + file.getName());
+                        logger.log(LoggerManagerLevel.ERROR, String.format("Failed to delete [%s]", file.getName()), PropertiesManager.getEmailNotification());
                     }
                 }
             }
@@ -75,12 +74,12 @@ public class FileManager {
 
     public static Boolean createDirectories(String filename) {
         File dir = new File(filename);
-        logger.info("Creating: [" + filename + "] ... ");
+        logger.log(LoggerManagerLevel.INFO, String.format("Creating:  [%s]", filename), false);
         boolean successful = dir.mkdirs();
         if (successful) {
-            logger.debug("[" + filename + "] created successfully !!!");
+            logger.log(LoggerManagerLevel.DEBUG, String.format("[%s] created successfully !!!", filename), false);
         } else {
-            logger.error("Failed to create [" + filename + "] !!!");
+            logger.log(LoggerManagerLevel.ERROR, String.format("Failed to create [%s]", filename), PropertiesManager.getEmailNotification());
         }
         return successful;
     }
@@ -91,7 +90,7 @@ public class FileManager {
         try {
             FileUtils.copyFile(source, destination);
         } catch (IOException e) {
-            logger.error("Failed to copy file!!!" + e);
+            logger.log(LoggerManagerLevel.ERROR, String.format("Failed to copy file [%s]: [%s]" , source.getName(), e), PropertiesManager.getEmailNotification());
         }
     }
 }

@@ -2,13 +2,12 @@ package org.mozilla.benchmark.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.ImagePatternUtils;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.mozilla.benchmark.utils.PropertiesManager;
 import org.sikuli.script.Finder;
 import org.sikuli.script.Pattern;
@@ -30,7 +29,7 @@ import static org.apache.commons.io.FileUtils.iterateFiles;
  */
 public class ImageAnalyzer {
 
-    private static final Logger logger = LogManager.getLogger(ImageAnalyzer.class.getName());
+    private static final LoggerManager logger = new LoggerManager(ImageAnalyzer.class.getName());
 
     private ArrayList<ImagePattern> patterns;
     private ArrayList<String> images;
@@ -50,7 +49,7 @@ public class ImageAnalyzer {
 
     private ArrayList<ImagePattern> validatePatterns(ArrayList<ImagePattern> initialImagePatternList, String testName) {
 
-        logger.info("Validating patterns ...");
+        logger.log(LoggerManagerLevel.INFO, "Validating patterns ...", false);
         Iterator imagePatternIterator = initialImagePatternList.iterator();
         while (imagePatternIterator.hasNext()) {
             ImagePattern imagePattern = (ImagePattern) imagePatternIterator.next();
@@ -61,19 +60,19 @@ public class ImageAnalyzer {
                 while (imagesDetailsIterator.hasNext()) {
                     ImageDetails image = (ImageDetails) imagesDetailsIterator.next();
                     if (!isImagePresentInPatternsFolder(testName, image)) {
-                        logger.warn("[" + image.getName() + "] NOT found in " + PathConstants.PATTERNS_PATH + File.separator + testName + " folder. Removing from [" + imageElement.getName() + "] element");
+                        logger.log(LoggerManagerLevel.WARN, "[" + image.getName() + "] NOT found in " + PathConstants.PATTERNS_PATH + File.separator + testName + " folder. Removing from [" + imageElement.getName() + "] element", false);
                         imagesDetailsIterator.remove();
                     } else {
-                        logger.debug("[" + image.getName() + "] found!");
+                        logger.log(LoggerManagerLevel.DEBUG, "[" + image.getName() + "] found!", false);
                     }
                 }
                 if (imageElement.getImageDetails().size() == 0) {
-                    logger.warn("[" + imageElement.getName() + "] has no patterns. Removing element");
+                    logger.log(LoggerManagerLevel.WARN, "[" + imageElement.getName() + "] has no patterns. Removing element", false);
                     imageElementIterator.remove();
                 }
             }
         }
-        logger.info("Pattern validation complete!");
+        logger.log(LoggerManagerLevel.INFO, "Pattern validation complete!", false);
         return initialImagePatternList;
     }
 
@@ -168,8 +167,8 @@ public class ImageAnalyzer {
                 for (int j = pattern_counter; j < element.getImageDetails().size(); j++) {
                     for (int k = image_counter; k < images.size(); k++) {
                         String patternPath = PathConstants.PATTERNS_PATH + File.separator + testName + File.separator + element.getImageDetails().get(j).getName();
-                        logger.info(k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
-                                "] in [" + images.get(k) + "]");
+                        logger.log(LoggerManagerLevel.INFO, k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
+                                "] in [" + images.get(k) + "]", false);
                         ImageDetails imageDetails = element.getImageDetails().get(j);
                         if (searchImage(patternPath, images.get(k), imageDetails.getSearchType(), imageDetails.getSimilarity())) {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
@@ -211,12 +210,6 @@ public class ImageAnalyzer {
 
     public int getLastFound() {
         return this.lastFound;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(searchImage("C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T19_44_32\\patterns\\google\\firstNonBlank2.png",
-                "C:\\workspace\\Top5_Benchmark\\runs\\2018-02-05T19_44_32\\images\\google\\image.000495.png",
-                ImageSearchTypes.NEGATIVE, 0.95f));
     }
 }
 

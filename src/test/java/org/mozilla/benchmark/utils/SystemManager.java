@@ -1,25 +1,24 @@
 package org.mozilla.benchmark.utils;
 
 import com.sun.management.OperatingSystemMXBean;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.xalan.xsltc.runtime.InternalRuntimeError;
 import org.mozilla.benchmark.constants.SystemConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 
 import javax.management.MBeanServerConnection;
 import java.lang.management.ManagementFactory;
 
 public class SystemManager {
 
-    private static final Logger logger = LogManager.getLogger(SystemManager.class.getName());
+    private static final LoggerManager logger = new LoggerManager(SystemManager.class.getName());
 
     private static OperatingSystemMXBean getOperatingSystemMXBean() {
         OperatingSystemMXBean opSys = null;
         try {
             MBeanServerConnection server = ManagementFactory.getPlatformMBeanServer();
             opSys = ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
-        } catch (Exception exp) {
-            logger.fatal("Exception! ", exp);
+        } catch (Exception e) {
+            logger.log(LoggerManagerLevel.FATAL, String.format("Exception! [%s]", e), PropertiesManager.getEmailNotification());
         }
         return opSys;
     }
@@ -30,7 +29,7 @@ public class SystemManager {
             OperatingSystemMXBean osMBean = getOperatingSystemMXBean();
             cpuLoad = osMBean.getSystemCpuLoad() * 100;
         } catch (InternalRuntimeError e) {
-            logger.fatal("InternalRuntimeError! ", e);
+            logger.log(LoggerManagerLevel.FATAL, String.format("InternalRuntimeError! [%s] ", e), PropertiesManager.getEmailNotification());
         }
         return cpuLoad;
     }
@@ -41,11 +40,11 @@ public class SystemManager {
             double cpuLoad = getCpuLoad();
             if (cpuLoad > SystemConstants.CPU_DESIRED) {
                 try {
-                    logger.warn("Cpu Usage is too high for the moment: " + cpuLoad + "\n");
+                    logger.log(LoggerManagerLevel.WARN, String.format("Cpu Usage is too high for the moment: [%s]", cpuLoad), false);
                     Thread.sleep(SystemConstants.CPU_CHECK_REFRESH_RATE);
                     iteration++;
                 } catch (InterruptedException e) {
-                    logger.fatal("Interrupted!", e);
+                    logger.log(LoggerManagerLevel.FATAL, String.format("Interrupted! [%s]", e), PropertiesManager.getEmailNotification());
                     return false;
                 }
             }

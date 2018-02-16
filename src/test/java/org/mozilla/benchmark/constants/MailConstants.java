@@ -5,6 +5,6 @@ package org.mozilla.benchmark.constants;
  */
 public class MailConstants {
 
-    public static final String TITLE_ERROR = "[ERROR] Automated benchmark run";
-    public static final String TITLE_RESULTS = "Automated benchmark run complete!";
+    public static final String ERROR_TITLE = "[ERROR] Automated benchmark run";
+    public static final String INFO_TITLE = "[INFO] Automated benchmark run";
 }

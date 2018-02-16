@@ -1,9 +1,8 @@
 package org.mozilla.benchmark.utils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
 import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 
 public class ScenarioManager {
 
-    private static final Logger logger = LogManager.getLogger(ScenarioManager.class.getName());
+    private static final LoggerManager logger = new LoggerManager(ScenarioManager.class.getName());
     private static final String CLASS_NAME_SUFFIX = "Page";
 
     public static String getScenarioName(String jsonName) {
@@ -28,13 +27,13 @@ public class ScenarioManager {
 
     public static ArrayList<String> validateScenarios(String[] scenarios, String directoryName) {
         ArrayList<String> scenarioList = new ArrayList<>();
-        logger.info("Validating scenarios ...");
+        logger.log(LoggerManagerLevel.INFO, "Validating scenarios ...", false);
         for (String scenario : scenarios) {
             if (FileManager.fileFound(scenario, directoryName)) {
-                logger.debug("[" + scenario + "] found!");
+                logger.log(LoggerManagerLevel.DEBUG, String.format("[%s] found!", scenario), false);
                 scenarioList.add(scenario);
             } else {
-                logger.warn("[" + scenario + "] NOT found in " + PathConstants.RESOURCES_PATH + " folder !!! Skipping scenario ...");
+                logger.log(LoggerManagerLevel.WARN, String.format("[%s] NOT found in [%s] folder !!! Skipping scenario ...", scenario, PathConstants.RESOURCES_PATH), false);
             }
         }
         return scenarioList;

@@ -1,25 +1,20 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.DriverUtils;
-import org.mozilla.benchmark.utils.PropertiesManager;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.awt.*;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
 public class AmazonPage extends BasePage {
 
-    private static final Logger logger = LogManager.getLogger(AmazonPage.class.getName());
+    private static final LoggerManager logger = new LoggerManager(AmazonPage.class.getName());
 
     //patterns Section 1
     private By AMAZON_CART = By.id("nav-cart");
@@ -46,7 +41,7 @@ public class AmazonPage extends BasePage {
     }
 
     public void accessAmazon() {
-        logger.info("Accessing Amazon ...");
+        logger.log(LoggerManagerLevel.INFO, "Accessing Amazon ...", false);
         navigateToUrl(WebPageConstants.AMAZON_URL);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section1_navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(NAV_LOGO, "Section1_firstNonBlank", ImageSearchTypes.POSITIVE);
@@ -57,7 +52,7 @@ public class AmazonPage extends BasePage {
     }
 
     public void searchAmazon() {
-        logger.info("Searching [" + WebPageConstants.AMAZON_SEARCH_ITEM + "] ...");
+        logger.log(LoggerManagerLevel.INFO, "Searching [" + WebPageConstants.AMAZON_SEARCH_ITEM + "] ...", false);
         sendKeys(SEARCH_BAR, WebPageConstants.AMAZON_SEARCH_ITEM);
         click(SEARCH_BUTTON);
         addPattern(NAV_SEARCH, "Section2_beforeActionElement", ImageSearchTypes.POSITIVE);
@@ -68,7 +63,7 @@ public class AmazonPage extends BasePage {
 
 
     public void accessVideoResult() {
-        logger.info("Navigate to video product ...");
+        logger.log(LoggerManagerLevel.INFO, "Navigate to video product ...", false);
         click(VIDEO_PRODUCT);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section3_searchStart", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section3_firstNonBlank", ImageSearchTypes.POSITIVE);
@@ -77,7 +72,7 @@ public class AmazonPage extends BasePage {
     }
 
     public void backAction() {
-        logger.info("Navigate back ...");
+        logger.log(LoggerManagerLevel.INFO, "Navigate back ...", false);
         navigateBack();
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section4_backAction", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section4_firstNonBlank", ImageSearchTypes.POSITIVE);
@@ -86,7 +81,7 @@ public class AmazonPage extends BasePage {
     }
 
     public void accessBookResult() {
-        logger.info("Navigate to book product ...");
+        logger.log(LoggerManagerLevel.INFO, "Navigate to book product ...", false);
         click(BOOK_PRODUCT);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section5_AccessPapper", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section5_firstNonBlank", ImageSearchTypes.POSITIVE);

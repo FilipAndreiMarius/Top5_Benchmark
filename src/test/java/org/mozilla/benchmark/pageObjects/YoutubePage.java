@@ -1,14 +1,11 @@
 package org.mozilla.benchmark.pageObjects;
 
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.WebPageConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.DriverUtils;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 
 
@@ -17,7 +14,7 @@ import org.openqa.selenium.WebElement;
  */
 public class YoutubePage extends BasePage{
 
-    private static final Logger logger = LogManager.getLogger(YoutubePage.class.getName());
+    private static final LoggerManager logger = new LoggerManager(YoutubePage.class.getName());
 
     private By YOUTUBE_SEARCH_BAR = By.name("search_query");
     private By YOUTUBE_SEARCH_BUTTON = By.id("search-icon-legacy");
@@ -30,7 +27,7 @@ public class YoutubePage extends BasePage{
     }
 
     public void accessYoutube() {
-        logger.info("Accessing Youtube...");
+        logger.log(LoggerManagerLevel.INFO, "Accessing Youtube...", false);
         navigateToUrl(WebPageConstants.YOUTUBE_URL);
     }
 

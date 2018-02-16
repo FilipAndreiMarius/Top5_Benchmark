@@ -1,29 +1,26 @@
 package org.mozilla.benchmark.objects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.constants.MailConstants;
 import org.mozilla.benchmark.constants.VideoConstants;
 import org.mozilla.benchmark.mail.MailBuilder;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.mozilla.benchmark.utils.PropertiesManager;
 import org.mozilla.benchmark.utils.ThreadManager;
 import org.mozilla.benchmark.utils.TimeManager;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
-
-import javax.mail.Transport;
 
 /**
  * Created by silviu.checherita on 1/5/2018.
  */
 public class ScenarioRunner extends Thread {
 
-    private static final Logger logger = LogManager.getLogger(ScenarioRunner.class.getName());
+    private static final LoggerManager logger = new LoggerManager(ImageAnalyzer.class.getName());
 
     public ScenarioRunner(String testName) {
 
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
-        logger.info("Start creating patterns ...");
+        logger.log(LoggerManagerLevel.INFO, "Start creating patterns ...", false);
 
         Thread createPatterns = ThreadManager.getPageObjectThread(testName, 1, PageNavigationTypes.SAVE_PATTERN);
         if (createPatterns != null) {
@@ -34,11 +31,11 @@ public class ScenarioRunner extends Thread {
                 e.printStackTrace();
             }
         } else {
-            logger.fatal("Cannot create patterns !!!");
+            logger.log(LoggerManagerLevel.FATAL, "Cannot create patterns !!!", PropertiesManager.getEmailNotification());
         }
-        logger.info("Creating patterns done !!!");
+        logger.log(LoggerManagerLevel.INFO, "Creating patterns done !!!", false);
 
-        logger.info("Start Video Process ...");
+        logger.log(LoggerManagerLevel.INFO, "Start Video Process ...", false);
         Thread recordVideo = new VideoCapture(VideoConstants.FFMPEG_INITIAL_FPS, VideoConstants.FFMPEG_RECORD_DURATION, VideoCaptureCommands.START_VIDEO, testName);
         recordVideo.start();
 
@@ -53,7 +50,7 @@ public class ScenarioRunner extends Thread {
             e.printStackTrace();
         }
 
-        if(VideoConstants.FFMPEG_INITIAL_FPS != VideoConstants.FFMPEG_FINAL_FPS) {
+        if (VideoConstants.FFMPEG_INITIAL_FPS != VideoConstants.FFMPEG_FINAL_FPS) {
             Thread compress = new VideoCapture(VideoCaptureCommands.COMPRESS_VIDEO, testName);
             compress.start();
 
@@ -82,10 +79,11 @@ public class ScenarioRunner extends Thread {
             e.printStackTrace();
         }
 
-        logger.info("Video Processing done !!!");
+        logger.log(LoggerManagerLevel.INFO, "Video Processing done !!!", false);
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        MailBuilder mail = new MailBuilder(MailConstants.TITLE_RESULTS, imgAnalyzer.getResults().toString(), PropertiesManager.getResultsEmailRecipients());
+        logger.log(LoggerManagerLevel.INFO, "Video Processing done !!!", true);
+        MailBuilder mail = new MailBuilder(MailConstants.INFO_TITLE, imgAnalyzer.getResults().toString(), PropertiesManager.getResultsEmailRecipients());
         mail.sendMail();
     }
 }

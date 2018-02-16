@@ -28,7 +28,7 @@ public class DriverUtils {
                 System.setProperty(WebdriverConstants.WEBDRIVER_PROPERTY, WebdriverConstants.WEBDRIVER_PATH);
 
                 File profileFile = new File(PropertiesManager.getProfilePath());
-                if(!profileFile.exists()) {
+                if (!profileFile.exists()) {
                     logger.log(LoggerManagerLevel.FATAL, String.format("Could not locate Firefox Profile. Check if the provided path is correct: [%s]", profileFile), PropertiesManager.getEmailNotification());
                 }
 
@@ -49,7 +49,6 @@ public class DriverUtils {
 
                 instance = new FirefoxDriver(options);
                 TimestampContainer.getInstance().setMaximize(TimeManager.getCurrentTimestamp());
-                System.out.println("BROWSER START: " + TimestampContainer.getInstance().getMaximize());
             }
         }
         logger.log(LoggerManagerLevel.INFO, "Driver initialized !", false);

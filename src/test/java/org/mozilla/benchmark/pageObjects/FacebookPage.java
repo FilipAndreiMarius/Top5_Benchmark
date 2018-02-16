@@ -1,25 +1,21 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.DriverUtils;
-import org.mozilla.benchmark.utils.PropertiesManager;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-
-import java.awt.*;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
 public class FacebookPage extends BasePage {
 
-    private static final Logger logger = LogManager.getLogger(FacebookPage.class.getName());
+    private static final LoggerManager logger = new LoggerManager(FacebookPage.class.getName());
 
     private By USER_NAME = By.id("email");
     private By USER_PASSWORD = By.id("pass");
@@ -33,7 +29,7 @@ public class FacebookPage extends BasePage {
     }
 
     public void navigateToHomePage() {
-        logger.info("Accessing Facebook ...");
+        logger.log(LoggerManagerLevel.INFO, "Accessing Facebook ...", false);
         navigateToUrl(WebPageConstants.FACEBOOK_URL);
     }
 

@@ -1,25 +1,20 @@
 package org.mozilla.benchmark.pageObjects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.constants.WebPageConstants;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.utils.BasePage;
-import org.mozilla.benchmark.utils.DriverUtils;
-import org.mozilla.benchmark.utils.PropertiesManager;
+import org.mozilla.benchmark.utils.LoggerManager;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.awt.*;
 
 /**
  * Created by andrei.filip on 10/30/2017.
  */
 public class GooglePage extends BasePage {
 
-    private static final Logger logger = LogManager.getLogger(GooglePage.class.getName());
+    private static final LoggerManager logger = new LoggerManager(GooglePage.class.getName());
 
     private By GOOGLE_LOGO = By.id("hplogo");
     private By GOOGLE_SEARCH_BAR = By.id("lst-ib");
@@ -45,7 +40,7 @@ public class GooglePage extends BasePage {
     }
 
     public void navigateToHomePage() {
-        logger.info("Accessing Google ...");
+        logger.log(LoggerManagerLevel.INFO, "Accessing Google ...", false);
         navigateToUrl(WebPageConstants.GSEARCH_URL);
         addPattern(GOOGLE_LOGO, "startingPoint", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "startingPoint", ImageSearchTypes.POSITIVE);
@@ -55,7 +50,7 @@ public class GooglePage extends BasePage {
         addPattern(PathConstants.LOAD_PENDING_PATH, "navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(getElements(TOP_RIGTH_MENU).get(0), "firstNonBlank", ImageSearchTypes.NEGATIVE);
 
-        logger.info("Searching [" + WebPageConstants.SEARCH_ITEM + "] ...");
+        logger.log(LoggerManagerLevel.INFO, "Searching [" + WebPageConstants.SEARCH_ITEM + "] ...", false);
         sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, WebPageConstants.SEARCH_ITEM);
 
         addPattern(TOP_STORIES_LIST,"hero", ImageSearchTypes.POSITIVE);
@@ -70,7 +65,7 @@ public class GooglePage extends BasePage {
     }
 
     public void accessImage() {
-        logger.info("Selecting [Images] section ...");
+        logger.log(LoggerManagerLevel.INFO, "Selecting [Images] section ...", false);
         click(getElements(TOP_MENU).get(0));
         addPattern(PathConstants.LOAD_PENDING_PATH, "imageStart", ImageSearchTypes.POSITIVE);
         addPattern(getElements(TOP_MENU).get(0),"imageFirstNonBlank", ImageSearchTypes.POSITIVE);

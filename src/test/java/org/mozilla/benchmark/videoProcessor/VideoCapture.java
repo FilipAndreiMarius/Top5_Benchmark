@@ -1,22 +1,19 @@
 package org.mozilla.benchmark.videoProcessor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.constants.VideoConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.mozilla.benchmark.objects.VideoCaptureCommands;
-import org.mozilla.benchmark.utils.FileManager;
-import org.mozilla.benchmark.utils.SystemManager;
-import org.mozilla.benchmark.utils.TimeManager;
+import org.mozilla.benchmark.utils.*;
 
 import java.io.File;
 import java.sql.Timestamp;
 
 public class VideoCapture extends Thread {
 
-    private static final Logger logger = LogManager.getLogger(SystemManager.class.getName());
+    private static final LoggerManager logger = new LoggerManager(VideoCapture.class.getName());
 
     private int frames;
     private int duration;
@@ -44,63 +41,61 @@ public class VideoCapture extends Thread {
             switch (this.command) {
                 case START_VIDEO:
                     TimestampContainer.getInstance().setFfmpeg(TimeManager.getCurrentTimestamp());
-                    System.out.println("FFMPEG START: " +TimestampContainer.getInstance().getFfmpeg());
                     String videoOutputPath = PathConstants.VIDEOS_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(videoOutputPath)) {
-                        logger.info("Start recording video ...");
-                        logger.info("Executing FFMPEG command: [" + ffmpegStartVideoCommand(videoOutputPath, videoName) + "]");
+                        logger.log(LoggerManagerLevel.INFO, "Start recording video ...", false);
+                        logger.log(LoggerManagerLevel.INFO, String.format("Executing FFMPEG command: [%s]", ffmpegStartVideoCommand(videoOutputPath, videoName)), false);
                         ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", ffmpegStartVideoCommand(videoOutputPath, videoName));
                         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
                         Process p1 = pb.start();
                         p1.waitFor();
-                        logger.info("Video recording done !!!");
+                        logger.log(LoggerManagerLevel.INFO, "Video recording done !!!", false);
                     }
                     break;
 
                 case COMPRESS_VIDEO:
                     String video60FpsOutputPath = PathConstants.FPS_60_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(video60FpsOutputPath)) {
-                        logger.info("Start video compression ... ");
+                        logger.log(LoggerManagerLevel.INFO, "Start video compression ... ", false);
                         String inputPath = PathConstants.VIDEOS_PATH + File.separator + getTestName() + File.separator + videoName;
                         String outputPath = video60FpsOutputPath + File.separator + videoName;
                         String convertCommand = convertTo60Fps(inputPath, outputPath);
-                        logger.info("Executing conversion command: [" + convertCommand + "]");
+                        logger.log(LoggerManagerLevel.INFO, String.format("Executing conversion command: [%s]", convertCommand), false);
                         ProcessBuilder BuilderCompress = new ProcessBuilder("cmd.exe", "/c", convertCommand);
                         BuilderCompress.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         BuilderCompress.redirectError(ProcessBuilder.Redirect.INHERIT);
                         p = BuilderCompress.start();
                         p.waitFor();
-                        logger.info("Video compression done !!!");
+                        logger.log(LoggerManagerLevel.INFO, "Video compression done !!!", false);
                     }
                     break;
 
                 case SPLIT_VIDEO_TO_FRAMES:
-                    logger.info("Start image split ...");
+                    logger.log(LoggerManagerLevel.INFO, "Start image split ...", false);
                     Boolean isCompressionNeeded = VideoConstants.FFMPEG_FINAL_FPS != VideoConstants.FFMPEG_INITIAL_FPS;
                     String input = (isCompressionNeeded ? PathConstants.FPS_60_VIDEO_PATH : PathConstants.VIDEOS_PATH)
                             + File.separator + getTestName() + File.separator + videoName;
                     String output = PathConstants.SPLIT_VIDEO_PATH + File.separator + getTestName();
                     if (FileManager.createDirectories(output)) {
                         String splitCommand = splitIntoFrames(input, output);
-                        logger.info("Executing split command: [" + splitCommand + "]");
+                        logger.log(LoggerManagerLevel.INFO, String.format("Executing split command: [%s]", splitCommand), false);
                         ProcessBuilder splitFrames = new ProcessBuilder("cmd.exe", "/c", splitCommand);
                         splitFrames.redirectOutput(ProcessBuilder.Redirect.INHERIT).command();
                         splitFrames.redirectError(ProcessBuilder.Redirect.INHERIT);
                         Process split = splitFrames.start();
                         split.waitFor();
-                        logger.info("Image split done !!!");
+                        logger.log(LoggerManagerLevel.INFO, "Image split done !!!", false);
                     }
                     break;
 
                 case REMOVE_FRAMES:
-                    logger.info("Start removing unnecessary images  ...");
+                    logger.log(LoggerManagerLevel.INFO, "Start removing unnecessary images  ...", false);
                     Timestamp ffmpeg = TimestampContainer.getInstance().getFfmpeg();
                     Timestamp maximize = TimestampContainer.getInstance().getMaximize();
                     int secondsToRemove = TimeManager.getTimestampDifference(maximize, ffmpeg) - 1;
-                    System.out.println("DIFFERENCE: " + secondsToRemove);
                     FileManager.removeFiles(PathConstants.SPLIT_VIDEO_PATH + File.separator + getTestName(), secondsToRemove);
-                    logger.info("Removing unnecessary images done !!!");
+                    logger.log(LoggerManagerLevel.INFO, "Removing unnecessary images done !!!", false);
                     break;
             }
 

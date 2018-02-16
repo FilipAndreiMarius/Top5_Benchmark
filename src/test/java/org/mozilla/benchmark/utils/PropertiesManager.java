@@ -1,10 +1,8 @@
 package org.mozilla.benchmark.utils;
 
-import org.apache.commons.lang.text.StrTokenizer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FirefoxPrefsConstants;
 import org.mozilla.benchmark.constants.PathConstants;
+import org.mozilla.benchmark.objects.LoggerManagerLevel;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,7 +14,7 @@ import java.util.Properties;
  */
 public class PropertiesManager {
 
-    private static final Logger logger = LogManager.getLogger(PropertiesManager.class.getName());
+    private static final LoggerManager logger = new LoggerManager(PropertiesManager.class.getName());
     private static Properties prop = loadProperties(PathConstants.PROP_FILE_PATH);
 
     private static String getString(String key) {
@@ -122,14 +120,14 @@ public class PropertiesManager {
         try {
             input = new FileInputStream(inputFilePath);
             properties.load(input);
-        } catch (IOException ex) {
-            logger.error("Could not load " + inputFilePath + " " + ex);
+        } catch (IOException e) {
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", inputFilePath, e), PropertiesManager.getEmailNotification());
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    logger.error("Could not close " + inputFilePath + " " + e);
+                    logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close [%s]: [%s]", inputFilePath, e), PropertiesManager.getEmailNotification());
                 }
             }
         }
