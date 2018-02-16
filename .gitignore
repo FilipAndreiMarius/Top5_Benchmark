@@ -1,5 +1,6 @@
 .idea/
 *.iml
-60FpsVideos/
-SplitedVideos/
-Videos/
+target/
+runs/
+logs/
+src/test/resources/profiles/

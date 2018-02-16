@@ -8,15 +8,10 @@
     <artifactId>Benchmark</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
-    <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-java</artifactId>
-        <version>3.6.0</version>
-    </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.6.0</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -28,23 +23,20 @@
             <artifactId>xalan</artifactId>
             <version>2.7.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.sikuli/sikuli-api -->
         <dependency>
             <groupId>org.sikuli</groupId>
             <artifactId>sikuli-api</artifactId>
             <version>1.2.0</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixapi</artifactId>
+            <version>1.1.1</version>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>6.1.25</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -52,22 +44,30 @@
             <version>15.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.2</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
-            <groupId>org.sikuli</groupId>
-            <artifactId>sikuli-api</artifactId>
-            <version>1.0.1</version>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
-            <groupId>com.sikulix</groupId>
-            <artifactId>sikulixapi</artifactId>
-            <version>1.1.1</version>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>0.9</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>com.google.gdata</groupId>
+            <artifactId>core</artifactId>
+            <version>1.47.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-sheets</artifactId>
+            <version>v4-rev494-1.23.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -83,7 +83,6 @@
         </plugins>
 
     </build>
-
 
 
 </project>
