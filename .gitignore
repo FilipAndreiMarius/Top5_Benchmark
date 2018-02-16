@@ -3,4 +3,4 @@
 target/
 runs/
 logs/
-src/test/resources/profiles/
+target/
