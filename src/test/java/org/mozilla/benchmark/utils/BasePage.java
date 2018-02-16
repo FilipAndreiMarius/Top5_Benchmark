@@ -4,7 +4,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.MailConstants;
 import org.mozilla.benchmark.constants.WebPageConstants;
+import org.mozilla.benchmark.mail.MailBuilder;
 import org.mozilla.benchmark.objects.ImagePattern;
 import org.mozilla.benchmark.objects.ImageSearchTypes;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
@@ -71,7 +73,12 @@ public abstract class BasePage extends Thread {
             driverSleep(1000);
             _driver.navigate().to(url);
         } catch (Exception e) {
-            logger.error(String.format("Could NOT load [%s]: [%s]", url, e));
+            String message = String.format("Could NOT load [%s]: [%s]", url, e);
+            logger.error(message);
+            if (PropertiesManager.getEmailNotification()){
+                MailBuilder mail = new MailBuilder(MailConstants.TITLE_ERROR, message, PropertiesManager.getErrorEmailRecipients());
+                mail.sendMail();
+            }
             if (PropertiesManager.getExitIfErrorsFound()) {
                 System.exit(1);
             }

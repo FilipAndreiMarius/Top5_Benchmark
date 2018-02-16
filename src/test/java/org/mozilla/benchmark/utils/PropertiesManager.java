@@ -1,5 +1,6 @@
 package org.mozilla.benchmark.utils;
 
+import org.apache.commons.lang.text.StrTokenizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.FirefoxPrefsConstants;
@@ -89,6 +90,30 @@ public class PropertiesManager {
 
     public static String[] getScenariosToExecute() {
         return getString("scenarios_to_execute").split(",");
+    }
+
+    public static String getEmailSender() {
+        return getString("email_sender");
+    }
+
+    public static String getErrorEmailRecipients() {
+        return getString("error_email_recipients");
+    }
+
+    public static String getResultsEmailRecipients() {
+        return getString("results_email_recipients");
+    }
+
+    public static String getEmailUserName() {
+        return getString("email_user_name");
+    }
+
+    public static String getEmailPassword() {
+        return getString("email_password");
+    }
+
+    public static Boolean getEmailNotification() {
+        return getBoolean("email_notification");
     }
 
     public static Properties loadProperties(String inputFilePath) {

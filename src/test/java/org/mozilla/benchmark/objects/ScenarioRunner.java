@@ -3,10 +3,15 @@ package org.mozilla.benchmark.objects;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.ExecutionConstants;
+import org.mozilla.benchmark.constants.MailConstants;
 import org.mozilla.benchmark.constants.VideoConstants;
+import org.mozilla.benchmark.mail.MailBuilder;
+import org.mozilla.benchmark.utils.PropertiesManager;
 import org.mozilla.benchmark.utils.ThreadManager;
 import org.mozilla.benchmark.utils.TimeManager;
 import org.mozilla.benchmark.videoProcessor.VideoCapture;
+
+import javax.mail.Transport;
 
 /**
  * Created by silviu.checherita on 1/5/2018.
@@ -80,6 +85,7 @@ public class ScenarioRunner extends Thread {
         logger.info("Video Processing done !!!");
 
         ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
-        System.out.println(testName + " search results: " + imgAnalyzer.getResults());
+        MailBuilder mail = new MailBuilder(MailConstants.TITLE_RESULTS, imgAnalyzer.getResults().toString(), PropertiesManager.getResultsEmailRecipients());
+        mail.sendMail();
     }
 }

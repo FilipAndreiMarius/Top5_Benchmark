@@ -3,6 +3,8 @@ package org.mozilla.benchmark;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mozilla.benchmark.constants.ExecutionConstants;
+import org.mozilla.benchmark.constants.MailConstants;
+import org.mozilla.benchmark.mail.MailBuilder;
 import org.mozilla.benchmark.objects.ScenarioRunner;
 import org.mozilla.benchmark.utils.PropertiesManager;
 
@@ -35,7 +37,12 @@ public class Runner {
             try {
                 threads[i].join();
             } catch (InterruptedException e) {
-                logger.fatal(String.format("[%s] was interrupted: [%s]", threads[i], e));
+                String error = String.format("[%s] was interrupted: [%s]", threads[i], e);
+                logger.fatal(error);
+                if (PropertiesManager.getEmailNotification()){
+                    MailBuilder mail = new MailBuilder(MailConstants.TITLE_ERROR, error, PropertiesManager.getErrorEmailRecipients());
+                    mail.sendMail();
+                }
             }
         }
     }
