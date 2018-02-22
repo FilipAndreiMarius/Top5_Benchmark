@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -286,6 +287,10 @@ public abstract class BasePage extends Thread {
         }
     }
 
+    private int getElementRectTop(WebElement element) {
+        return Integer.valueOf(((JavascriptExecutor) _driver).executeScript("return arguments[0].getBoundingClientRect().top;", element).toString());
+    }
+
     public void captureElementScreenshot(WebElement element, String destination) {
         waitForElementToDisplay(element);
         int imageX = element.getLocation().getX();
@@ -294,10 +299,15 @@ public abstract class BasePage extends Thread {
         int imageHeight = element.getSize().getHeight();
         File screen = ((TakesScreenshot) _driver).getScreenshotAs(OutputType.FILE);
         BufferedImage img;
+        BufferedImage dest;
         try {
             logger.log(LoggerManagerLevel.INFO, String.format("Saving screenshot for [%s] at the following destination: [%s] ...", element.toString(), destination), false);
             img = ImageIO.read(screen);
-            BufferedImage dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
+            try {
+                dest = img.getSubimage(imageX, imageY, imageWidth, imageHeight);
+            } catch (RasterFormatException e) {
+                dest = img.getSubimage(imageX, getElementRectTop(element), imageWidth, imageHeight);
+            }
             ImageIO.write(dest, FileExtensionsConstants.IMAGE_EXTENSION, screen);
             FileUtils.copyFile(screen, new File(destination));
             logger.log(LoggerManagerLevel.DEBUG, "Screenshot saved !!!", false);
