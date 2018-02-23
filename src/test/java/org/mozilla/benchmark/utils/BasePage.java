@@ -186,6 +186,7 @@ public abstract class BasePage extends Thread {
             Robot r = new Robot();
             r.mouseMove(moveX, moveY);
             r.mousePress(InputEvent.BUTTON1_MASK);
+            driverSleep(10);
             r.mouseRelease(InputEvent.BUTTON1_MASK);
         } catch (AWTException e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
@@ -209,6 +210,7 @@ public abstract class BasePage extends Thread {
             element.sendKeys(value);
             Robot r = new Robot();
             r.keyPress(KeyEvent.VK_ENTER);
+            driverSleep(10);
             r.keyRelease(KeyEvent.VK_ENTER);
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e), PropertiesManager.getEmailNotification());
