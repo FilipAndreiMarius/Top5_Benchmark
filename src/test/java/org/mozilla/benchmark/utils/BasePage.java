@@ -73,7 +73,7 @@ public abstract class BasePage extends Thread {
             driverSleep(1000);
             _driver.navigate().to(url);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", url, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", url, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -89,7 +89,7 @@ public abstract class BasePage extends Thread {
                 _driver.switchTo().window(_driver.getWindowHandles().toArray()[0].toString());
             }
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close all tabs except first: [%s]", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close all tabs except first: [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class BasePage extends Thread {
         try {
             _driver.navigate().back();
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT navigate to previous page: [%s]", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT navigate to previous page: [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class BasePage extends Thread {
         try {
             return _driver.manage().window().getSize();
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT get window size: [%s]", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT get window size: [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
         return null;
     }
@@ -136,7 +136,7 @@ public abstract class BasePage extends Thread {
         try {
             return _driver.findElements(selector);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element did not display: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element did not display: [%s] - [%s]", selector, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
         return null;
     }
@@ -189,7 +189,7 @@ public abstract class BasePage extends Thread {
             driverSleep(10);
             r.mouseRelease(InputEvent.BUTTON1_MASK);
         } catch (AWTException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -199,7 +199,7 @@ public abstract class BasePage extends Thread {
         try {
             element.sendKeys(value);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -213,7 +213,7 @@ public abstract class BasePage extends Thread {
             driverSleep(10);
             r.keyRelease(KeyEvent.VK_ENTER);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -222,7 +222,7 @@ public abstract class BasePage extends Thread {
             element.clear();
             waitForElementTextToBeEmpty(element);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element could not be cleared: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element could not be cleared: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -245,7 +245,7 @@ public abstract class BasePage extends Thread {
                 text = element.getText();
             }
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element could not be cleared: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element could not be cleared: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -254,7 +254,7 @@ public abstract class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.presenceOfElementLocated(selector));
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element was not visible: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element was not visible: [%s] - [%s]", selector, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -263,7 +263,7 @@ public abstract class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.visibilityOfElementLocated(selector));
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element was not visible: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element was not visible: [%s] - [%s]", selector, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -272,7 +272,7 @@ public abstract class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.elementToBeClickable(selector));
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", selector, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -281,7 +281,7 @@ public abstract class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.elementToBeClickable(element));
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -290,7 +290,7 @@ public abstract class BasePage extends Thread {
             wait = new WebDriverWait(_driver, timeout);
             wait.until(ExpectedConditions.visibilityOf(element));
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -299,7 +299,7 @@ public abstract class BasePage extends Thread {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Sleep interrupted: [%s]", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Sleep interrupted: [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -320,7 +320,7 @@ public abstract class BasePage extends Thread {
             FileUtils.copyFile(screen, new File(destination));
             logger.log(LoggerManagerLevel.DEBUG, "Screenshot saved !!!", false);
         } catch (IOException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could not save screenshot for element: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could not save screenshot for element: [%s] - [%s]", selector, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -345,7 +345,7 @@ public abstract class BasePage extends Thread {
             FileUtils.copyFile(screen, new File(destination));
             logger.log(LoggerManagerLevel.DEBUG, "Screenshot saved !!!", false);
         } catch (IOException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could not save screenshot for element: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could not save screenshot for element: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
@@ -363,7 +363,7 @@ public abstract class BasePage extends Thread {
                 logger.log(LoggerManagerLevel.DEBUG, "Image created !!!", false);
             }
         } catch (IOException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could not create image [%s]: [%s]", destination, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could not create image [%s]: [%s]", destination, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 

@@ -121,13 +121,13 @@ public class PropertiesManager {
             input = new FileInputStream(inputFilePath);
             properties.load(input);
         } catch (IOException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", inputFilePath, e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", inputFilePath, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         } finally {
             if (input != null) {
                 try {
                     input.close();
                 } catch (IOException e) {
-                    logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close [%s]: [%s]", inputFilePath, e), PropertiesManager.getEmailNotification());
+                    logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close [%s]: [%s]", inputFilePath, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
                 }
             }
         }

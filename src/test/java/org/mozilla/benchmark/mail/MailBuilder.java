@@ -2,6 +2,7 @@ package org.mozilla.benchmark.mail;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mozilla.benchmark.utils.ErrorManager;
 import org.mozilla.benchmark.utils.PropertiesManager;
 
 import java.util.Properties;
@@ -71,7 +72,7 @@ public class MailBuilder {
             Transport.send(getMail());
             logger.info("Email sent successfully ! ");
         } catch (MessagingException e) {
-            logger.error(String.format("Error sending Email !!! [%s]", e));
+            logger.error(String.format("Error sending Email !!! %s", ErrorManager.getErrorMessage(e.getStackTrace())));
         }
     }
 }

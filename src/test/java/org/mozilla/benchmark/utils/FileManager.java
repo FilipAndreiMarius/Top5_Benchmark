@@ -90,7 +90,7 @@ public class FileManager {
         try {
             FileUtils.copyFile(source, destination);
         } catch (IOException e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("Failed to copy file [%s]: [%s]" , source.getName(), e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.ERROR, String.format("Failed to copy file [%s]: [%s]" , source.getName(), ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 }

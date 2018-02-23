@@ -3,6 +3,7 @@ package org.mozilla.benchmark;
 import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.ScenarioRunner;
+import org.mozilla.benchmark.utils.ErrorManager;
 import org.mozilla.benchmark.utils.LoggerManager;
 import org.mozilla.benchmark.utils.PropertiesManager;
 
@@ -36,7 +37,7 @@ public class Runner {
             try {
                 threads[i].join();
             } catch (InterruptedException e) {
-                logger.log(LoggerManagerLevel.FATAL, String.format("[%s] was interrupted: [%s]", threads[i], e), PropertiesManager.getEmailNotification());
+                logger.log(LoggerManagerLevel.FATAL, String.format("[%s] was interrupted: [%s]", threads[i], ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
             }
         }
     }
