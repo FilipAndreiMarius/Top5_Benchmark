@@ -10,11 +10,14 @@ import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.File;
@@ -138,24 +141,55 @@ public abstract class BasePage extends Thread {
         return null;
     }
 
-    public void click(By selector) {
-        WebElement element = getElement(selector);
-        waitForElementToBeClickable(selector);
-        try {
-            element.click();
-        } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
-        }
+    private int getElementRectTop(WebElement element) {
+        return ((Number) ((JavascriptExecutor) _driver).executeScript("return arguments[0].getBoundingClientRect().top;", element)).intValue();
     }
 
-    public void click(WebElement element) {
-        waitForElementToBeClickable(element);
-        try {
-            element.click();
-        } catch (Exception e) {
-            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+    private int getElementRectLeft(WebElement element) {
+        return ((Number) ((JavascriptExecutor) _driver).executeScript("return arguments[0].getBoundingClientRect().left;", element)).intValue();
+    }
+
+    private void scrollToViewport(WebElement element) {
+        ((JavascriptExecutor) _driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    public void click(Object elementOrSelector) {
+        WebElement element = null;
+
+        if (!(elementOrSelector instanceof By || elementOrSelector instanceof WebElement)) {
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following object is not an instance of By or WebElement : [%s]", elementOrSelector), PropertiesManager.getEmailNotification());
+            return;
         }
 
+        if (elementOrSelector instanceof By) {
+            element = getElement((By) elementOrSelector);
+        }
+        waitForElementToBeClickable(element);
+
+        if (element == null) {
+            return;
+        }
+
+        Dimension elemSize = element.getSize();
+        Actions actionBuilder = new Actions(_driver);
+
+        try {
+            actionBuilder.moveToElement(element).perform();
+        } catch (MoveTargetOutOfBoundsException e) {
+            scrollToViewport(element);
+        }
+
+        int moveX = getElementRectLeft(element) + elemSize.getWidth() / 2;
+        int moveY = getElementRectTop(element) + 75 + elemSize.getHeight() / 2;
+
+        try {
+            Robot r = new Robot();
+            r.mouseMove(moveX, moveY);
+            r.mousePress(InputEvent.BUTTON1_MASK);
+            r.mouseRelease(InputEvent.BUTTON1_MASK);
+        } catch (AWTException e) {
+            logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, e), PropertiesManager.getEmailNotification());
+        }
     }
 
     public void sendKeys(By selector, String value) {
@@ -173,8 +207,9 @@ public abstract class BasePage extends Thread {
         clearField(element);
         try {
             element.sendKeys(value);
-            Actions actions = new Actions(_driver);
-            actions.sendKeys(element, Keys.ENTER).build().perform();
+            Robot r = new Robot();
+            r.keyPress(KeyEvent.VK_ENTER);
+            r.keyRelease(KeyEvent.VK_ENTER);
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), e), PropertiesManager.getEmailNotification());
         }
@@ -285,10 +320,6 @@ public abstract class BasePage extends Thread {
         } catch (IOException e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Could not save screenshot for element: [%s] - [%s]", selector, e), PropertiesManager.getEmailNotification());
         }
-    }
-
-    private int getElementRectTop(WebElement element) {
-        return Integer.valueOf(((JavascriptExecutor) _driver).executeScript("return arguments[0].getBoundingClientRect().top;", element).toString());
     }
 
     public void captureElementScreenshot(WebElement element, String destination) {
