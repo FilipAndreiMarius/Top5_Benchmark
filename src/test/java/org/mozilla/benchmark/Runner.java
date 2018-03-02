@@ -2,7 +2,9 @@ package org.mozilla.benchmark;
 
 import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.objects.LoggerManagerLevel;
+import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.objects.ScenarioRunner;
+import org.mozilla.benchmark.pageObjects.AmazonPage;
 import org.mozilla.benchmark.utils.LoggerManager;
 import org.mozilla.benchmark.utils.PropertiesManager;
 

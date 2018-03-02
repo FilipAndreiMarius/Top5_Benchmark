@@ -112,15 +112,17 @@ public class ImageAnalyzer {
 
     private static Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
         switch (searchType) {
-            case BACKGROUND: {
+            case BACKGROUND_POSITIVE: {
                 try {
                     BufferedImage pattern = ImageIO.read(new File(imagePath1));
                     Color colorPattern = new Color(pattern.getRGB(0, 0));
                     BufferedImage image = ImageIO.read(new File(imagePath2));
                     for (int i = 0; i < image.getWidth(); i++) {
-                        Color colorImage = new Color(image.getRGB(i, image.getHeight() / 2));
-                        if (!colorImage.equals(colorPattern))
-                            return true;
+                        for (int j = 0; j < image.getHeight(); j++) {
+                            Color colorImage = new Color(image.getRGB(i, j));
+                            if (colorImage.equals(colorPattern))
+                                return true;
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -210,6 +212,12 @@ public class ImageAnalyzer {
 
     public int getLastFound() {
         return this.lastFound;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(searchImage("E:\\workspace\\Top5_Benchmark\\runs\\2018-03-02T10_11_06\\patterns\\amazon\\Section3_firstNonBlank1.png",
+    "E:\\workspace\\Top5_Benchmark\\runs\\2018-03-02T10_11_06\\images\\amazon\\image.001261.png",
+        ImageSearchTypes.POSITIVE, 0.99f));
     }
 }
 

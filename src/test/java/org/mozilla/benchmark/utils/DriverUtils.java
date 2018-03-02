@@ -6,6 +6,7 @@ import org.mozilla.benchmark.constants.WebdriverConstants;
 import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.TimestampContainer;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
@@ -26,6 +27,8 @@ public class DriverUtils {
                 logger.log(LoggerManagerLevel.INFO, "Initializing Driver ...", false);
                 logger.log(LoggerManagerLevel.INFO, "Setting [" + WebdriverConstants.WEBDRIVER_PROPERTY + "] property ...", false);
                 System.setProperty(WebdriverConstants.WEBDRIVER_PROPERTY, WebdriverConstants.WEBDRIVER_PATH);
+                System.setProperty("webdriver.firefox.bin", "C:\\Program Files\\Firefox Nightly\\firefox.exe");
+
 
                 File profileFile = new File(PropertiesManager.getProfilePath());
                 if (!profileFile.exists()) {
