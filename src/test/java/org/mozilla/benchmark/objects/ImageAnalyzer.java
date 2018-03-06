@@ -110,18 +110,23 @@ public class ImageAnalyzer {
         return images;
     }
 
-    private static Boolean searchImage(String imagePath1, String imagePath2, ImageSearchTypes searchType, float similarity) {
+    private static Boolean searchImage(String imagePath1, String imagePath2, Rectangle rectangle, ImageSearchTypes searchType, float similarity) {
         switch (searchType) {
             case BACKGROUND_POSITIVE: {
                 try {
+
                     BufferedImage pattern = ImageIO.read(new File(imagePath1));
                     Color colorPattern = new Color(pattern.getRGB(0, 0));
                     BufferedImage image = ImageIO.read(new File(imagePath2));
-                    for (int i = 0; i < image.getWidth(); i++) {
-                        for (int j = 0; j < image.getHeight(); j++) {
+
+                    for (int i = (rectangle == null ? 0 : rectangle.x); i < (rectangle == null ? image.getWidth() : rectangle.width); i++) {
+                        for (int j = (rectangle == null ? 0 : rectangle.y); j < (rectangle == null ? image.getHeight() : rectangle.height); j++) {
                             Color colorImage = new Color(image.getRGB(i, j));
-                            if (colorImage.equals(colorPattern))
+                            if ((colorImage.getRed() == colorPattern.getRed()) && (colorImage.getGreen() == colorPattern.getGreen()) &&
+                                    (colorImage.getBlue() == colorPattern.getBlue())) {
+                                System.out.println(imagePath2 + " COORDINATES: " + i + ", " + j);
                                 return true;
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -172,7 +177,7 @@ public class ImageAnalyzer {
                         logger.log(LoggerManagerLevel.INFO, k + " - [" + element.getName() + "] - Searching for pattern [" + patternPath +
                                 "] in [" + images.get(k) + "]", false);
                         ImageDetails imageDetails = element.getImageDetails().get(j);
-                        if (searchImage(patternPath, images.get(k), imageDetails.getSearchType(), imageDetails.getSimilarity())) {
+                        if (searchImage(patternPath, images.get(k), imageDetails.getRectangle(), imageDetails.getSearchType(), imageDetails.getSimilarity())) {
                             if (element.getImageDetails().size() - pattern_counter > 1) {
                                 pattern_counter = j + 1;
                             } else {
@@ -212,12 +217,6 @@ public class ImageAnalyzer {
 
     public int getLastFound() {
         return this.lastFound;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(searchImage("E:\\workspace\\Top5_Benchmark\\runs\\2018-03-02T10_11_06\\patterns\\amazon\\Section3_firstNonBlank1.png",
-    "E:\\workspace\\Top5_Benchmark\\runs\\2018-03-02T10_11_06\\images\\amazon\\image.001261.png",
-        ImageSearchTypes.POSITIVE, 0.99f));
     }
 }
 
