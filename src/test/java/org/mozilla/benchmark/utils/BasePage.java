@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -186,7 +187,7 @@ public abstract class BasePage extends Thread {
             Robot r = new Robot();
             r.mouseMove(moveX, moveY);
             r.mousePress(InputEvent.BUTTON1_MASK);
-            driverSleep(10);
+            driverSleep(51);
             r.mouseRelease(InputEvent.BUTTON1_MASK);
         } catch (AWTException e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
@@ -210,7 +211,7 @@ public abstract class BasePage extends Thread {
             element.sendKeys(value);
             Robot r = new Robot();
             r.keyPress(KeyEvent.VK_ENTER);
-            driverSleep(10);
+            driverSleep(51);
             r.keyRelease(KeyEvent.VK_ENTER);
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Error in sending [%s] to the following element: [%s] - [%s]", value, selector.toString(), ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
@@ -367,19 +368,19 @@ public abstract class BasePage extends Thread {
         }
     }
 
-    public void addPatternWithSimilarity(Color color, String elementName, ImageSearchTypes searchType, float similarity) {
+    public void addPatternWithSimilarity(Color color, Rectangle rectangle, String elementName, ImageSearchTypes searchType, float similarity) {
         if (PageNavigationTypes.SAVE_PATTERN.equals(getNavigationType())) {
             String imageDetailsName = ScenarioManager.getPatternName(elementName, getTestName());
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, getTestName());
             createBackgroundImage(new Color(color.getRed(), color.getGreen(), color.getBlue()), imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()) {
-                ImagePattern.createDynamicPattern(getTestName(), elementName, imageDetailsNameShort, searchType, similarity);
+                ImagePattern.createDynamicPattern(getTestName(), rectangle, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
 
-    public void addPattern(Color color, String elementName, ImageSearchTypes searchType) {
-        addPatternWithSimilarity(color, elementName, searchType, PropertiesManager.getDefaultSimilarity());
+    public void addPattern(Color color, Rectangle rectangle, String elementName, ImageSearchTypes searchType) {
+        addPatternWithSimilarity(color, rectangle, elementName, searchType, PropertiesManager.getDefaultSimilarity());
     }
 
     public void addPatternWithSimilarity(WebElement element, String elementName, ImageSearchTypes searchType, float similarity) {
@@ -388,7 +389,7 @@ public abstract class BasePage extends Thread {
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, getTestName());
             captureElementScreenshot(element, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()) {
-                ImagePattern.createDynamicPattern(getTestName(), elementName, imageDetailsNameShort, searchType, similarity);
+                ImagePattern.createDynamicPattern(getTestName(), null, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }
@@ -404,7 +405,7 @@ public abstract class BasePage extends Thread {
                 String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, getTestName());
                 captureElementScreenshot(elem, imageDetailsName);
                 if (PropertiesManager.getDynamicPatterns()) {
-                    ImagePattern.createDynamicPattern(getTestName(), elementName, imageDetailsNameShort, searchType, similarity);
+                    ImagePattern.createDynamicPattern(getTestName(), null, elementName, imageDetailsNameShort, searchType, similarity);
                 }
             }
         }
@@ -420,7 +421,7 @@ public abstract class BasePage extends Thread {
             String imageDetailsNameShort = ScenarioManager.getPatternNameShort(elementName, getTestName());
             FileManager.copyImage(source, imageDetailsName);
             if (PropertiesManager.getDynamicPatterns()) {
-                ImagePattern.createDynamicPattern(getTestName(), elementName, imageDetailsNameShort, searchType, similarity);
+                ImagePattern.createDynamicPattern(getTestName(), null, elementName, imageDetailsNameShort, searchType, similarity);
             }
         }
     }

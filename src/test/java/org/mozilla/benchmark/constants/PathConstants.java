@@ -23,9 +23,9 @@ public final class PathConstants {
     private static final String LOAD_DONE_FILE_NAME = "load_done.png";
     private static final String LOAD_PENDING_FILE_NAME = "load_pending.png";
     private static final String GMAIL_LOADING_FILE_NAME = "gmail_loading.png";
-    private static final String MOUSE_UP_FILE_NAME = "mouse_up.png";
     private static final String MOUSE_DOWN_FILE_NAME = "mouse_down.png";
     private static final String MOUSE_AND_ENTER_UP_FILE_NAME = "mouse_and_enter_up.png";
+    private static final String ENTER_DOWN = "enter_down.png";
     private static final String ROOT_PATH = PROJECT_LOCATION + File.separator + RUNS_FOLDER + File.separator + TimeManager.getFormattedTimestamp(TimeManager.getCurrentTimestamp());
 
     public static final String RESOURCES_PATH = PROJECT_LOCATION + File.separator + SRC_FOLDER + File.separator + TEST_FOLDER + File.separator + RESOURCES_FOLDER;
@@ -37,10 +37,11 @@ public final class PathConstants {
     public static final String LOAD_DONE_PATH = RESOURCES_PATH + File.separator + LOAD_DONE_FILE_NAME;
     public static final String LOAD_PENDING_PATH = RESOURCES_PATH + File.separator + LOAD_PENDING_FILE_NAME;
     public static final String GMAIL_LOADING_PATH = RESOURCES_PATH + File.separator + GMAIL_LOADING_FILE_NAME;
-    public static final String MOUSE_UP_PATH = RESOURCES_PATH + File.separator + MOUSE_UP_FILE_NAME;
+    public static final String ENTER_DOWN_PATH = RESOURCES_PATH + File.separator + ENTER_DOWN;
     public static final String MOUSE_DOWN_PATH = RESOURCES_PATH + File.separator + MOUSE_DOWN_FILE_NAME;
     public static final String MOUSE_AND_ENTER_UP_PATH = RESOURCES_PATH + File.separator + MOUSE_AND_ENTER_UP_FILE_NAME;
     public static final String PAGE_OBJECT_CLASS_PATH = "org.mozilla.benchmark.pageObjects.";
+
 
     private PathConstants() {
     }

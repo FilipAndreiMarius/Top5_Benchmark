@@ -2,6 +2,7 @@ package org.mozilla.benchmark.objects;
 
 import org.mozilla.benchmark.utils.ImagePatternUtils;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -43,31 +44,31 @@ public class ImagePattern {
         this.imageElements = imageElements;
     }
 
-    public static void createDynamicPattern(String testName, String elementName, String imageDetailsName, ImageSearchTypes searchType, float similarity) {
+    public static void createDynamicPattern(String testName, Rectangle rectangle, String elementName, String imageDetailsName, ImageSearchTypes searchType, float similarity) {
         ImagePattern imagePattern = ImagePatternUtils.getInstance();
         if (!imagePattern.getName().equals(testName)) {
             imagePattern.setName(testName);
         }
         if (imagePattern.getImageElements().size() == 0) {
-            addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, searchType, similarity);
+            addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, rectangle, searchType, similarity);
         } else {
             ImageElement imageElementFound = findImageElementFromList(elementName, imagePattern.getImageElements());
             if (imageElementFound != null) {
-                addImageDetailsToImageElement(imageElementFound, imageDetailsName, searchType, similarity);
+                addImageDetailsToImageElement(imageElementFound, imageDetailsName, rectangle, searchType, similarity);
             } else {
-                addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, searchType, similarity);
+                addImageElementsToImagePattern(imagePattern, elementName, imageDetailsName, rectangle, searchType, similarity);
             }
         }
     }
 
-    private static void addImageDetailsToImageElement(ImageElement imageElement, String imageDetailsName, ImageSearchTypes searchType, float similarity) {
-        ImageDetails imageDetails = new ImageDetails(imageDetailsName, searchType, similarity);
+    private static void addImageDetailsToImageElement(ImageElement imageElement, String imageDetailsName, Rectangle rectangle, ImageSearchTypes searchType, float similarity) {
+        ImageDetails imageDetails = new ImageDetails(imageDetailsName, rectangle, searchType, similarity);
         imageElement.getImageDetails().add(imageDetails);
     }
 
-    private static void addImageElementsToImagePattern(ImagePattern imagePattern, String elementName, String imageDetailsName, ImageSearchTypes searchType, float similarity) {
+    private static void addImageElementsToImagePattern(ImagePattern imagePattern, String elementName, String imageDetailsName, Rectangle rectangle, ImageSearchTypes searchType, float similarity) {
         ImageElement imageElement = new ImageElement(elementName);
-        addImageDetailsToImageElement(imageElement, imageDetailsName, searchType, similarity);
+        addImageDetailsToImageElement(imageElement, imageDetailsName, rectangle, searchType, similarity);
         imagePattern.getImageElements().add(imageElement);
     }
 
