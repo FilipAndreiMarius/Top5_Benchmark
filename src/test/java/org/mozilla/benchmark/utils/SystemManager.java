@@ -18,7 +18,7 @@ public class SystemManager {
             MBeanServerConnection server = ManagementFactory.getPlatformMBeanServer();
             opSys = ManagementFactory.newPlatformMXBeanProxy(server, ManagementFactory.OPERATING_SYSTEM_MXBEAN_NAME, OperatingSystemMXBean.class);
         } catch (Exception e) {
-            logger.log(LoggerManagerLevel.FATAL, String.format("Exception! [%s]", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.FATAL, String.format("Exception! [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
         return opSys;
     }
@@ -29,7 +29,7 @@ public class SystemManager {
             OperatingSystemMXBean osMBean = getOperatingSystemMXBean();
             cpuLoad = osMBean.getSystemCpuLoad() * 100;
         } catch (InternalRuntimeError e) {
-            logger.log(LoggerManagerLevel.FATAL, String.format("InternalRuntimeError! [%s] ", e), PropertiesManager.getEmailNotification());
+            logger.log(LoggerManagerLevel.FATAL, String.format("InternalRuntimeError! [%s] ", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
         return cpuLoad;
     }
@@ -44,7 +44,7 @@ public class SystemManager {
                     Thread.sleep(SystemConstants.CPU_CHECK_REFRESH_RATE);
                     iteration++;
                 } catch (InterruptedException e) {
-                    logger.log(LoggerManagerLevel.FATAL, String.format("Interrupted! [%s]", e), PropertiesManager.getEmailNotification());
+                    logger.log(LoggerManagerLevel.FATAL, String.format("Interrupted! [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
                     return false;
                 }
             }
