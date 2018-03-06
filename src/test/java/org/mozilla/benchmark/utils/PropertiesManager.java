@@ -78,12 +78,8 @@ public class PropertiesManager {
         return getString("image_extension");
     }
 
-    public static Boolean getGfxWebrenderEnabled() {
-        return getBoolean(FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE);
-    }
-
-    public static Boolean getGfxWebrenderBlobImages() {
-        return getBoolean(FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE);
+    public static Boolean getGfxWebrenderAll() {
+        return getBoolean(FirefoxPrefsConstants.GFX_WEBRENDER_ALL_PREFERENCE);
     }
 
     public static String[] getScenariosToExecute() {

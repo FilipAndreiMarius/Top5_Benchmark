@@ -39,13 +39,9 @@ public class DriverUtils {
                 FirefoxOptions options = new FirefoxOptions();
                 options.setProfile(profile);
 
-                if (FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES != null) {
-                    logger.log(LoggerManagerLevel.INFO, "Adding [" + FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE + "] preference ...", false);
-                    options.addPreference(FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES_PREFERENCE, FirefoxPrefsConstants.GFX_WEBRENDER_BLOB_IMAGES);
-                }
-                if (FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED != null) {
-                    logger.log(LoggerManagerLevel.INFO, "Adding [" + FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE + "] preference ...", false);
-                    options.addPreference(FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED_PREFERENCE, FirefoxPrefsConstants.GFX_WEBRENDER_ENABLED);
+                if (FirefoxPrefsConstants.GFX_WEBRENDER_ALL != null) {
+                    logger.log(LoggerManagerLevel.INFO, "Adding [" + FirefoxPrefsConstants.GFX_WEBRENDER_ALL_PREFERENCE + "] preference ...", false);
+                    options.addPreference(FirefoxPrefsConstants.GFX_WEBRENDER_ALL_PREFERENCE, FirefoxPrefsConstants.GFX_WEBRENDER_ALL);
                 }
 
                 options.addPreference(FirefoxPrefsConstants.STARTUP_HOMEPAGE_PREFERENCE, WebPageConstants.HOME_PAGE_URL);
