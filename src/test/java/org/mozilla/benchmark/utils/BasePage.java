@@ -187,7 +187,7 @@ public abstract class BasePage extends Thread {
             Robot r = new Robot();
             r.mouseMove(moveX, moveY);
             r.mousePress(InputEvent.BUTTON1_MASK);
-            driverSleep(51);
+            driverSleep(100);
             r.mouseRelease(InputEvent.BUTTON1_MASK);
         } catch (AWTException e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("The following element is not clickable: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
