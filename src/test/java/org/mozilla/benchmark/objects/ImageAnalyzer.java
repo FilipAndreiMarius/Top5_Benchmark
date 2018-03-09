@@ -118,13 +118,13 @@ public class ImageAnalyzer {
                     BufferedImage pattern = ImageIO.read(new File(imagePath1));
                     Color colorPattern = new Color(pattern.getRGB(0, 0));
                     BufferedImage image = ImageIO.read(new File(imagePath2));
+                    System.out.println(rectangle);
 
-                    for (int i = (rectangle == null ? 0 : rectangle.x); i < (rectangle == null ? image.getWidth() : rectangle.width); i++) {
-                        for (int j = (rectangle == null ? 0 : rectangle.y); j < (rectangle == null ? image.getHeight() : rectangle.height); j++) {
+                    for (int i = (rectangle == null ? 0 : rectangle.x); i < (rectangle == null ? image.getWidth() : rectangle.x + rectangle.width); i++) {
+                        for (int j = (rectangle == null ? 0 : rectangle.y); j < (rectangle == null ? image.getHeight() : rectangle.y + rectangle.height); j++) {
                             Color colorImage = new Color(image.getRGB(i, j));
                             if ((colorImage.getRed() == colorPattern.getRed()) && (colorImage.getGreen() == colorPattern.getGreen()) &&
                                     (colorImage.getBlue() == colorPattern.getBlue())) {
-                                System.out.println(imagePath2 + " COORDINATES: " + i + ", " + j);
                                 return true;
                             }
                         }
