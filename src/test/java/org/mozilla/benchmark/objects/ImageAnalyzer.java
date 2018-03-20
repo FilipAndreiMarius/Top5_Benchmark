@@ -43,6 +43,83 @@ public class ImageAnalyzer {
         this.lastFound = 0;
     }
 
+    private static ArrayList<ImagePattern> initializePatterns(String testName) {
+
+        ArrayList<ImagePattern> patternList = new ArrayList<>();
+        ImagePattern pattern;
+
+        for (int i = 0; i < ExecutionConstants.NUMBER_OF_RUNS; i++) {
+            try {
+                if (!PropertiesManager.getDynamicPatterns()) {
+                    String jsonPath = PathConstants.RESOURCES_PATH + File.separator + testName.toLowerCase() + FileExtensionsConstants.JSON_EXTENSION;
+                    pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
+                } else {
+                    pattern = new Gson().fromJson(new Gson().toJson(ImagePatternUtils.getInstance()), ImagePattern.class);
+                }
+                pattern.setName(testName + "_run_" + (i + 1));
+                patternList.add(pattern);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        ImagePatternUtils.closeInstance();
+        return patternList;
+    }
+
+    private static Boolean searchImage(String imagePath1, String imagePath2, Rectangle rectangle, ImageSearchTypes searchType, float similarity) {
+        switch (searchType) {
+            case BACKGROUND_POSITIVE: {
+                return backgroundColorSearch(imagePath1, imagePath2, rectangle, true);
+            }
+            case BACKGROUND_NEGATIVE: {
+                return backgroundColorSearch(imagePath1, imagePath2, rectangle, false);
+            }
+            case POSITIVE: {
+                try {
+                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
+                    Finder finder = new Finder(imagePath2);
+                    finder.find(pattern);
+                    return finder.hasNext();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            case NEGATIVE: {
+                try {
+                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
+                    Finder finder = new Finder(imagePath2);
+                    finder.find(pattern);
+                    return !finder.hasNext();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            default:
+                return false;
+        }
+    }
+
+    private static Boolean backgroundColorSearch(String imagePath1, String imagePath2, Rectangle rectangle, Boolean isPositiveSearch) {
+        try {
+            BufferedImage pattern = ImageIO.read(new File(imagePath1));
+            Color colorPattern = new Color(pattern.getRGB(0, 0));
+            BufferedImage image = ImageIO.read(new File(imagePath2));
+
+            for (int i = (rectangle == null ? 0 : rectangle.x); i < (rectangle == null ? image.getWidth() : rectangle.x + rectangle.width); i++) {
+                for (int j = (rectangle == null ? 0 : rectangle.y); j < (rectangle == null ? image.getHeight() : rectangle.y + rectangle.height); j++) {
+                    Color colorImage = new Color(image.getRGB(i, j));
+                    if ((colorImage.getRed() == colorPattern.getRed()) && (colorImage.getGreen() == colorPattern.getGreen()) &&
+                            (colorImage.getBlue() == colorPattern.getBlue())) {
+                        return isPositiveSearch;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return !isPositiveSearch;
+    }
+
     private Boolean isImagePresentInPatternsFolder(String testName, ImageDetails image) {
         return FileManager.fileFound(image.getName(), PathConstants.PATTERNS_PATH + File.separator + testName);
     }
@@ -76,29 +153,6 @@ public class ImageAnalyzer {
         return initialImagePatternList;
     }
 
-    private static ArrayList<ImagePattern> initializePatterns(String testName) {
-
-        ArrayList<ImagePattern> patternList = new ArrayList<>();
-        ImagePattern pattern;
-
-        for (int i = 0; i < ExecutionConstants.NUMBER_OF_RUNS; i++) {
-            try {
-                if (!PropertiesManager.getDynamicPatterns()) {
-                    String jsonPath = PathConstants.RESOURCES_PATH + File.separator + testName.toLowerCase() + FileExtensionsConstants.JSON_EXTENSION;
-                    pattern = new Gson().fromJson(new FileReader(jsonPath), ImagePattern.class);
-                } else {
-                    pattern = new Gson().fromJson(new Gson().toJson(ImagePatternUtils.getInstance()), ImagePattern.class);
-                }
-                pattern.setName(testName + "_run_" + (i + 1));
-                patternList.add(pattern);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        ImagePatternUtils.closeInstance();
-        return patternList;
-    }
-
     private ArrayList<String> initializeImages(String testName) {
 
         ArrayList<String> images = new ArrayList<>();
@@ -108,55 +162,6 @@ public class ImageAnalyzer {
             images.add(o.toString());
         }
         return images;
-    }
-
-    private static Boolean searchImage(String imagePath1, String imagePath2, Rectangle rectangle, ImageSearchTypes searchType, float similarity) {
-        switch (searchType) {
-            case BACKGROUND_POSITIVE: {
-                try {
-
-                    BufferedImage pattern = ImageIO.read(new File(imagePath1));
-                    Color colorPattern = new Color(pattern.getRGB(0, 0));
-                    BufferedImage image = ImageIO.read(new File(imagePath2));
-                    System.out.println(rectangle);
-
-                    for (int i = (rectangle == null ? 0 : rectangle.x); i < (rectangle == null ? image.getWidth() : rectangle.x + rectangle.width); i++) {
-                        for (int j = (rectangle == null ? 0 : rectangle.y); j < (rectangle == null ? image.getHeight() : rectangle.y + rectangle.height); j++) {
-                            Color colorImage = new Color(image.getRGB(i, j));
-                            if ((colorImage.getRed() == colorPattern.getRed()) && (colorImage.getGreen() == colorPattern.getGreen()) &&
-                                    (colorImage.getBlue() == colorPattern.getBlue())) {
-                                return true;
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }
-            case POSITIVE: {
-                try {
-                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
-                    Finder finder = new Finder(imagePath2);
-                    finder.find(pattern);
-                    return finder.hasNext();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            case NEGATIVE: {
-                try {
-                    Pattern pattern = new Pattern(imagePath1).similar(similarity);
-                    Finder finder = new Finder(imagePath2);
-                    finder.find(pattern);
-                    return !finder.hasNext();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            default:
-                return false;
-        }
     }
 
     private JsonObject analyzeAndShowResults(String testName) {
@@ -211,12 +216,12 @@ public class ImageAnalyzer {
         return this.images;
     }
 
-    public void setLastFound(int lastFound) {
-        this.lastFound = lastFound;
-    }
-
     public int getLastFound() {
         return this.lastFound;
+    }
+
+    public void setLastFound(int lastFound) {
+        this.lastFound = lastFound;
     }
 }
 

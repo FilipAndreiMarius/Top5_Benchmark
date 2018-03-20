@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,6 +93,13 @@ public abstract class BasePage extends Thread {
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT close all tabs except first: [%s]", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
+    }
+
+    public void changeFocusToLastOpenedTab() {
+        driverSleep(1000);
+        int numberOfTabs = _driver.getWindowHandles().size();
+        String winHandle = _driver.getWindowHandles().toArray()[numberOfTabs - 1].toString();
+        _driver.switchTo().window(winHandle);
     }
 
     public void resetRun() {
