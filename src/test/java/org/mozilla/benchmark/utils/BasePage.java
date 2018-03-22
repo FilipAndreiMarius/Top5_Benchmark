@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -255,6 +256,15 @@ public abstract class BasePage extends Thread {
             }
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("The following element could not be cleared: [%s] - [%s]", element, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
+        }
+    }
+
+    public void waitUntilTitleContains(String title) {
+        try {
+            wait = new WebDriverWait(_driver, timeout);
+            wait.until(ExpectedConditions.titleContains(title));
+        } catch (Exception e) {
+            logger.log(LoggerManagerLevel.ERROR, String.format("Page with title: [%s] NOT found [%s]", title, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
