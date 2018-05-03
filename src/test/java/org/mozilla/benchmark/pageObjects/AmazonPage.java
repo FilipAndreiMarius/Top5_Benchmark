@@ -9,8 +9,10 @@ import org.mozilla.benchmark.utils.BasePage;
 import org.mozilla.benchmark.utils.ColorManager;
 import org.mozilla.benchmark.utils.LoggerManager;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by andrei.filip on 10/30/2017.
@@ -34,7 +36,7 @@ public class AmazonPage extends BasePage {
     //patterns Section 3
     private By VIDEO_RESULT = By.cssSelector("a[href='#btf-product-details']");
     private Color NAVBAR = ColorManager.getColorFromString("#242f3e");
-    
+
     //patterns Section 5
     private By BOOK_RESULT = By.id("img-canvas");
     private By VIDEO_PRODUCT = By.xpath("//*[contains(text(),'The Lord Of The Rings: The Fellowship Of The Ring')]");
@@ -84,11 +86,12 @@ public class AmazonPage extends BasePage {
     public void backAction() {
         logger.log(LoggerManagerLevel.INFO, "Navigate back ...", false);
         navigateBack();
+        WebElement prod = getElements(VIDEO_PRODUCT).get(0);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section4_NavigationStart", ImageSearchTypes.POSITIVE);
-        addPattern(VIDEO_PRODUCT, "Section4_firstNonBlank", ImageSearchTypes.POSITIVE);
-        addPattern(VIDEO_PRODUCT, "Section4_heroElement", ImageSearchTypes.POSITIVE);
+        addPattern(FIRST_RESULT, "Section4_firstNonBlank", ImageSearchTypes.POSITIVE);
+        addPattern(FIRST_RESULT, "Section4_heroElement", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section4_lastPaint", ImageSearchTypes.POSITIVE);
-        driverSleep(1000);
+        waitForElementToDisplay(prod);
     }
 
     public void accessBookResult() {
@@ -99,9 +102,9 @@ public class AmazonPage extends BasePage {
         addPattern(NAVBAR, new Rectangle(0, 0, 200, 200), "Section5_firstNonBlank", ImageSearchTypes.BACKGROUND_POSITIVE);
         addPattern(BOOK_RESULT, "Section5_heroElement", ImageSearchTypes.POSITIVE);
         addPattern(BUY_BOX, "Section5_heroElement", ImageSearchTypes.POSITIVE);
-        addPattern(LOGIN_POP_UP, "Section5_lastPaint", ImageSearchTypes.POSITIVE);
+        //addPattern(LOGIN_POP_UP, "Section5_lastPaint", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section5_lastPaint", ImageSearchTypes.POSITIVE);
-        driverSleep(5000);
+        driverSleep(2000);
     }
 
     public void runAllScenarios() {
