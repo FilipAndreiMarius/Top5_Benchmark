@@ -22,7 +22,7 @@ public class FacebookPage extends BasePage {
 
     //Section 1
     private Color FB_HEADER = ColorManager.getColorFromString("#4167b1");
-    private By POST_IMAGE = By.xpath("//a[contains(@href,'https://www.facebook.com/photo.php?fbid=198743237548038&set=a.110565376365825.1073741828.100022370893545&type=3')]");
+    private By POST_IMAGE = By.xpath("//a[contains(@href,'https://www.facebook.com/photo.php?fbid=219101978845497&set=a.110565376365825.1073741828.100022370893545&type=3')]");
 
     //Section 2
     private Color FADE_OUT = ColorManager.getColorFromString("#eaebef");
@@ -44,9 +44,9 @@ public class FacebookPage extends BasePage {
         addPattern(WebPageConstants.HOME_PAGE_PATTERN, "startingPoint", ImageSearchTypes.POSITIVE);
         logger.log(LoggerManagerLevel.INFO, "Accessing Facebook ...", false);
         navigateToUrl(WebPageConstants.FACEBOOK_URL);
+        WebElement post = getElements(POST_IMAGE).get(1);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section1_navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(FB_HEADER, new Rectangle(0, 0, 200, 200), "Section1_firstNonBlank", ImageSearchTypes.BACKGROUND_POSITIVE);
-        WebElement post = getElements(POST_IMAGE).get(1);
         addPattern(post, "Section1_heroElement", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section1_lastPaint", ImageSearchTypes.POSITIVE);
         driverSleep(2000);
@@ -60,7 +60,7 @@ public class FacebookPage extends BasePage {
         addPattern(GROUP_POST_IMAGE, "Section2_heroElement", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section2_lastPaint", ImageSearchTypes.POSITIVE);
         addPattern(GROUP_MESSAGE_ICON, "Section2_lastPaint", ImageSearchTypes.POSITIVE);
-        driverSleep(2000);
+        driverSleep(3000);
     }
 
     public void homeLink() {
@@ -76,9 +76,10 @@ public class FacebookPage extends BasePage {
 
     public void accessUser() {
         click(SECOND_USER);
+        mouseMove(400,385);
         addPatternWithSimilarity(PathConstants.MOUSE_DOWN_PATH, "Section4_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
         addPatternWithSimilarity(PathConstants.MOUSE_AND_ENTER_UP_PATH, "Section4_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
-        addPattern(FADE_OUT, new Rectangle(650, 360, 20, 20), "Section4_firstNonBlank", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(FB_HEADER, new Rectangle(473, 90, 2, 2), "Section4_firstNonBlank", ImageSearchTypes.BACKGROUND_NEGATIVE);
         WebElement post = getElements(POST_IMAGE).get(1);
         addPattern(post, "Section4_heroElement", ImageSearchTypes.POSITIVE);
         addPattern(FOOTER, "Section4_lastPaint", ImageSearchTypes.POSITIVE);
@@ -95,7 +96,3 @@ public class FacebookPage extends BasePage {
         resetRun();
     }
 }
-
-
-
-

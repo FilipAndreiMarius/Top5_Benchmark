@@ -65,7 +65,3 @@ public class GmailPage extends BasePage {
         resetRun();
     }
 }
-
-
-
-

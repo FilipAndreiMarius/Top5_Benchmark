@@ -11,6 +11,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -446,6 +447,17 @@ public abstract class BasePage extends Thread {
 
     public void addPattern(String source, String elementName, ImageSearchTypes searchType) {
         addPatternWithSimilarity(source, elementName, searchType, PropertiesManager.getDefaultSimilarity());
+    }
+
+    public void mouseMove(int x, int y){
+        Robot robot;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+            return;
+        }
+        robot.mouseMove(x,y);
     }
 
     public abstract void runAllScenarios();
