@@ -49,7 +49,6 @@ public class GooglePage extends BasePage {
 
 
     public void navigateToHomePage() {
-
         logger.log(LoggerManagerLevel.INFO, "Accessing Google ...", false);
         navigateToUrl(WebPageConstants.GSEARCH_URL);
         addPattern(GOOGLE_LOGO, "startingPoint", ImageSearchTypes.POSITIVE);
@@ -57,7 +56,6 @@ public class GooglePage extends BasePage {
     }
 
     public void search() {
-
         logger.log(LoggerManagerLevel.INFO, "Searching [" + WebPageConstants.SEARCH_ITEM + "] ...", false);
         sendKeysAndPressEnter(GOOGLE_SEARCH_BAR, WebPageConstants.SEARCH_ITEM);
         waitUntilTitleContains("barack obama");

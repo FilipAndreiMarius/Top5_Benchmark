@@ -32,6 +32,9 @@ public final class WebPageConstants {
     public static final String AMAZON_URL = "https://www.amazon.com";
     public static final String AMAZON_SEARCH_ITEM = "lord of the rings";
 
+    //Nightly about:support
+    public static final String ABOUT_SUPPORT_URL = "about:support";
+
     private WebPageConstants() {
     }
 }
