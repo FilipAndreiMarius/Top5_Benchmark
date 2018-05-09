@@ -17,7 +17,7 @@ public class ScenarioRunner extends Thread {
 
     private static final LoggerManager logger = new LoggerManager(ImageAnalyzer.class.getName());
 
-    public ScenarioRunner(String testName) {
+    public ScenarioRunner(String testName, String buildID) {
 
         TimestampContainer.getInstance().setStartRunningTime(TimeManager.getCurrentTimestamp());
         logger.log(LoggerManagerLevel.INFO, "Start creating patterns ...", false);
@@ -81,7 +81,7 @@ public class ScenarioRunner extends Thread {
 
         logger.log(LoggerManagerLevel.INFO, "Video Processing done !!!", false);
 
-        ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName);
+        ImageAnalyzer imgAnalyzer = new ImageAnalyzer(testName, buildID);
         logger.log(LoggerManagerLevel.INFO, imgAnalyzer.getResults().toString(), true);
     }
 }

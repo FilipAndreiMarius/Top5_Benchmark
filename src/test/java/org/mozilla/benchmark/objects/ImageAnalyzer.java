@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.constants.FileExtensionsConstants;
+import org.mozilla.benchmark.constants.FirefoxPrefsConstants;
 import org.mozilla.benchmark.constants.PathConstants;
 import org.mozilla.benchmark.utils.FileManager;
 import org.mozilla.benchmark.utils.ImagePatternUtils;
@@ -36,10 +37,10 @@ public class ImageAnalyzer {
     private JsonObject results;
     private int lastFound;
 
-    ImageAnalyzer(String testName) {
+    ImageAnalyzer(String testName, String buildID) {
         this.patterns = initializePatterns(testName);
         this.images = initializeImages(testName);
-        this.results = analyzeAndShowResults(testName);
+        this.results = analyzeAndShowResults(testName, buildID);
         this.lastFound = 0;
     }
 
@@ -164,7 +165,7 @@ public class ImageAnalyzer {
         return images;
     }
 
-    private JsonObject analyzeAndShowResults(String testName) {
+    private JsonObject analyzeAndShowResults(String testName, String buildID) {
 
         ArrayList<ImagePattern> patterns = this.patterns;
         ArrayList<String> images = this.images;
@@ -172,6 +173,15 @@ public class ImageAnalyzer {
         JsonObject results = new JsonObject();
         int image_counter = this.lastFound;
         int pattern_counter = 0;
+
+        JsonObject buildIdJson = new JsonObject();
+        buildIdJson.addProperty("build_id", buildID);
+        JsonObject webrenderPreference = new JsonObject();
+        webrenderPreference.addProperty("browser_prefs", FirefoxPrefsConstants.GFX_WEBRENDER_ALL);
+
+
+        results.add("buildDetails", buildIdJson);
+        results.add(FirefoxPrefsConstants.GFX_WEBRENDER_ALL_PREFERENCE, webrenderPreference);
 
         for (ImagePattern pattern : patterns) {
             JsonObject result = new JsonObject();

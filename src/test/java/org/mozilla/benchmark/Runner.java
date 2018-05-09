@@ -4,9 +4,7 @@ import org.mozilla.benchmark.constants.ExecutionConstants;
 import org.mozilla.benchmark.objects.LoggerManagerLevel;
 import org.mozilla.benchmark.objects.PageNavigationTypes;
 import org.mozilla.benchmark.objects.ScenarioRunner;
-import org.mozilla.benchmark.utils.ErrorManager;
-import org.mozilla.benchmark.utils.LoggerManager;
-import org.mozilla.benchmark.utils.PropertiesManager;
+import org.mozilla.benchmark.utils.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -31,9 +29,12 @@ public class Runner {
 
         }
 
+        BuildIDPage buildIDPage = new BuildIDPage(1, "", PageNavigationTypes.EXECUTE_FLOW);
+        String buildID = buildIDPage.getBuildID();
+
         Thread[] threads = new Thread[scenarios.length];
         for (int i = 0; i < threads.length; i++) {
-            threads[i] = new ScenarioRunner(scenarios[i]);
+            threads[i] = new ScenarioRunner(scenarios[i], buildID);
             threads[i].start();
             try {
                 threads[i].join();
