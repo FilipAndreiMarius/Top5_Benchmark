@@ -39,7 +39,6 @@ public class YoutubePage extends BasePage{
 
     //Section 4
     private Color VIDEO_FIRST_PAINT = ColorManager.getColorFromString("#000000");
-    private By COMMENTS_SORT_BY = By.id("icon-label");
     private By VIDEO_TEST = By.cssSelector("ytd-video-renderer.ytd-item-section-renderer:nth-child(2)");
 
     //Section 5
@@ -50,38 +49,51 @@ public class YoutubePage extends BasePage{
     }
 
     public void accessYoutube() {
+        navigateToUrl(WebPageConstants.HOME_PAGE_URL);
         addPattern(WebPageConstants.HOME_PAGE_PATTERN, "startingPoint", ImageSearchTypes.POSITIVE);
         logger.log(LoggerManagerLevel.INFO, "Accessing Youtube...", false);
         navigateToUrl(WebPageConstants.YOUTUBE_URL);
         addPattern(PathConstants.LOAD_PENDING_PATH, "Section1_navigationStart", ImageSearchTypes.POSITIVE);
         addPattern(YOUTUBE_LOGO, "Section1_firstNonBlank", ImageSearchTypes.POSITIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(460, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(670, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(880, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1090, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1300, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1510, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(460, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(670, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(880, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1090, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1300, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1510, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(460, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(670, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(880, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1090, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1300, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1510, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(460, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(670, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(880, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1090, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1300, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1510, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(532, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(750, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(966, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1180, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1390, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1606, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(532, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(750, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(966, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1180, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1390, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE2, new Rectangle(1606, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(532, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(750, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(966, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1180, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1390, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1606, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(532, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(750, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(966, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1180, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1390, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1606, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(532, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(750, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(966, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1180, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1390, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1606, 260, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(532, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(750, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(966, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1180, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1390, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
+        addPattern(THUMBNAIL_PRESENCE, new Rectangle(1606, 500, 2, 2), "Section1_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
         addPattern(FAVICON_YOUTUBE, new Rectangle(12, 17, 2, 2), "Section1_lastPaint", ImageSearchTypes.BACKGROUND_POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section1_lastPaint", ImageSearchTypes.POSITIVE);
-        driverSleep(3000);
+        driverSleep(4000);
     }
 
     public void accessTrending() {
@@ -114,21 +126,20 @@ public class YoutubePage extends BasePage{
         addPatternWithSimilarity(PathConstants.MOUSE_DOWN_PATH, "Section4_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
         addPatternWithSimilarity(PathConstants.MOUSE_AND_ENTER_UP_PATH, "Section4_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
         addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 360, 20, 20), "Section4_Video_firstPaint", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 300, 20, 20), "Section4_Video_firstPaint", ImageSearchTypes.BACKGROUND_POSITIVE);
         addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 360, 2, 2), "Section4_Video_Playback_Start", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(COMMENTS_SORT_BY, "Section4_lastPaint", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section4_lastPaint", ImageSearchTypes.POSITIVE);
-        waitForElementToDisplay(COMMENTS_SORT_BY);
+        driverSleep(3000);
     }
 
     public void playSecondVideo()  {
         click(YOUTUBE_SECOND_VIDEO);
-        waitUntilElementIsDisplayedOnScreen(COMMENTS_SORT_BY);
         addPatternWithSimilarity(PathConstants.MOUSE_DOWN_PATH, "Section5_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
         addPatternWithSimilarity(PathConstants.MOUSE_AND_ENTER_UP_PATH, "Section5_NavigationStart", ImageSearchTypes.POSITIVE, 0.99f);
         addPattern(THUMBNAIL_PRESENCE, new Rectangle(4, 80, 2, 2), "Section3_Before_First_Non", ImageSearchTypes.BACKGROUND_POSITIVE);
         addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 360, 20, 20), "Section5_Video_firstPaint", ImageSearchTypes.BACKGROUND_POSITIVE);
+        addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 300, 20, 20), "Section5_Video_firstPaint", ImageSearchTypes.BACKGROUND_POSITIVE);
         addPattern(VIDEO_FIRST_PAINT, new Rectangle(700, 360, 2, 2), "Section5_Video_Playback_Start", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(COMMENTS_SORT_BY, "Section5_lastPaint", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section5_lastPaint", ImageSearchTypes.POSITIVE);
     }
 
