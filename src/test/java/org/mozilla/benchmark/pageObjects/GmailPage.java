@@ -28,13 +28,13 @@ public class GmailPage extends BasePage {
     private By HYPERLINK_INSIDE_MAIL = By.className("m_-7793005015168254029m_3189775553631395212video-title-font-class");
     private By YOUTUBE_LOGO = By.xpath("//a[contains(@id,'logo')]");
     private Color FIRST_VIDEO_FRAME = ColorManager.getColorFromString("#000000");
-    private By COMMENTS_SORT_BY = By.id("icon-label");
 
     public GmailPage(int runs, String testName, PageNavigationTypes navigationType) {
         super(runs, testName, navigationType);
     }
 
     public void navigateToHomePage() {
+        navigateToUrl(WebPageConstants.HOME_PAGE_URL);
         addPattern(WebPageConstants.HOME_PAGE_PATTERN, "startingPoint", ImageSearchTypes.POSITIVE);
         logger.log(LoggerManagerLevel.INFO, "Accessing Gmail ...", false);
         navigateToUrl(WebPageConstants.GMAIL_URL);
@@ -54,9 +54,7 @@ public class GmailPage extends BasePage {
         WebElement logoYoutube = getElements(YOUTUBE_LOGO).get(0);
         addPattern(logoYoutube, "Section2_firstNonBlank", ImageSearchTypes.POSITIVE);
         addPattern(FIRST_VIDEO_FRAME, new Rectangle(394, 203, 2, 1), "Section2_heroElement", ImageSearchTypes.BACKGROUND_NEGATIVE);
-        addPattern(COMMENTS_SORT_BY, "Section2_lastPaint", ImageSearchTypes.POSITIVE);
         addPattern(PathConstants.LOAD_DONE_PATH, "Section2_lastPaint", ImageSearchTypes.POSITIVE);
-        waitForElementToDisplay(COMMENTS_SORT_BY);
     }
 
     public void runAllScenarios() {
