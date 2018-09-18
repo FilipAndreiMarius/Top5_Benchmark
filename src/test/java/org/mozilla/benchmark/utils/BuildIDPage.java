@@ -12,7 +12,7 @@ public class BuildIDPage extends BasePage {
     }
 
     public String getBuildID(){
-        navigateToUrl(WebPageConstants.ABOUT_SUPPORT_URL);
+        navigateToAbout();
         WebElement locatorElement = getElement(By.id("buildid-box"));
         return locatorElement.getText();
     }
