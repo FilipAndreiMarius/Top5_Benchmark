@@ -67,6 +67,7 @@ public abstract class BasePage extends Thread {
 
     public BasePage(int runs, String testName, PageNavigationTypes navigationType) {
         _driver = DriverUtils.getInstance();
+        _driver.manage().window().maximize();
         this.runs = runs;
         this.testName = testName;
         this.navigationType = navigationType;
@@ -78,6 +79,14 @@ public abstract class BasePage extends Thread {
             _driver.navigate().to(url);
         } catch (Exception e) {
             logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load [%s]: [%s]", url, ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
+        }
+    }
+    public void navigateToAbout() {
+        try {
+            driverSleep(1000);
+            _driver.navigate().to("about:support");
+        } catch (Exception e) {
+            logger.log(LoggerManagerLevel.ERROR, String.format("Could NOT load AboutSupport", ErrorManager.getErrorMessage(e.getStackTrace())), PropertiesManager.getEmailNotification());
         }
     }
 
